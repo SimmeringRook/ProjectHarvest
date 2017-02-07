@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="512a9968b231407c9258be56a1a94a3b" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="HarvestModel.FoodType" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Inventory" Width="1.5" PointX="2.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.MealHistory" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.MealTime" Width="1.5" PointX="8.5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Metric" Width="1.5" PointX="8.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Recipe" Width="1.5" PointX="2.625" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Recipe_Inventory" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="HarvestModel.FK_Inventory_FoodType" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_Inventory_Metric" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Inventory" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_MealHistory_MealTime" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Metric" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Recipe" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_MealHistory_Recipe" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

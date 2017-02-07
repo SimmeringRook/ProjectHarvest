@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +51,76 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FoodType.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HarvestModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HarvestModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HarvestModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HarvestModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HarvestModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MealHistory.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MealTime.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="MeasurementUnitConversions\VolumeConversionFactors.cs" />
+    <Compile Include="Metric.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Recipe.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RecipeMangement\Ingredient.cs" />
     <Compile Include="MeasurementUnitConversions\MeasurementUnit.cs" />
     <Compile Include="MeasurementUnitConversions\VolumeUnitConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipeMangement\RecipeManager.cs" />
+    <Compile Include="Recipe_Inventory.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="HarvestModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>HarvestModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="HarvestModel.edmx.diagram">
+      <DependentUpon>HarvestModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HarvestModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HarvestModel.Context.cs</LastGenOutput>
+      <DependentUpon>HarvestModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="HarvestModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HarvestModel.edmx</DependentUpon>
+      <LastGenOutput>HarvestModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
