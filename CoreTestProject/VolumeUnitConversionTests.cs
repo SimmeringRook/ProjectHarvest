@@ -86,34 +86,7 @@ namespace CoreTestProject
         public class TableSpoon
         {
             #region TableSpoon to Different Unit
-            [TestMethod]
-            public void Convert_FromTableSpoonToTeaSpoon_ReturnsCorrectAmount()
-            {
-                //Arrange
-                Ingredient expected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Correct Answer
-                Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TableSpoon);
-
-                //Act
-                Ingredient result = VolumeUnitConverter.Convert(unconverted, MeasurementUnit.TeaSpoon);
-                Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
-                //Assert
-                Assert.AreEqual(expected.Amount, result.Amount);
-            }
-
-            [TestMethod]
-            public void Convert_FromTableSpoonToTeaSpoon_ReturnsIncorrectAmount()
-            {
-                //Arrange
-                Ingredient notExpected = new Ingredient(2.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TableSpoon);
-
-                //Act
-                Ingredient result = VolumeUnitConverter.Convert(unconverted, MeasurementUnit.TeaSpoon);
-                Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
-                //Assert
-                Assert.AreNotEqual(notExpected.Amount, result.Amount);
-            }
-
+           
             [TestMethod]
             public void Convert_FromTableSpoonToFluidOunce_ReturnsCorrectAmount()
             {
@@ -144,34 +117,6 @@ namespace CoreTestProject
             #endregion
 
             #region Different Unit To TableSpoon
-            [TestMethod]
-            public void Convert_FromTeaSpoonToTableSpoon_ReturnsCorrectAmount()
-            {
-                //Arrange
-                Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon); //Correct Answer
-                Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
-
-                //Act
-                Ingredient result = VolumeUnitConverter.Convert(unconverted, MeasurementUnit.TableSpoon);
-                Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
-                //Assert
-                Assert.AreEqual(expected.Amount, result.Amount);
-            }
-
-            [TestMethod]
-            public void Convert_FromTeaSpoonToTableSpoon_ReturnsIncorrectAmount()
-            {
-                //Arrange
-                Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
-
-                //Act
-                Ingredient result = VolumeUnitConverter.Convert(unconverted, MeasurementUnit.TableSpoon);
-                Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
-                //Assert
-                Assert.AreNotEqual(notExpected.Amount, result.Amount);
-            }
-
             [TestMethod]
             public void Convert_FromFluidOunceToTableSpoon_ReturnsCorrectAmount()
             {
