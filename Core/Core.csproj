@@ -40,7 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MetricOperations\UnitConverter.cs" />
+    <Compile Include="MeasurementUnitConversions\VolumeConversionFactors.cs" />
+    <Compile Include="RecipeMangement\Ingredient.cs" />
+    <Compile Include="MeasurementUnitConversions\MeasurementUnit.cs" />
+    <Compile Include="MeasurementUnitConversions\VolumeUnitConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipeMangement\RecipeManager.cs" />
   </ItemGroup>
