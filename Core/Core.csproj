@@ -78,7 +78,7 @@
     <Compile Include="MealTime.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MeasurementUnitConversions\VolumeConversionFactors.cs" />
+    <Compile Include="MeasurementConversions\MeasurementConversionFactors.cs" />
     <Compile Include="Metric.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
@@ -86,8 +86,8 @@
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RecipeMangement\Ingredient.cs" />
-    <Compile Include="MeasurementUnitConversions\MeasurementUnit.cs" />
-    <Compile Include="MeasurementUnitConversions\VolumeUnitConverter.cs" />
+    <Compile Include="MeasurementConversions\MeasurementUnit.cs" />
+    <Compile Include="MeasurementConversions\VolumeUnitConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipeMangement\RecipeManager.cs" />
     <Compile Include="Recipe_Inventory.cs">

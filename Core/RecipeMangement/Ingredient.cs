@@ -1,4 +1,4 @@
-﻿using Core.MeasurementUnitConversions;
+﻿using Core.MeasurementConversions;
 
 namespace Core.RecipeMangement
 {
