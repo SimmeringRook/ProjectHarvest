@@ -53,11 +53,8 @@ namespace Core.MeasurementConversions
             List<float> conversionFactors = MeasurementConversionFactors.GetRatios();
                 
             //Ensure we're dealing with the same measurement system
-            bool startingUnitIsMetric = IsMetricUnitSystem(ingredientToConvert.Measurement);
-            bool endUnitIsMetric = IsMetricUnitSystem(unitToConvertTo);
-
-            if (startingUnitIsMetric != endUnitIsMetric)
-                ingredientToConvert = ConvertToSameUnitSystem(ingredientToConvert, startingUnitIsMetric, endUnitIsMetric);
+            if (IsMetricUnitSystem(ingredientToConvert.Measurement) != IsMetricUnitSystem(unitToConvertTo))
+                ConvertToSameUnitSystem(ref ingredientToConvert);
                
 
             //Volume Units belong to the same measurement system now, continue converting to the desired unit
@@ -87,7 +84,7 @@ namespace Core.MeasurementConversions
             return false; //US volume unit
         }
 
-        private static Ingredient ConvertToSameUnitSystem(Ingredient ingredientToConvert, bool startingUnitIsMetric, bool endingUnitIsMetric)
+        private static void ConvertToSameUnitSystem(ref Ingredient ingredientToConvert)
         {
             //grab a reference of the amount that needs to be converted
             float amount = ingredientToConvert.Amount;
@@ -112,9 +109,6 @@ namespace Core.MeasurementConversions
                 ingredientToConvert = new Ingredient(
                     ingredientToConvert.Amount / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(), 
                     MeasurementUnit.MilliLiter);
-
-            //Return the new amount with its correct unit
-            return ingredientToConvert;
         }
     }
 }
