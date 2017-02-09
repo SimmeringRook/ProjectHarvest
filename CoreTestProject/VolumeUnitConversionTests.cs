@@ -233,39 +233,78 @@ namespace CoreTestProject
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
                 }
 
-                //TODO: Fix
-                //[TestMethod]
-                //public void Convert_FromTeaSpoonToMillileter_ReturnsCorrectAmount()
-                //{
-                //    //Arrange
-                //    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Correct Answer
+                [TestMethod]
+                public void Convert_FromTeaSpoonToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio
+                        * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
-                //    float amountToConvert = 1;
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
 
-                //    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
 
-                //    //Act
-                //    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                //    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
 
-                //    //Assert
-                //    Assert.AreEqual(expected.Amount, result.Amount);
-                //}
+                [TestMethod]
+                public void Convert_FromTeaSpoonToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
 
-                //[TestMethod]
-                //public void Convert_FromTeaSpoonToMillileter_ReturnsIncorrectAmount()
-                //{
-                //    //Arrange
-                //    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                //    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
 
-                //    //Act
-                //    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                //    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
 
-                //    //Assert
-                //    Assert.AreNotEqual(notExpected.Amount, result.Amount);
-                //}
+                [TestMethod]
+                public void Convert_FromTeaSpoonToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio
+                        * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromTeaSpoonToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
             }
 
             [TestClass]
@@ -475,6 +514,77 @@ namespace CoreTestProject
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
                 }
+
+                [TestMethod]
+                public void Convert_FromTableSpoonToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromTableSpoonToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TableSpoon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromTableSpoonToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromTableSpoonToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
             }
 
             [TestClass]
@@ -674,6 +784,75 @@ namespace CoreTestProject
                     //Arrange
                     Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
                     Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromFluidOunceToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromFluidOunceToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.FluidOunce);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromFluidOunceToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromFluidOunceToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.FluidOunce);
 
                     //Act
                     Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
@@ -891,6 +1070,77 @@ namespace CoreTestProject
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
                 }
+
+                [TestMethod]
+                public void Convert_FromCupToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromCupToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Cup);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromCupToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromCupToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Cup);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
             }
 
             [TestClass]
@@ -1093,6 +1343,79 @@ namespace CoreTestProject
                     //Arrange
                     Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
                     Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromPintToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.CupToPintRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromPintToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Pint);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromPintToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.CupToPintRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromPintToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Pint);
 
                     //Act
                     Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
@@ -1314,6 +1637,81 @@ namespace CoreTestProject
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
                 }
+
+                [TestMethod]
+                public void Convert_FromQuartToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.CupToPintRatio
+                        / MeasurementConversionFactors.PintToQuartRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromQuartToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Quart);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromQuartToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.CupToPintRatio
+                        / MeasurementConversionFactors.PintToQuartRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromQuartToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Quart);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
             }
 
             [TestClass]
@@ -1524,6 +1922,83 @@ namespace CoreTestProject
                     //Arrange
                     Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
                     Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromGallonToMilliliter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.CupToPintRatio
+                        / MeasurementConversionFactors.PintToQuartRatio
+                        / MeasurementConversionFactors.QuartToGallonRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromGallonToMilliliter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Gallon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreNotEqual(notExpected.Amount, result.Amount);
+                }
+
+                [TestMethod]
+                public void Convert_FromGallonToLiter_ReturnsCorrectAmount()
+                {
+                    //Arrange
+                    float expectedAmount = 1.0f
+                        / MeasurementConversionFactors.FluidOunceToCupRatio
+                        / MeasurementConversionFactors.CupToPintRatio
+                        / MeasurementConversionFactors.PintToQuartRatio
+                        / MeasurementConversionFactors.QuartToGallonRatio
+                        / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
+                        * MeasurementConversionFactors.MillilitersToLiters;
+                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+
+                    float amountToConvert = 1.0f;
+                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+
+                    //Act
+                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+
+                    //Assert
+                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                }
+
+                [TestMethod]
+                public void Convert_FromGallonToLiter_ReturnsIncorrectAmount()
+                {
+                    //Arrange
+                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Gallon);
 
                     //Act
                     Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);

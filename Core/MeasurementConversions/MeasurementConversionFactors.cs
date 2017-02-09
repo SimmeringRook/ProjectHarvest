@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Core.MeasurementConversions
 {
@@ -27,7 +23,7 @@ namespace Core.MeasurementConversions
             return 0.035274f;
         }
 
-        public static List<float> GetSameSystemRatios()
+        public static List<float> GetRatios()
         {
             return ConversionFactors;
         }
@@ -46,7 +42,7 @@ namespace Core.MeasurementConversions
             GramsToKiloGrams
         };
 
-        #region Imperial Volume Ratios
+        #region US Volume Ratios
         public const float TeaSpoonToTableSpoonRatio = (1.0f / 3.0f); //3 tsp = 1 tbs
         public const float TableSpoonToFluidOunceRatio = (1.0f / 2.0f); //2 tbs = 1 fl oz
         public const float FluidOunceToCupRatio = (1.0f / 8.0f); // 8.11537 fl oz = 1 cup
@@ -56,16 +52,16 @@ namespace Core.MeasurementConversions
         #endregion
 
         #region Metric Volume Ratios
-        private const float MillilitersToLiters = (1.0f / 1000f); //1000 mL = 1 L
+        public const float MillilitersToLiters = (1.0f / 1000f); //1000 mL = 1 L
         #endregion
 
-        #region Imperial Weight Ratios
-        private const float OunceToLbs = (1.0f / 16.0f); // 16 oz = 1lbs
+        #region US Weight Ratios
+        public const float OunceToLbs = (1.0f / 16.0f); // 16 oz = 1lbs
         #endregion
 
         #region Metric Weight Ratios
-        private const float MilligramsToGrams = (1.0f / 1000f); // 1000 mg = 1 g
-        private const float GramsToKiloGrams = (1.0f / 1000f); // 1000 g = 1 kg
+        public const float MilligramsToGrams = (1.0f / 1000f); // 1000 mg = 1 g
+        public const float GramsToKiloGrams = (1.0f / 1000f); // 1000 g = 1 kg
         #endregion
     }
 }

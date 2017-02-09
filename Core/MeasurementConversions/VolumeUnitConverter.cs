@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Core.MeasurementConversions
 {
+    /// <summary>
+    /// Handles all Same System and System-to-System Volume unit conversions.
+    /// </summary>
     public static class VolumeUnitConverter
     {
         /* This lets us have one struct object for Ingredients,
@@ -25,6 +28,11 @@ namespace Core.MeasurementConversions
             MeasurementUnit.Liter
         };
 
+        /// <summary>
+        /// Returns whether or not a MeasurementUnit is a Volume unit (regardless of System)
+        /// </summary>
+        /// <param name="measurement"></param>
+        /// <returns></returns>
         public static bool IsVolumeMeasurement(MeasurementUnit measurement)
         {
             foreach (MeasurementUnit unit in volumeUnits)
@@ -37,68 +45,76 @@ namespace Core.MeasurementConversions
 
         public static Ingredient Convert(Ingredient ingredientToConvert, MeasurementUnit unitToConvertTo)
         {
-            if (IsVolumeMeasurement(unitToConvertTo))
-            {
-                List<float> conversionFactors = MeasurementConversionFactors.GetSameSystemRatios();
-                float convertedAmount = ingredientToConvert.Amount;
+            //TODO: add in error handling for attempts to convert weight to volume (or volume to weight)
+            if (!IsVolumeMeasurement(unitToConvertTo) || !IsVolumeMeasurement(ingredientToConvert.Measurement))
+                throw new System.Exception();
 
-                //Ensure we're dealing with the same measurement system
-                bool startingUnitIsMetric = IsMetricUnitSystem(ingredientToConvert.Measurement);
-                bool endUnitIsMetric = IsMetricUnitSystem(unitToConvertTo);
-
-                if (startingUnitIsMetric != endUnitIsMetric)
-                    ingredientToConvert = ConvertToSameUnitSystem(ingredientToConvert, startingUnitIsMetric, endUnitIsMetric);
+            //Get the list of conversion factors
+            List<float> conversionFactors = MeasurementConversionFactors.GetRatios();
                 
-                //A weird error occured while trying to convert from US to Metric (or vice versa)
-                //Exit Early
-                if (ingredientToConvert == null)
-                    return null;
+            //Ensure we're dealing with the same measurement system
+            bool startingUnitIsMetric = IsMetricUnitSystem(ingredientToConvert.Measurement);
+            bool endUnitIsMetric = IsMetricUnitSystem(unitToConvertTo);
 
-                //Volume Units belong to the same measurement system now, continue converting to the desired unit
-                if ((int) ingredientToConvert.Measurement > (int) unitToConvertTo)
-                {
-                    //Converting from bigger to smaller unit
-                    for (int i = (int) ingredientToConvert.Measurement -1; i >= (int)unitToConvertTo; i--)
-                        convertedAmount /= conversionFactors[i];
-                }
-                else
-                {
-                    //Converting from smaller to Bigger
-                    for (int i = (int)ingredientToConvert.Measurement; i < (int)unitToConvertTo; i++)
-                        convertedAmount *= conversionFactors[i];
-                }
+            if (startingUnitIsMetric != endUnitIsMetric)
+                ingredientToConvert = ConvertToSameUnitSystem(ingredientToConvert, startingUnitIsMetric, endUnitIsMetric);
+               
 
-                return new Ingredient(convertedAmount, unitToConvertTo);
+            //Volume Units belong to the same measurement system now, continue converting to the desired unit
+            float convertedAmount = ingredientToConvert.Amount;
+
+            if ((int) ingredientToConvert.Measurement > (int) unitToConvertTo)
+            {
+                //Converting from bigger to smaller unit
+                for (int i = (int) ingredientToConvert.Measurement -1; i >= (int)unitToConvertTo; i--)
+                    convertedAmount /= conversionFactors[i];
             }
-            return null;
+            else
+            {
+                //Converting from smaller to Bigger
+                for (int i = (int)ingredientToConvert.Measurement; i < (int)unitToConvertTo; i++)
+                    convertedAmount *= conversionFactors[i];
+            }
+
+            return new Ingredient(convertedAmount, unitToConvertTo);
         }
 
         private static bool IsMetricUnitSystem(MeasurementUnit unitToCheck)
         {
+            //Check to see if the unit is between the values of Milliter and Milligram for Metric Volume units
             if ((int)unitToCheck < (int)MeasurementUnit.MilliLiter == false)
                     return ((int)unitToCheck < (int)MeasurementUnit.Milligram);
-            return false;
+            return false; //US volume unit
         }
 
         private static Ingredient ConvertToSameUnitSystem(Ingredient ingredientToConvert, bool startingUnitIsMetric, bool endingUnitIsMetric)
         {
-            float amount = 0.0f;
-            
-            if (startingUnitIsMetric == true && endingUnitIsMetric == false)
-            {
-                if (ingredientToConvert.Measurement != MeasurementUnit.MilliLiter)
-                    amount = Convert(ingredientToConvert, MeasurementUnit.MilliLiter).Amount;
-                amount *= MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                return new Ingredient(amount, MeasurementUnit.FluidOunce);
-            }
-            else if (startingUnitIsMetric == false && endingUnitIsMetric == true)
-            {
-                if (ingredientToConvert.Measurement != MeasurementUnit.FluidOunce)
-                    amount = Convert(ingredientToConvert, MeasurementUnit.FluidOunce).Amount;
-                amount /= MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                return new Ingredient(amount, MeasurementUnit.MilliLiter);
-            }
-            return null;
+            //grab a reference of the amount that needs to be converted
+            float amount = ingredientToConvert.Amount;
+
+            bool startingWithMetric = IsMetricUnitSystem(ingredientToConvert.Measurement);
+            MeasurementUnit unitToStandarizeWith = (startingWithMetric) 
+                ? MeasurementUnit.MilliLiter 
+                : MeasurementUnit.FluidOunce;
+
+            //If the ingredient is not MilliLiter or Fluid Ounce (respective to the value of startingWithMetric)
+            //Convert down/up to the respective unit
+            if (ingredientToConvert.Measurement != unitToStandarizeWith)
+                ingredientToConvert = Convert(ingredientToConvert, unitToStandarizeWith);
+
+            //Metric to US
+            if (startingWithMetric)
+                ingredientToConvert = new Ingredient(
+                    ingredientToConvert.Amount * MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(), 
+                    MeasurementUnit.FluidOunce);
+            //US to Metric
+            else
+                ingredientToConvert = new Ingredient(
+                    ingredientToConvert.Amount / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(), 
+                    MeasurementUnit.MilliLiter);
+
+            //Return the new amount with its correct unit
+            return ingredientToConvert;
         }
     }
 }
