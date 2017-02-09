@@ -30,40 +30,11 @@ namespace Client_Desktop
             this.Dispose();
         }
 
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PantryForm_Load(object sender, EventArgs e)
         {
-            if (RecipeManager.Add())
-            {
+            // TODO: This line of code loads data into the 'harvestDataSet.Inventory' table. You can move, or remove it, as needed.
+            this.inventoryTableAdapter.Fill(this.harvestDataSet.Inventory);
 
-            }
-            else
-            {
-                MessageBox.Show("An error occured while trying to add a recipe to the database.");
-            }
-        }
-
-        private void modifyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (RecipeManager.Modify())
-            {
-
-            }
-            else
-            {
-                MessageBox.Show("An error occured while trying to modify a recipe in the database.");
-            }
-        }
-
-        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (RecipeManager.Remove())
-            {
-
-            }
-            else
-            {
-                MessageBox.Show("An error occured while trying to remove a recipe from the database.");
-            }
         }
     }
 }

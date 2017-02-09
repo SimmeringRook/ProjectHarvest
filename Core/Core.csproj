@@ -85,6 +85,7 @@
     <Compile Include="Recipe.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RecipeMangement\ExampleHandshakeWithDatabase.cs" />
     <Compile Include="RecipeMangement\Ingredient.cs" />
     <Compile Include="MeasurementConversions\MeasurementUnit.cs" />
     <Compile Include="MeasurementConversions\VolumeUnitConverter.cs" />
