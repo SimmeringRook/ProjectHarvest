@@ -12,26 +12,26 @@ namespace Core.RecipeMangement
         /// Note: this code is broken and does not work
         /// </summary>
         /// <param name="recipeNameThatWeWantInfoAbout"></param>
-        public void InventoryQuery(string recipeNameThatWeWantInfoAbout)
-        {
-            int recipeIDWeWant = 0;
-            HarvestEntities context = new HarvestEntities();
+        //public void InventoryQuery(string recipeNameThatWeWantInfoAbout)
+        //{
+        //    int recipeIDWeWant = 0;
+        //    HarvestEntities context = new HarvestEntities();
 
-            foreach (var recipe in context.Recipe)
-            {
-                if (recipe.Name == recipeNameThatWeWantInfoAbout)
-                    recipeIDWeWant = recipe.ID;
-            }
+        //    foreach (var recipe in context.Recipe)
+        //    {
+        //        if (recipe.Name == recipeNameThatWeWantInfoAbout)
+        //            recipeIDWeWant = recipe.ID;
+        //    }
 
-            List<Ingredient> ingredient = new List<Ingredient>();
+        //    List<Ingredient> ingredient = new List<Ingredient>();
         
-            foreach (var item in context.Recipe_Inventory)
-            {
-                if (item.RecipeID == recipeIDWeWant)
-                   ingredient.Add(item);
-            }
+        //    foreach (var item in context.Recipe_Inventory)
+        //    {
+        //        if (item.RecipeID == recipeIDWeWant)
+        //           ingredient.Add(item);
+        //    }
 
-            return ingredient;
-        }
+        //    return ingredient;
+        //}
     }
 }

@@ -16,7 +16,7 @@ namespace Client_Desktop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PantryForm());
+            Application.Run(new HarvestForm());
         }
     }
 }

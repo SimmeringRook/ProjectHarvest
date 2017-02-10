@@ -46,21 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarvestDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HarvestDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="PantryForm.cs">
+    <Compile Include="HarvestForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PantryForm.Designer.cs">
-      <DependentUpon>PantryForm.cs</DependentUpon>
+    <Compile Include="HarvestForm.Designer.cs">
+      <DependentUpon>HarvestForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="PantryForm.resx">
-      <DependentUpon>PantryForm.cs</DependentUpon>
+    <EmbeddedResource Include="HarvestForm.resx">
+      <DependentUpon>HarvestForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -71,17 +66,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="HarvestDataSet.xsc">
-      <DependentUpon>HarvestDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="HarvestDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>HarvestDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="HarvestDataSet.xss">
-      <DependentUpon>HarvestDataSet.xsd</DependentUpon>
-    </None>
+    <None Include="Properties\DataSources\Core.Inventory.datasource" />
+    <None Include="Properties\DataSources\Core.Recipe.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
