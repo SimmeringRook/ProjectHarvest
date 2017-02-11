@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.EntityFramework_Utils
 {
@@ -102,23 +99,53 @@ namespace Core.EntityFramework_Utils
         }
         #endregion
 
-
         public static void UpdateItemInDatabaseByItem(Inventory modifiedItem)
         {
             using (HarvestEntities context = new HarvestEntities())
             {
                 //Load the table, and get the Item to modify
                 context.Inventory.Load();
+                
                 Inventory itemInDB = context.Inventory.SingleOrDefault(i => i.ID == modifiedItem.ID);
 
-                //Assign the new values
-                itemInDB.Name = modifiedItem.Name;
-                itemInDB.Amount = modifiedItem.Amount;
-                itemInDB.MetricID = modifiedItem.MetricID;
-                itemInDB.TypeID = modifiedItem.TypeID;
-
+                if (itemInDB != null)
+                {
+                    //Assign the new values
+                    itemInDB.Name = modifiedItem.Name;
+                    itemInDB.Amount = modifiedItem.Amount;
+                    itemInDB.MetricID = modifiedItem.MetricID;
+                    itemInDB.TypeID = modifiedItem.TypeID;
+                }
+                else
+                {
+                    context.Inventory.Add(modifiedItem);
+                }
                 //commit changes to DB
                 context.SaveChanges();
+            }
+        }
+
+        public static void RemoveItemsFromDatabase(ref List<Inventory> itemsToRemove)
+        {
+            using (HarvestEntities context = new HarvestEntities())
+            {
+                context.Inventory.Load();
+                foreach (Inventory item in itemsToRemove)
+                {
+                    //TODO: Check if the item is tied to a recipe object
+                    foreach (Inventory dbItem in context.Inventory.Local.ToList())
+                        if (item.ID == dbItem.ID)
+                            context.Inventory.Remove(dbItem); //delete item
+                }
+                context.SaveChanges();
+
+                //If the item no longer exists in the database, remove it from the list
+                //the only items remaining will be the one prevented from being removed.
+                foreach (Inventory databaseItem in context.Inventory.ToList())
+                {
+                    if (itemsToRemove.Contains(databaseItem) == false)
+                        itemsToRemove.Remove(databaseItem);
+                }
             }
         }
 

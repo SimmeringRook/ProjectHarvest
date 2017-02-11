@@ -3,13 +3,14 @@ using Core.EntityFramework_Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop
 {
     public partial class HarvestForm : Form
     {
+        private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
+
         public HarvestForm()
         {
             InitializeComponent();
@@ -29,22 +30,33 @@ namespace Client_Desktop
 
         private void pantryTabControl_Selected(object sender, TabControlEventArgs e)
         {
-            TabControl selected = (TabControl)sender;
+            ForceRefreshOfCurrentView();
+        }
 
-            switch (selected.SelectedIndex)
+        /// <summary>
+        /// Loads the relevant table for the current TabPage, and rebinds the table to the datagridview
+        /// </summary>
+        private void ForceRefreshOfCurrentView()
+        {
+            using (HarvestEntities context = new HarvestEntities())
             {
-                case 0:
-                    InitializeMealTab();
-                    break;
-                case 1:
-                    InitializeInventoryTab();
-                    break;
-                case 2:
-                    InitializeRecipeTab();
-                    break;
-                default:
-                    break;
-            }
+                switch (pantryTabControl.SelectedIndex)
+                {
+                    case 0:
+                        //Meal Planning stuff goes here
+                        break;
+                    case 1:
+                        context.Inventory.Load();
+                        InventoryGridView.DataSource = context.Inventory.Local.ToBindingList();
+                        break;
+                    case 2:
+                        context.Recipe.Load();
+                        RecipeGridView.DataSource = context.Recipe.Local.ToBindingList();
+                        break;
+                }
+            };
+            
+            pantryTabControl.SelectedTab.Refresh();
         }
 
         #region Meal Tab
@@ -55,30 +67,11 @@ namespace Client_Desktop
         #endregion
 
         #region Inventory Tab
-        private void InitializeInventoryTab()
-        {
-            using (HarvestEntities context = new HarvestEntities())
-            {
-                //Load table
-                context.Inventory.Load();
-                //Bind data to Grid
-                InventoryGridView.DataSource = context.Inventory.Local.ToBindingList();
-            };
-        }
-
-        private void Inventory_ForceRefreshOfView()
-        {
-            InitializeInventoryTab();
-            InventoryGridView.Refresh();
-            InventoryGridView.Parent.Refresh();
-        }
-
         /// <summary>
-        /// Translate MetricID and FoodTypeID into respective strings
+        /// Translate MetricID and FoodTypeID into respective strings; assign the text value to the modify button
         /// </summary>
         private void InventoryGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            
             if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
                 e.Value = InventoryTranslator.GetFoodCategoryByItemID(e.RowIndex);
 
@@ -89,24 +82,12 @@ namespace Client_Desktop
                 e.Value = "...";
         }
 
+        /// <summary>
+        /// Display an Inventory Item input form that allows the user to create a new Inventory record.
+        /// </summary>
         private void AddInventoryButton_Click(object sender, EventArgs e)
         {
-            //Display the Inventory form
-            InventoryForm inventoryManagement = new InventoryForm();
-            if (inventoryManagement.ShowDialog() == DialogResult.OK)
-            {
-                using (HarvestEntities context = new HarvestEntities())
-                {
-                    context.Inventory.Add(inventoryManagement.GetCreatedItem());
-                    context.SaveChanges();
-
-                    //Refresh the Inventory DataGridView
-                    Inventory_ForceRefreshOfView();
-                }                    
-            }
-
-            //Free up the resources
-            inventoryManagement.Dispose();
+            AddOrModifiyInventoryItem(null);
         }
 
         /// <summary>
@@ -114,79 +95,44 @@ namespace Client_Desktop
         /// </summary>
         private void InventoryGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridView inventoryGrid = (DataGridView)sender;
+            //Modify Button Clicked
+            if (InventoryGridView.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+                AddOrModifiyInventoryItem((Inventory)InventoryGridView.Rows[e.RowIndex].DataBoundItem);
 
-            //Modify Button
-            if (inventoryGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            //Remove checkbox Clicked
+            if (InventoryGridView.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
             {
-                //We need to reference the inventory item that was clicked
-                //and pass that to the form that will handle the modifications
-                //for the inventory item
-                ModifiyInventoryItem((Inventory)InventoryGridView.Rows[e.RowIndex].DataBoundItem);
-            }
-            //the Remove checkbox
-            else if (inventoryGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
-            {
-                DataGridViewCheckBoxCell removeCheckbox = (DataGridViewCheckBoxCell) inventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
-
-                if (removeCheckbox.Value == null)
-                    removeCheckbox.Value = false;
-
-                bool currentValue = (bool)removeCheckbox.Value;
-                currentValue = !currentValue;
+                DataGridViewCheckBoxCell removeCheckbox = (DataGridViewCheckBoxCell)InventoryGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                removeCheckbox.Value = (removeCheckbox.Value == null) ? true : !(bool)removeCheckbox.Value;
+                InventoryGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = removeCheckbox.Value;
 
                 Inventory itemToRemove = (Inventory)InventoryGridView.Rows[e.RowIndex].DataBoundItem;
-                inventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = currentValue;
-
-                if (currentValue)
+                if ((bool)removeCheckbox.Value)
                     inventoryItemsToRemove.Add(itemToRemove);
                 else
                     inventoryItemsToRemove.Remove(itemToRemove);
             }
         }
 
-        private void ModifiyInventoryItem(Inventory itemToModify)
+        private void AddOrModifiyInventoryItem(Inventory itemToModify)
         {
-            InventoryForm inventoryManagement = new InventoryForm(itemToModify);
-            if (inventoryManagement.ShowDialog() == DialogResult.OK)
-            {
-                using (HarvestEntities context = new HarvestEntities())
-                {
-                    InventoryTranslator.UpdateItemInDatabaseByItem(inventoryManagement.GetModifiedItem());
-
-                    //Refresh the Inventory DataGridView
-                    Inventory_ForceRefreshOfView();
-                }
-            }
+            using (InventoryForm inventoryManagement = new InventoryForm(itemToModify))
+                if (inventoryManagement.ShowDialog() == DialogResult.OK)
+                    ForceRefreshOfCurrentView();
         }
-
-        private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
+        
         private void RemoveInventoryButton_Click(object sender, EventArgs e)
         {
             if (inventoryItemsToRemove.Count < 1)
                 return;
 
-
             //Make sure user wants to delete the selected recipes
             string warningMessage = "Are you sure you want to delete the selected items?";
 
             if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
-            {  
-                using (HarvestEntities context = new HarvestEntities())
-                {
-                    context.Inventory.Load();
-                    foreach (Inventory item in inventoryItemsToRemove)
-                    {
-                        //TODO: Check if the item is tied to a recipe object
-                        foreach (Inventory dbItem in context.Inventory.Local.ToList())
-                            if (item.ID == dbItem.ID) 
-                                context.Inventory.Remove(dbItem); //delete item
-                    }
-                    context.SaveChanges();
-                }
-                inventoryItemsToRemove = new List<Inventory>();
-                //Refresh the Inventory DataGridView
-                Inventory_ForceRefreshOfView();
+            {
+                InventoryTranslator.RemoveItemsFromDatabase(ref inventoryItemsToRemove);
+                ForceRefreshOfCurrentView();
             }
         }
         #endregion
@@ -283,7 +229,5 @@ namespace Client_Desktop
 
 
         #endregion
-
- 
     }
 }

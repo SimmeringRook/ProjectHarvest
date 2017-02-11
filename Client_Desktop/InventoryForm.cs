@@ -1,34 +1,27 @@
 ﻿using Core;
 using Core.EntityFramework_Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client_Desktop
 {
     public partial class InventoryForm : Form
     {
-        private Inventory ItemCreated = null;
         private Inventory itemToModify = null;
-
-        public InventoryForm()
-        {
-            InitializeComponent();
-        }
 
         public InventoryForm(Inventory itemToModify)
         {
-            this.itemToModify = itemToModify;
+            if (itemToModify != null)
+                this.itemToModify = itemToModify;
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Initialize the controls with Data from the Database or from the Item to be modified
+        /// </summary>
         private void InventoryForm_Load(object sender, EventArgs e)
         {
             using (HarvestEntities context = new HarvestEntities())
@@ -40,16 +33,15 @@ namespace Client_Desktop
                 //Load the metrics
                 context.Metric.Load();
                 measurementCombo.DataSource = context.Metric.Local.ToList();
+            }
 
-                //If we're modifying an item, populate the controls with information
-                if (itemToModify != null)
-                {
-                    itemNameTextbox.Text = itemToModify.Name;
-                    amountTextbox.Text = itemToModify.Amount.ToString();
-
-                    foodCategoryCombo.SelectedIndex = InventoryTranslator.GetFoodCategoryIndexByItemFoodTypeID(itemToModify.TypeID.Value);
-                    measurementCombo.SelectedIndex = InventoryTranslator.GetMeasurementIndexByItemMetricID(itemToModify.MetricID.Value);
-                }
+            //If we're modifying an item, populate the controls with information
+            if (itemToModify != null)
+            {
+                itemNameTextbox.Text = itemToModify.Name;
+                amountTextbox.Text = itemToModify.Amount.ToString();
+                foodCategoryCombo.SelectedIndex = InventoryTranslator.GetFoodCategoryIndexByItemFoodTypeID(itemToModify.TypeID.Value);
+                measurementCombo.SelectedIndex = InventoryTranslator.GetMeasurementIndexByItemMetricID(itemToModify.MetricID.Value);
             }
         }
 
@@ -62,38 +54,20 @@ namespace Client_Desktop
                 return;
             }
 
-            if (itemToModify != null)
-                UpdateItemWithNewData();
-            else
-                CreateNewItem();
+            CreateNewItem();
+            InventoryTranslator.UpdateItemInDatabaseByItem(CreateNewItem());
+            itemToModify = null; //We don't need a reference to the object that no longer exists in the database
             this.DialogResult = DialogResult.OK;
         }
 
-        private void CreateNewItem()
+        private Inventory CreateNewItem()
         {
-            ItemCreated = new Core.Inventory();
+            Inventory ItemCreated = new Inventory();
             ItemCreated.Name = itemNameTextbox.Text;
             ItemCreated.Amount = float.Parse(amountTextbox.Text);
             ItemCreated.MetricID = (int?)measurementCombo.SelectedValue;
             ItemCreated.TypeID = (int?)foodCategoryCombo.SelectedValue;
-        }
-
-        public Core.Inventory GetCreatedItem()
-        {
             return ItemCreated;
-        }
-
-        private void UpdateItemWithNewData()
-        {
-            itemToModify.Name = itemNameTextbox.Text;
-            itemToModify.Amount = float.Parse(amountTextbox.Text);
-            itemToModify.MetricID = (int?)measurementCombo.SelectedValue;
-            itemToModify.TypeID = (int?)foodCategoryCombo.SelectedValue;
-        }
-
-        public Inventory GetModifiedItem()
-        {
-            return itemToModify;
         }
 
         #region Input Validation
