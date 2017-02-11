@@ -78,21 +78,21 @@
             this.RecipeAddNewRecipeButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.InventoryGridView = new System.Windows.Forms.DataGridView();
-            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.servingsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Modify = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Remove = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.inventoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.typeIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.metricIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ModifyInventory = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.RemoveInventory = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.RemoveInventoryButton = new System.Windows.Forms.Button();
             this.AddInventoryButton = new System.Windows.Forms.Button();
+            this.inventoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.servingsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FoodCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Measurement = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ModifyInventory = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.RemoveInventory = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.mainMenuStrip.SuspendLayout();
             this.pantryTabControl.SuspendLayout();
             this.mealPlannerTabPage.SuspendLayout();
@@ -107,9 +107,9 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InventoryGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.inventoryBindingSource)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.inventoryBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -801,9 +801,9 @@
             this.InventoryGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.InventoryGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn1,
-            this.typeIDDataGridViewTextBoxColumn,
+            this.FoodCategory,
             this.amountDataGridViewTextBoxColumn,
-            this.metricIDDataGridViewTextBoxColumn,
+            this.Measurement,
             this.ModifyInventory,
             this.RemoveInventory});
             this.InventoryGridView.DataSource = this.inventoryBindingSource;
@@ -811,27 +811,12 @@
             this.InventoryGridView.Location = new System.Drawing.Point(156, 104);
             this.InventoryGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.InventoryGridView.Name = "InventoryGridView";
+            this.InventoryGridView.ReadOnly = true;
             this.InventoryGridView.RowTemplate.Height = 24;
             this.InventoryGridView.Size = new System.Drawing.Size(1210, 785);
             this.InventoryGridView.TabIndex = 3;
             this.InventoryGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.InventoryGridView_CellContentClick);
-            this.InventoryGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.InventoryGridView_DataBindingComplete);
-            // 
-            // recipeBindingSource
-            // 
-            this.recipeBindingSource.DataSource = typeof(Core.Recipe);
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            // 
-            // servingsDataGridViewTextBoxColumn
-            // 
-            this.servingsDataGridViewTextBoxColumn.DataPropertyName = "Servings";
-            this.servingsDataGridViewTextBoxColumn.HeaderText = "Servings";
-            this.servingsDataGridViewTextBoxColumn.Name = "servingsDataGridViewTextBoxColumn";
+            this.InventoryGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.InventoryGridView_CellFormatting);
             // 
             // Modify
             // 
@@ -843,44 +828,6 @@
             // 
             this.Remove.HeaderText = "Remove";
             this.Remove.Name = "Remove";
-            // 
-            // inventoryBindingSource
-            // 
-            this.inventoryBindingSource.DataSource = typeof(Core.Inventory);
-            // 
-            // nameDataGridViewTextBoxColumn1
-            // 
-            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn1.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
-            // 
-            // typeIDDataGridViewTextBoxColumn
-            // 
-            this.typeIDDataGridViewTextBoxColumn.DataPropertyName = "TypeID";
-            this.typeIDDataGridViewTextBoxColumn.HeaderText = "TypeID";
-            this.typeIDDataGridViewTextBoxColumn.Name = "typeIDDataGridViewTextBoxColumn";
-            // 
-            // amountDataGridViewTextBoxColumn
-            // 
-            this.amountDataGridViewTextBoxColumn.DataPropertyName = "Amount";
-            this.amountDataGridViewTextBoxColumn.HeaderText = "Amount";
-            this.amountDataGridViewTextBoxColumn.Name = "amountDataGridViewTextBoxColumn";
-            // 
-            // metricIDDataGridViewTextBoxColumn
-            // 
-            this.metricIDDataGridViewTextBoxColumn.DataPropertyName = "MetricID";
-            this.metricIDDataGridViewTextBoxColumn.HeaderText = "MetricID";
-            this.metricIDDataGridViewTextBoxColumn.Name = "metricIDDataGridViewTextBoxColumn";
-            // 
-            // ModifyInventory
-            // 
-            this.ModifyInventory.HeaderText = "Modify";
-            this.ModifyInventory.Name = "ModifyInventory";
-            // 
-            // RemoveInventory
-            // 
-            this.RemoveInventory.HeaderText = "Remove";
-            this.RemoveInventory.Name = "RemoveInventory";
             // 
             // tableLayoutPanel5
             // 
@@ -922,6 +869,64 @@
             this.AddInventoryButton.UseVisualStyleBackColor = true;
             this.AddInventoryButton.Click += new System.EventHandler(this.AddInventoryButton_Click);
             // 
+            // inventoryBindingSource
+            // 
+            this.inventoryBindingSource.DataSource = typeof(Core.Inventory);
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            // 
+            // servingsDataGridViewTextBoxColumn
+            // 
+            this.servingsDataGridViewTextBoxColumn.DataPropertyName = "Servings";
+            this.servingsDataGridViewTextBoxColumn.HeaderText = "Servings";
+            this.servingsDataGridViewTextBoxColumn.Name = "servingsDataGridViewTextBoxColumn";
+            // 
+            // recipeBindingSource
+            // 
+            this.recipeBindingSource.DataSource = typeof(Core.Recipe);
+            // 
+            // nameDataGridViewTextBoxColumn1
+            // 
+            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
+            this.nameDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // FoodCategory
+            // 
+            this.FoodCategory.HeaderText = "Food Category";
+            this.FoodCategory.Name = "FoodCategory";
+            this.FoodCategory.ReadOnly = true;
+            // 
+            // amountDataGridViewTextBoxColumn
+            // 
+            this.amountDataGridViewTextBoxColumn.DataPropertyName = "Amount";
+            this.amountDataGridViewTextBoxColumn.HeaderText = "Amount";
+            this.amountDataGridViewTextBoxColumn.Name = "amountDataGridViewTextBoxColumn";
+            this.amountDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // Measurement
+            // 
+            this.Measurement.HeaderText = "Measurement";
+            this.Measurement.Name = "Measurement";
+            this.Measurement.ReadOnly = true;
+            // 
+            // ModifyInventory
+            // 
+            this.ModifyInventory.HeaderText = "Modify";
+            this.ModifyInventory.Name = "ModifyInventory";
+            this.ModifyInventory.ReadOnly = true;
+            // 
+            // RemoveInventory
+            // 
+            this.RemoveInventory.HeaderText = "Remove";
+            this.RemoveInventory.Name = "RemoveInventory";
+            this.RemoveInventory.ReadOnly = true;
+            // 
             // HarvestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -934,6 +939,7 @@
             this.MinimumSize = new System.Drawing.Size(1600, 1200);
             this.Name = "HarvestForm";
             this.Padding = new System.Windows.Forms.Padding(5);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Harvest";
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
@@ -954,9 +960,9 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.InventoryGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.inventoryBindingSource)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.inventoryBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1018,16 +1024,16 @@
         private System.Windows.Forms.DataGridViewButtonColumn Modify;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Remove;
         private System.Windows.Forms.BindingSource recipeBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn typeIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn amountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn metricIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewButtonColumn ModifyInventory;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn RemoveInventory;
         private System.Windows.Forms.BindingSource inventoryBindingSource;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Button RemoveInventoryButton;
         private System.Windows.Forms.Button AddInventoryButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FoodCategory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn amountDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Measurement;
+        private System.Windows.Forms.DataGridViewButtonColumn ModifyInventory;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn RemoveInventory;
     }
 }
 

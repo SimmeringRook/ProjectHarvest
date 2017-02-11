@@ -25,5 +25,7 @@ namespace Core
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MealHistory> MealHistory { get; set; }
+        public virtual MealTime MealTime1 { get; set; }
+        public virtual MealTime MealTime2 { get; set; }
     }
 }

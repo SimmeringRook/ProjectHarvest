@@ -19,6 +19,7 @@
         <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Metric" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Recipe" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_MealHistory_Recipe" />
+        <AssociationConnector Association="HarvestModel.FK_MealTime_MealTime" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

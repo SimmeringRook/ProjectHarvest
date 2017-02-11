@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityFramework Utils\InventoryTranslator.cs" />
     <Compile Include="FoodType.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
