@@ -18,15 +18,14 @@ namespace Core
         public Metric()
         {
             this.Inventory = new HashSet<Inventory>();
-            this.Recipe_Inventory = new HashSet<Recipe_Inventory>();
+            this.RecipeIngredient = new HashSet<RecipeIngredient>();
         }
     
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public string Measurement { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inventory> Inventory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recipe_Inventory> Recipe_Inventory { get; set; }
+        public virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
     }
 }

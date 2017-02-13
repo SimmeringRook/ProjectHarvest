@@ -20,17 +20,17 @@ namespace Core.EntityFramework_Utils
                 List<Inventory> items = context.Inventory.ToList();
                 List<Metric> metrics = context.Metric.ToList();
 
-                int? metricID = items[itemID].MetricID;
+                string metricID = items[itemID].Measurement;
                 string name = "Error";
 
                 foreach (Metric metric in metrics)
-                    if (metric.ID == metricID.Value)
-                        name = metric.Name;
+                    if (metric.Measurement == metricID)
+                        name = metric.Measurement;
                 return name;
             }
         }
 
-        public static int GetMeasurementIndexByItemMetricID(int itemMetricID)
+        public static int GetMeasurementIndexByItemMetricName(string itemMetricName)
         {
             using (HarvestEntities context = new HarvestEntities())
             {
@@ -44,7 +44,7 @@ namespace Core.EntityFramework_Utils
                 int index = -1;
                 foreach (Metric metric in metrics)
                 {
-                    if (metric.ID == itemMetricID)
+                    if (metric.Measurement == itemMetricName)
                         index = metrics.IndexOf(metric);
                 }
 
@@ -54,49 +54,53 @@ namespace Core.EntityFramework_Utils
         #endregion
 
         #region  Food Category Helper Functions
-        public static string GetFoodCategoryByItemID(int itemID)
+        public static string GetFoodCategoryByRowPostion(int rowIndex)
         {
             using (HarvestEntities context = new HarvestEntities())
             {
                 //Load the tables
-                context.FoodType.Load();
+                context.IngredientCategory.Load();
                 context.Inventory.Load();
 
                 //Build the lists
                 List<Inventory> items = context.Inventory.ToList();
-                List<FoodType> foodTypes = context.FoodType.ToList();
+                List<IngredientCategory> foodTypes = context.IngredientCategory.ToList();
 
-                int foodID = items[itemID].TypeID.Value;
+                string foodID = items[rowIndex].Category;
                 string name = "Error";
 
-                foreach (FoodType food in foodTypes)
-                    if (food.ID == foodID)
-                        name = food.Name;
+                foreach (IngredientCategory type in foodTypes)
+                    if (type.Category == foodID)
+                        name = type.Category;
                 return name;
             }
         }
 
-        public static int GetFoodCategoryIndexByItemFoodTypeID(int itemFoodTypeID)
-        {
-            using (HarvestEntities context = new HarvestEntities())
-            {
-                //Load the tables
-                context.FoodType.Load();
+        /**
+         * Is this needed anymore!!
+         */
 
-                //Build the list
-                List<FoodType> foods = context.FoodType.ToList();
+        //public static int GetFoodCategoryIndexByItemFoodTypeID(int itemFoodTypeID)
+        //{
+        //    using (HarvestEntities context = new HarvestEntities())
+        //    {
+        //        //Load the tables
+        //        context.IngredientCategory.Load();
 
-                //Get the index of the FoodType
-                int index = -1;
-                foreach (FoodType food in foods)
-                {
-                    if (food.ID == itemFoodTypeID)
-                        index = foods.IndexOf(food);
-                }
+        //        //Build the list
+        //        List<IngredientCategory> foods = context.IngredientCategory.ToList();
 
-                return index;
-            }
-        }
+        //        //Get the index of the FoodType
+        //        int index = -1;
+        //        foreach (IngredientCategory food in foods)
+        //        {
+        //            if (food.ID == itemFoodTypeID)
+        //                index = foods.IndexOf(food);
+        //        }
+
+        //        return index;
+        //    }
+        //}
         #endregion
 
         public static void UpdateItemInDatabaseByItem(Inventory modifiedItem)
@@ -106,15 +110,15 @@ namespace Core.EntityFramework_Utils
                 //Load the table, and get the Item to modify
                 context.Inventory.Load();
                 
-                Inventory itemInDB = context.Inventory.SingleOrDefault(i => i.ID == modifiedItem.ID);
+                Inventory itemInDB = context.Inventory.SingleOrDefault(i => i.InventoryID == modifiedItem.InventoryID);
 
                 if (itemInDB != null)
                 {
                     //Assign the new values
-                    itemInDB.Name = modifiedItem.Name;
+                    itemInDB.IngredientName = modifiedItem.IngredientName;
                     itemInDB.Amount = modifiedItem.Amount;
-                    itemInDB.MetricID = modifiedItem.MetricID;
-                    itemInDB.TypeID = modifiedItem.TypeID;
+                    itemInDB.Measurement = modifiedItem.Measurement;
+                    itemInDB.Category = modifiedItem.Category;
                 }
                 else
                 {
@@ -134,7 +138,7 @@ namespace Core.EntityFramework_Utils
                 {
                     //TODO: Check if the item is tied to a recipe object
                     foreach (Inventory dbItem in context.Inventory.Local.ToList())
-                        if (item.ID == dbItem.ID)
+                        if (item.InventoryID == dbItem.InventoryID)
                             context.Inventory.Remove(dbItem); //delete item
                 }
                 context.SaveChanges();

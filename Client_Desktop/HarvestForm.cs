@@ -73,7 +73,7 @@ namespace Client_Desktop
         private void InventoryGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
-                e.Value = InventoryTranslator.GetFoodCategoryByItemID(e.RowIndex);
+                e.Value = InventoryTranslator.GetFoodCategoryByRowPostion(e.RowIndex);
 
             if (InventoryGridView.Columns[e.ColumnIndex].Name == "Measurement")
                 e.Value = InventoryTranslator.GetMeasurementNameByItemID(e.RowIndex);

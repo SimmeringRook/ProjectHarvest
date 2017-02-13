@@ -12,23 +12,15 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class Inventory
+    public partial class RecipeIngredient
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Inventory()
-        {
-            this.RecipeIngredient = new HashSet<RecipeIngredient>();
-        }
-    
+        public int RecipeID { get; set; }
         public int InventoryID { get; set; }
-        public string IngredientName { get; set; }
-        public string Category { get; set; }
         public double Amount { get; set; }
         public string Measurement { get; set; }
     
-        public virtual IngredientCategory IngredientCategory { get; set; }
+        public virtual Inventory Inventory { get; set; }
         public virtual Metric Metric { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
+        public virtual Recipe Recipe { get; set; }
     }
 }

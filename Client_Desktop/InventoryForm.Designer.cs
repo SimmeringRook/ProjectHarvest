@@ -167,7 +167,7 @@
             // 
             // foodTypeBindingSource
             // 
-            this.foodTypeBindingSource.DataSource = typeof(Core.FoodType);
+            this.foodTypeBindingSource.DataSource = typeof(Core.IngredientCategory);
             // 
             // measurementCombo
             // 

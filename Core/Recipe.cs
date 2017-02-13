@@ -17,17 +17,18 @@ namespace Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Recipe()
         {
-            this.Recipe_Inventory = new HashSet<Recipe_Inventory>();
             this.MealHistory = new HashSet<MealHistory>();
+            this.RecipeIngredient = new HashSet<RecipeIngredient>();
         }
     
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int RecipeID { get; set; }
+        public string RecipeName { get; set; }
         public double Servings { get; set; }
+        public string RCategory { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recipe_Inventory> Recipe_Inventory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MealHistory> MealHistory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
     }
 }

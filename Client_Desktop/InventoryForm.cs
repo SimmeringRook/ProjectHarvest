@@ -27,8 +27,8 @@ namespace Client_Desktop
             using (HarvestEntities context = new HarvestEntities())
             {
                 //Load the food categories
-                context.FoodType.Load();
-                foodCategoryCombo.DataSource = context.FoodType.Local.ToList();
+                context.IngredientCategory.Load();
+                foodCategoryCombo.DataSource = context.IngredientCategory.Local.ToList();
 
                 //Load the metrics
                 context.Metric.Load();
@@ -38,10 +38,11 @@ namespace Client_Desktop
             //If we're modifying an item, populate the controls with information
             if (itemToModify != null)
             {
-                itemNameTextbox.Text = itemToModify.Name;
+                itemNameTextbox.Text = itemToModify.IngredientName;
                 amountTextbox.Text = itemToModify.Amount.ToString();
-                foodCategoryCombo.SelectedIndex = InventoryTranslator.GetFoodCategoryIndexByItemFoodTypeID(itemToModify.TypeID.Value);
-                measurementCombo.SelectedIndex = InventoryTranslator.GetMeasurementIndexByItemMetricID(itemToModify.MetricID.Value);
+                // TO DO FIX
+                //foodCategoryCombo.SelectedIndex = InventoryTranslator.GetFoodCategoryIndexByItemFoodTypeID(itemToModify.TypeID.Value);
+                measurementCombo.SelectedIndex = InventoryTranslator.GetMeasurementIndexByItemMetricName(itemToModify.Measurement);
             }
         }
 
@@ -63,10 +64,11 @@ namespace Client_Desktop
         private Inventory CreateNewItem()
         {
             Inventory ItemCreated = new Inventory();
-            ItemCreated.Name = itemNameTextbox.Text;
+            ItemCreated.IngredientName = itemNameTextbox.Text;
             ItemCreated.Amount = float.Parse(amountTextbox.Text);
-            ItemCreated.MetricID = (int?)measurementCombo.SelectedValue;
-            ItemCreated.TypeID = (int?)foodCategoryCombo.SelectedValue;
+            // TO DO Look at the combobox
+            ItemCreated.Measurement = measurementCombo.SelectedValue.ToString();
+            ItemCreated.Category = foodCategoryCombo.SelectedValue.ToString();
             return ItemCreated;
         }
 

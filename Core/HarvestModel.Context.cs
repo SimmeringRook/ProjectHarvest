@@ -25,12 +25,13 @@ namespace Core
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<FoodType> FoodType { get; set; }
+        public virtual DbSet<IngredientCategory> IngredientCategory { get; set; }
         public virtual DbSet<Inventory> Inventory { get; set; }
+        public virtual DbSet<LastLaunched> LastLaunched { get; set; }
         public virtual DbSet<MealHistory> MealHistory { get; set; }
         public virtual DbSet<MealTime> MealTime { get; set; }
         public virtual DbSet<Metric> Metric { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
-        public virtual DbSet<Recipe_Inventory> Recipe_Inventory { get; set; }
+        public virtual DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     }
 }

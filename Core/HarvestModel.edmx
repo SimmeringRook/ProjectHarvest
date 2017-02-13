@@ -4,57 +4,66 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="HarvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="FoodType">
+      <Schema Namespace="HarvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IngredientCategory">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Category" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Inventory">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="InventoryID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="TypeID" Type="int" />
+          <Property Name="InventoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IngredientName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Amount" Type="float" Nullable="false" />
-          <Property Name="MetricID" Type="int" />
+          <Property Name="Measurement" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LastLaunched">
+          <Key>
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="MealHistory">
           <Key>
-            <PropertyRef Name="MealTimeID" />
+            <PropertyRef Name="MealName" />
             <PropertyRef Name="RecipeID" />
             <PropertyRef Name="DateEaten" />
           </Key>
-          <Property Name="MealTimeID" Type="int" Nullable="false" />
+          <Property Name="MealName" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="RecipeID" Type="int" Nullable="false" />
           <Property Name="DateEaten" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="MealTime">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="MealName" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MealName" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Metric">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Measurement" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Measurement" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Recipe">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="RecipeID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="RecipeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RecipeName" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Servings" Type="float" Nullable="false" />
+          <Property Name="RCategory" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <EntityType Name="Recipe_Inventory">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="RecipeClass">
+          <Property Name="RCategory" Type="varchar" MaxLength="20" />
+        </EntityType>-->
+        <EntityType Name="RecipeIngredient">
           <Key>
             <PropertyRef Name="RecipeID" />
             <PropertyRef Name="InventoryID" />
@@ -62,29 +71,29 @@
           <Property Name="RecipeID" Type="int" Nullable="false" />
           <Property Name="InventoryID" Type="int" Nullable="false" />
           <Property Name="Amount" Type="float" Nullable="false" />
-          <Property Name="MetricID" Type="int" Nullable="false" />
+          <Property Name="Measurement" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <Association Name="FK_Inventory_FoodType">
-          <End Role="FoodType" Type="Self.FoodType" Multiplicity="0..1" />
+          <End Role="IngredientCategory" Type="Self.IngredientCategory" Multiplicity="1" />
           <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FoodType">
-              <PropertyRef Name="ID" />
+            <Principal Role="IngredientCategory">
+              <PropertyRef Name="Category" />
             </Principal>
             <Dependent Role="Inventory">
-              <PropertyRef Name="TypeID" />
+              <PropertyRef Name="Category" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Inventory_Metric">
-          <End Role="Metric" Type="Self.Metric" Multiplicity="0..1" />
+          <End Role="Metric" Type="Self.Metric" Multiplicity="1" />
           <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Metric">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="Measurement" />
             </Principal>
             <Dependent Role="Inventory">
-              <PropertyRef Name="MetricID" />
+              <PropertyRef Name="Measurement" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -93,10 +102,10 @@
           <End Role="MealHistory" Type="Self.MealHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MealTime">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="MealName" />
             </Principal>
             <Dependent Role="MealHistory">
-              <PropertyRef Name="MealTimeID" />
+              <PropertyRef Name="MealName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -105,7 +114,7 @@
           <End Role="MealHistory" Type="Self.MealHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Recipe">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="RecipeID" />
             </Principal>
             <Dependent Role="MealHistory">
               <PropertyRef Name="RecipeID" />
@@ -117,59 +126,60 @@
           <End Role="MealTime1" Type="Self.MealTime" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="MealTime">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="MealName" />
             </Principal>
             <Dependent Role="MealTime1">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="MealName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Recipe_Inventory_Inventory">
           <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
-          <End Role="Recipe_Inventory" Type="Self.Recipe_Inventory" Multiplicity="*" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Inventory">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="InventoryID" />
             </Principal>
-            <Dependent Role="Recipe_Inventory">
+            <Dependent Role="RecipeIngredient">
               <PropertyRef Name="InventoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Recipe_Inventory_Metric">
           <End Role="Metric" Type="Self.Metric" Multiplicity="1" />
-          <End Role="Recipe_Inventory" Type="Self.Recipe_Inventory" Multiplicity="*" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Metric">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="Measurement" />
             </Principal>
-            <Dependent Role="Recipe_Inventory">
-              <PropertyRef Name="MetricID" />
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="Measurement" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Recipe_Inventory_Recipe">
           <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
-          <End Role="Recipe_Inventory" Type="Self.Recipe_Inventory" Multiplicity="*" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Recipe">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="RecipeID" />
             </Principal>
-            <Dependent Role="Recipe_Inventory">
+            <Dependent Role="RecipeIngredient">
               <PropertyRef Name="RecipeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="HarvestModelStoreContainer">
-          <EntitySet Name="FoodType" EntityType="Self.FoodType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LastLaunched" EntityType="Self.LastLaunched" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MealHistory" EntityType="Self.MealHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MealTime" EntityType="Self.MealTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Metric" EntityType="Self.Metric" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Recipe_Inventory" EntityType="Self.Recipe_Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
-            <End Role="FoodType" EntitySet="FoodType" />
+            <End Role="IngredientCategory" EntitySet="IngredientCategory" />
             <End Role="Inventory" EntitySet="Inventory" />
           </AssociationSet>
           <AssociationSet Name="FK_Inventory_Metric" Association="Self.FK_Inventory_Metric">
@@ -190,84 +200,89 @@
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Inventory" Association="Self.FK_Recipe_Inventory_Inventory">
             <End Role="Inventory" EntitySet="Inventory" />
-            <End Role="Recipe_Inventory" EntitySet="Recipe_Inventory" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Metric" Association="Self.FK_Recipe_Inventory_Metric">
             <End Role="Metric" EntitySet="Metric" />
-            <End Role="Recipe_Inventory" EntitySet="Recipe_Inventory" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Recipe" Association="Self.FK_Recipe_Inventory_Recipe">
             <End Role="Recipe" EntitySet="Recipe" />
-            <End Role="Recipe_Inventory" EntitySet="Recipe_Inventory" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HarvestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="FoodType">
+        <EntityType Name="IngredientCategory">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Category" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_FoodType" FromRole="FoodType" ToRole="Inventory" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_FoodType" FromRole="IngredientCategory" ToRole="Inventory" />
         </EntityType>
         <EntityType Name="Inventory">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="InventoryID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TypeID" Type="Int32" />
+          <Property Name="InventoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IngredientName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Amount" Type="Double" Nullable="false" />
-          <Property Name="MetricID" Type="Int32" />
-          <NavigationProperty Name="FoodType" Relationship="Self.FK_Inventory_FoodType" FromRole="Inventory" ToRole="FoodType" />
+          <Property Name="Measurement" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="IngredientCategory" Relationship="Self.FK_Inventory_FoodType" FromRole="Inventory" ToRole="IngredientCategory" />
           <NavigationProperty Name="Metric" Relationship="Self.FK_Inventory_Metric" FromRole="Inventory" ToRole="Metric" />
-          <NavigationProperty Name="Recipe_Inventory" Relationship="Self.FK_Recipe_Inventory_Inventory" FromRole="Inventory" ToRole="Recipe_Inventory" />
+          <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Inventory" FromRole="Inventory" ToRole="RecipeIngredient" />
+        </EntityType>
+        <EntityType Name="LastLaunched">
+          <Key>
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <EntityType Name="MealHistory">
           <Key>
-            <PropertyRef Name="MealTimeID" />
+            <PropertyRef Name="MealName" />
             <PropertyRef Name="RecipeID" />
             <PropertyRef Name="DateEaten" />
           </Key>
-          <Property Name="MealTimeID" Type="Int32" Nullable="false" />
+          <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RecipeID" Type="Int32" Nullable="false" />
           <Property Name="DateEaten" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="MealTime" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealHistory" ToRole="MealTime" />
-          <NavigationProperty Name="Recipe" Relationship="HarvestModel.FK_MealHistory_Recipe" FromRole="MealHistory" ToRole="Recipe" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_MealHistory_Recipe" FromRole="MealHistory" ToRole="Recipe" />
         </EntityType>
         <EntityType Name="MealTime">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="MealName" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealTime" ToRole="MealHistory" />
-          <NavigationProperty Name="MealTime1" Relationship="HarvestModel.FK_MealTime_MealTime" FromRole="MealTime" ToRole="MealTime1" />
-          <NavigationProperty Name="MealTime2" Relationship="HarvestModel.FK_MealTime_MealTime" FromRole="MealTime1" ToRole="MealTime" />
-          </EntityType>
+          <NavigationProperty Name="MealTime1" Relationship="Self.FK_MealTime_MealTime" FromRole="MealTime" ToRole="MealTime1" />
+          <NavigationProperty Name="MealTime2" Relationship="Self.FK_MealTime_MealTime" FromRole="MealTime1" ToRole="MealTime" />
+        </EntityType>
         <EntityType Name="Metric">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Measurement" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Measurement" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_Metric" FromRole="Metric" ToRole="Inventory" />
-          <NavigationProperty Name="Recipe_Inventory" Relationship="Self.FK_Recipe_Inventory_Metric" FromRole="Metric" ToRole="Recipe_Inventory" />
+          <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Metric" FromRole="Metric" ToRole="RecipeIngredient" />
         </EntityType>
         <EntityType Name="Recipe">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="RecipeID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RecipeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RecipeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Servings" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Recipe_Inventory" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe" ToRole="Recipe_Inventory" />
-          <NavigationProperty Name="MealHistory" Relationship="HarvestModel.FK_MealHistory_Recipe" FromRole="Recipe" ToRole="MealHistory" />
+          <Property Name="RCategory" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_Recipe" FromRole="Recipe" ToRole="MealHistory" />
+          <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe" ToRole="RecipeIngredient" />
         </EntityType>
-        <EntityType Name="Recipe_Inventory">
+        <EntityType Name="RecipeIngredient">
           <Key>
             <PropertyRef Name="RecipeID" />
             <PropertyRef Name="InventoryID" />
@@ -275,43 +290,43 @@
           <Property Name="RecipeID" Type="Int32" Nullable="false" />
           <Property Name="InventoryID" Type="Int32" Nullable="false" />
           <Property Name="Amount" Type="Double" Nullable="false" />
-          <Property Name="MetricID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Inventory" Relationship="Self.FK_Recipe_Inventory_Inventory" FromRole="Recipe_Inventory" ToRole="Inventory" />
-          <NavigationProperty Name="Metric" Relationship="Self.FK_Recipe_Inventory_Metric" FromRole="Recipe_Inventory" ToRole="Metric" />
-          <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe_Inventory" ToRole="Recipe" />
+          <Property Name="Measurement" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Recipe_Inventory_Inventory" FromRole="RecipeIngredient" ToRole="Inventory" />
+          <NavigationProperty Name="Metric" Relationship="Self.FK_Recipe_Inventory_Metric" FromRole="RecipeIngredient" ToRole="Metric" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="RecipeIngredient" ToRole="Recipe" />
         </EntityType>
         <Association Name="FK_Inventory_FoodType">
-          <End Role="FoodType" Type="Self.FoodType" Multiplicity="0..1" />
+          <End Role="IngredientCategory" Type="Self.IngredientCategory" Multiplicity="1" />
           <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FoodType">
-              <PropertyRef Name="ID" />
+            <Principal Role="IngredientCategory">
+              <PropertyRef Name="Category" />
             </Principal>
             <Dependent Role="Inventory">
-              <PropertyRef Name="TypeID" />
+              <PropertyRef Name="Category" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Inventory_Metric">
-          <End Role="Metric" Type="Self.Metric" Multiplicity="0..1" />
+          <End Role="Metric" Type="Self.Metric" Multiplicity="1" />
           <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Metric">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="Measurement" />
             </Principal>
             <Dependent Role="Inventory">
-              <PropertyRef Name="MetricID" />
+              <PropertyRef Name="Measurement" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Recipe_Inventory_Inventory">
           <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
-          <End Role="Recipe_Inventory" Type="Self.Recipe_Inventory" Multiplicity="*" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Inventory">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="InventoryID" />
             </Principal>
-            <Dependent Role="Recipe_Inventory">
+            <Dependent Role="RecipeIngredient">
               <PropertyRef Name="InventoryID" />
             </Dependent>
           </ReferentialConstraint>
@@ -321,47 +336,72 @@
           <End Role="MealHistory" Type="Self.MealHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MealTime">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="MealName" />
             </Principal>
             <Dependent Role="MealHistory">
-              <PropertyRef Name="MealTimeID" />
+              <PropertyRef Name="MealName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MealHistory_Recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="MealHistory" Type="Self.MealHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="MealHistory">
+              <PropertyRef Name="RecipeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MealTime_MealTime">
+          <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
+          <End Role="MealTime1" Type="Self.MealTime" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MealTime">
+              <PropertyRef Name="MealName" />
+            </Principal>
+            <Dependent Role="MealTime1">
+              <PropertyRef Name="MealName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Recipe_Inventory_Metric">
           <End Role="Metric" Type="Self.Metric" Multiplicity="1" />
-          <End Role="Recipe_Inventory" Type="Self.Recipe_Inventory" Multiplicity="*" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Metric">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="Measurement" />
             </Principal>
-            <Dependent Role="Recipe_Inventory">
-              <PropertyRef Name="MetricID" />
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="Measurement" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Recipe_Inventory_Recipe">
           <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
-          <End Role="Recipe_Inventory" Type="Self.Recipe_Inventory" Multiplicity="*" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Recipe">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="RecipeID" />
             </Principal>
-            <Dependent Role="Recipe_Inventory">
+            <Dependent Role="RecipeIngredient">
               <PropertyRef Name="RecipeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="HarvestEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="FoodType" EntityType="Self.FoodType" />
+          <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" />
+          <EntitySet Name="LastLaunched" EntityType="Self.LastLaunched" />
           <EntitySet Name="MealHistory" EntityType="Self.MealHistory" />
           <EntitySet Name="MealTime" EntityType="Self.MealTime" />
           <EntitySet Name="Metric" EntityType="Self.Metric" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" />
-          <EntitySet Name="Recipe_Inventory" EntityType="Self.Recipe_Inventory" />
+          <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
-            <End Role="FoodType" EntitySet="FoodType" />
+            <End Role="IngredientCategory" EntitySet="IngredientCategory" />
             <End Role="Inventory" EntitySet="Inventory" />
           </AssociationSet>
           <AssociationSet Name="FK_Inventory_Metric" Association="Self.FK_Inventory_Metric">
@@ -370,82 +410,64 @@
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Inventory" Association="Self.FK_Recipe_Inventory_Inventory">
             <End Role="Inventory" EntitySet="Inventory" />
-            <End Role="Recipe_Inventory" EntitySet="Recipe_Inventory" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
           <AssociationSet Name="FK_MealHistory_MealTime" Association="Self.FK_MealHistory_MealTime">
             <End Role="MealTime" EntitySet="MealTime" />
             <End Role="MealHistory" EntitySet="MealHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK_Recipe_Inventory_Metric" Association="Self.FK_Recipe_Inventory_Metric">
-            <End Role="Metric" EntitySet="Metric" />
-            <End Role="Recipe_Inventory" EntitySet="Recipe_Inventory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Recipe_Inventory_Recipe" Association="Self.FK_Recipe_Inventory_Recipe">
-            <End Role="Recipe" EntitySet="Recipe" />
-            <End Role="Recipe_Inventory" EntitySet="Recipe_Inventory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MealHistory_Recipe" Association="HarvestModel.FK_MealHistory_Recipe">
+          <AssociationSet Name="FK_MealHistory_Recipe" Association="Self.FK_MealHistory_Recipe">
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="MealHistory" EntitySet="MealHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK_MealTime_MealTime" Association="HarvestModel.FK_MealTime_MealTime">
+          <AssociationSet Name="FK_MealTime_MealTime" Association="Self.FK_MealTime_MealTime">
             <End Role="MealTime" EntitySet="MealTime" />
             <End Role="MealTime1" EntitySet="MealTime" />
           </AssociationSet>
+          <AssociationSet Name="FK_Recipe_Inventory_Metric" Association="Self.FK_Recipe_Inventory_Metric">
+            <End Role="Metric" EntitySet="Metric" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe_Inventory_Recipe" Association="Self.FK_Recipe_Inventory_Recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_MealHistory_Recipe">
-          <End Type="HarvestModel.Recipe" Role="Recipe" Multiplicity="1" />
-          <End Type="HarvestModel.MealHistory" Role="MealHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Recipe">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="MealHistory">
-              <PropertyRef Name="RecipeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MealTime_MealTime">
-          <End Type="HarvestModel.MealTime" Role="MealTime" Multiplicity="1" />
-          <End Type="HarvestModel.MealTime" Role="MealTime1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="MealTime">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="MealTime1">
-              <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="HarvestModelStoreContainer" CdmEntityContainer="HarvestEntities">
-          <EntitySetMapping Name="FoodType">
-            <EntityTypeMapping TypeName="HarvestModel.FoodType">
-              <MappingFragment StoreEntitySet="FoodType">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+          <EntitySetMapping Name="IngredientCategory">
+            <EntityTypeMapping TypeName="HarvestModel.IngredientCategory">
+              <MappingFragment StoreEntitySet="IngredientCategory">
+                <ScalarProperty Name="Category" ColumnName="Category" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Inventory">
             <EntityTypeMapping TypeName="HarvestModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
+                <ScalarProperty Name="IngredientName" ColumnName="IngredientName" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="MetricID" ColumnName="MetricID" />
+                <ScalarProperty Name="Measurement" ColumnName="Measurement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LastLaunched">
+            <EntityTypeMapping TypeName="HarvestModel.LastLaunched">
+              <MappingFragment StoreEntitySet="LastLaunched">
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MealHistory">
             <EntityTypeMapping TypeName="HarvestModel.MealHistory">
               <MappingFragment StoreEntitySet="MealHistory">
-                <ScalarProperty Name="MealTimeID" ColumnName="MealTimeID" />
+                <ScalarProperty Name="MealName" ColumnName="MealName" />
                 <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
                 <ScalarProperty Name="DateEaten" ColumnName="DateEaten" />
               </MappingFragment>
@@ -454,35 +476,34 @@
           <EntitySetMapping Name="MealTime">
             <EntityTypeMapping TypeName="HarvestModel.MealTime">
               <MappingFragment StoreEntitySet="MealTime">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MealName" ColumnName="MealName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Metric">
             <EntityTypeMapping TypeName="HarvestModel.Metric">
               <MappingFragment StoreEntitySet="Metric">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Measurement" ColumnName="Measurement" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Recipe">
             <EntityTypeMapping TypeName="HarvestModel.Recipe">
               <MappingFragment StoreEntitySet="Recipe">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
+                <ScalarProperty Name="RecipeName" ColumnName="RecipeName" />
                 <ScalarProperty Name="Servings" ColumnName="Servings" />
+                <ScalarProperty Name="RCategory" ColumnName="RCategory" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Recipe_Inventory">
-            <EntityTypeMapping TypeName="HarvestModel.Recipe_Inventory">
-              <MappingFragment StoreEntitySet="Recipe_Inventory">
+          <EntitySetMapping Name="RecipeIngredient">
+            <EntityTypeMapping TypeName="HarvestModel.RecipeIngredient">
+              <MappingFragment StoreEntitySet="RecipeIngredient">
                 <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
                 <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="MetricID" ColumnName="MetricID" />
+                <ScalarProperty Name="Measurement" ColumnName="Measurement" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,13 +12,8 @@ namespace Core
     using System;
     using System.Collections.Generic;
     
-    public partial class MealHistory
+    public partial class LastLaunched
     {
-        public string MealName { get; set; }
-        public int RecipeID { get; set; }
-        public System.DateTime DateEaten { get; set; }
-    
-        public virtual MealTime MealTime { get; set; }
-        public virtual Recipe Recipe { get; set; }
+        public System.DateTime Date { get; set; }
     }
 }
