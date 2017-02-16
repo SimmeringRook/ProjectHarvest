@@ -31,6 +31,7 @@ namespace Core
         public virtual DbSet<MealHistory> MealHistory { get; set; }
         public virtual DbSet<MealTime> MealTime { get; set; }
         public virtual DbSet<Metric> Metric { get; set; }
+        public virtual DbSet<PlannedMeals> PlannedMeals { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
         public virtual DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     }

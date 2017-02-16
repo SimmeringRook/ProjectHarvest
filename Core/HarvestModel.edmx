@@ -49,6 +49,17 @@
           </Key>
           <Property Name="Measurement" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
+        <EntityType Name="PlannedMeals">
+          <Key>
+            <PropertyRef Name="DatePlanned" />
+            <PropertyRef Name="MealName" />
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="DatePlanned" Type="date" Nullable="false" />
+          <Property Name="MealName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="RecipeID" Type="int" Nullable="false" />
+          <Property Name="MealEaten" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
         <EntityType Name="Recipe">
           <Key>
             <PropertyRef Name="RecipeID" />
@@ -121,6 +132,18 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MealTime">
+          <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
+          <End Role="PlannedMeals" Type="Self.PlannedMeals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MealTime">
+              <PropertyRef Name="MealName" />
+            </Principal>
+            <Dependent Role="PlannedMeals">
+              <PropertyRef Name="MealName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MealTime_MealTime">
           <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
           <End Role="MealTime1" Type="Self.MealTime" Multiplicity="0..1" />
@@ -130,6 +153,18 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Principal>
             <Dependent Role="MealTime1">
               <PropertyRef Name="MealName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="PlannedMeals" Type="Self.PlannedMeals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="PlannedMeals">
+              <PropertyRef Name="RecipeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -176,6 +211,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <EntitySet Name="MealHistory" EntityType="Self.MealHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MealTime" EntityType="Self.MealTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Metric" EntityType="Self.Metric" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlannedMeals" EntityType="Self.PlannedMeals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
@@ -194,9 +230,17 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="MealHistory" EntitySet="MealHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_MealTime" Association="Self.FK_MealTime">
+            <End Role="MealTime" EntitySet="MealTime" />
+            <End Role="PlannedMeals" EntitySet="PlannedMeals" />
+          </AssociationSet>
           <AssociationSet Name="FK_MealTime_MealTime" Association="Self.FK_MealTime_MealTime">
             <End Role="MealTime" EntitySet="MealTime" />
             <End Role="MealTime1" EntitySet="MealTime" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe" Association="Self.FK_Recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="PlannedMeals" EntitySet="PlannedMeals" />
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Inventory" Association="Self.FK_Recipe_Inventory_Inventory">
             <End Role="Inventory" EntitySet="Inventory" />
@@ -260,6 +304,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           </Key>
           <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealTime" ToRole="MealHistory" />
+          <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_MealTime" FromRole="MealTime" ToRole="PlannedMeals" />
           <NavigationProperty Name="MealTime1" Relationship="Self.FK_MealTime_MealTime" FromRole="MealTime" ToRole="MealTime1" />
           <NavigationProperty Name="MealTime2" Relationship="Self.FK_MealTime_MealTime" FromRole="MealTime1" ToRole="MealTime" />
         </EntityType>
@@ -271,6 +316,19 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_Metric" FromRole="Metric" ToRole="Inventory" />
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Metric" FromRole="Metric" ToRole="RecipeIngredient" />
         </EntityType>
+        <EntityType Name="PlannedMeals">
+          <Key>
+            <PropertyRef Name="DatePlanned" />
+            <PropertyRef Name="MealName" />
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="DatePlanned" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RecipeID" Type="Int32" Nullable="false" />
+          <Property Name="MealEaten" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="MealTime" Relationship="Self.FK_MealTime" FromRole="PlannedMeals" ToRole="MealTime" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe" FromRole="PlannedMeals" ToRole="Recipe" />
+        </EntityType>
         <EntityType Name="Recipe">
           <Key>
             <PropertyRef Name="RecipeID" />
@@ -280,6 +338,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <Property Name="Servings" Type="Double" Nullable="false" />
           <Property Name="RCategory" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_Recipe" FromRole="Recipe" ToRole="MealHistory" />
+          <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_Recipe" FromRole="Recipe" ToRole="PlannedMeals" />
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe" ToRole="RecipeIngredient" />
         </EntityType>
         <EntityType Name="RecipeIngredient">
@@ -355,6 +414,18 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MealTime">
+          <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
+          <End Role="PlannedMeals" Type="Self.PlannedMeals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MealTime">
+              <PropertyRef Name="MealName" />
+            </Principal>
+            <Dependent Role="PlannedMeals">
+              <PropertyRef Name="MealName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MealTime_MealTime">
           <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
           <End Role="MealTime1" Type="Self.MealTime" Multiplicity="0..1" />
@@ -379,6 +450,18 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="PlannedMeals" Type="Self.PlannedMeals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="PlannedMeals">
+              <PropertyRef Name="RecipeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Recipe_Inventory_Recipe">
           <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
           <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
@@ -398,6 +481,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <EntitySet Name="MealHistory" EntityType="Self.MealHistory" />
           <EntitySet Name="MealTime" EntityType="Self.MealTime" />
           <EntitySet Name="Metric" EntityType="Self.Metric" />
+          <EntitySet Name="PlannedMeals" EntityType="Self.PlannedMeals" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" />
           <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
@@ -420,6 +504,10 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="MealHistory" EntitySet="MealHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_MealTime" Association="Self.FK_MealTime">
+            <End Role="MealTime" EntitySet="MealTime" />
+            <End Role="PlannedMeals" EntitySet="PlannedMeals" />
+          </AssociationSet>
           <AssociationSet Name="FK_MealTime_MealTime" Association="Self.FK_MealTime_MealTime">
             <End Role="MealTime" EntitySet="MealTime" />
             <End Role="MealTime1" EntitySet="MealTime" />
@@ -427,6 +515,10 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <AssociationSet Name="FK_Recipe_Inventory_Metric" Association="Self.FK_Recipe_Inventory_Metric">
             <End Role="Metric" EntitySet="Metric" />
             <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe" Association="Self.FK_Recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="PlannedMeals" EntitySet="PlannedMeals" />
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Recipe" Association="Self.FK_Recipe_Inventory_Recipe">
             <End Role="Recipe" EntitySet="Recipe" />
@@ -484,6 +576,16 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             <EntityTypeMapping TypeName="HarvestModel.Metric">
               <MappingFragment StoreEntitySet="Metric">
                 <ScalarProperty Name="Measurement" ColumnName="Measurement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlannedMeals">
+            <EntityTypeMapping TypeName="HarvestModel.PlannedMeals">
+              <MappingFragment StoreEntitySet="PlannedMeals">
+                <ScalarProperty Name="DatePlanned" ColumnName="DatePlanned" />
+                <ScalarProperty Name="MealName" ColumnName="MealName" />
+                <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
+                <ScalarProperty Name="MealEaten" ColumnName="MealEaten" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

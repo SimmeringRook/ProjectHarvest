@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityFramework Utils\InventoryTranslator.cs" />
+    <Compile Include="EntityFramework Utils\RecipeTranslator.cs" />
     <Compile Include="HarvestModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,6 +85,9 @@
     </Compile>
     <Compile Include="MeasurementConversions\MeasurementConversionFactors.cs" />
     <Compile Include="Metric.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PlannedMeals.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Recipe.cs">
