@@ -219,11 +219,13 @@ namespace Client_Desktop
 
         private void RecipeAddNewRecipeButton_Click(object sender, EventArgs e)
         {
-            //Display the Add Recipe form
-            //AddRecipeForm addRecipe = new AddRecipeForm();
+
+            // Display the Add Recipe form
+            Recipe addRecipe = new Recipe();
+            addRecipe.Show();
             //if (addRecipe.ShowDialog() == DialogResult.Ok)
             //{
-            //  Core.Recipe recipeToAdd = addRecipe.GetCreatedRecipe();
+            //    Core.Recipe recipeToAdd = addRecipe.GetCreatedRecipe();
             //}
         }
 
