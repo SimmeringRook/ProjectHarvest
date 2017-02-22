@@ -1,5 +1,5 @@
 ﻿using Core;
-using Core.EntityFramework_Utils;
+using Core.DatabaseUtilities;
 using System;
 using System.ComponentModel;
 using System.Data.Entity;
@@ -42,7 +42,7 @@ namespace Client_Desktop
                 amountTextbox.Text = itemToModify.Amount.ToString();
                 // TO DO FIX
                 //foodCategoryCombo.SelectedIndex = InventoryTranslator.GetFoodCategoryIndexByItemFoodTypeID(itemToModify.TypeID.Value);
-                measurementCombo.SelectedIndex = InventoryTranslator.GetMeasurementIndexByItemMetricName(itemToModify.Measurement);
+                measurementCombo.SelectedIndex = InventoryUtility.GetMeasurementIndexByItemMetricName(itemToModify.Measurement);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Client_Desktop
             }
 
             CreateNewItem();
-            InventoryTranslator.UpdateItemInDatabaseByItem(CreateNewItem());
+            InventoryUtility.UpdateItemInDatabaseByItem(CreateNewItem());
             itemToModify = null; //We don't need a reference to the object that no longer exists in the database
             this.DialogResult = DialogResult.OK;
         }

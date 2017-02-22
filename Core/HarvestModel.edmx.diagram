@@ -5,25 +5,26 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9ff787e5dcec4f929ded5aa0d804ee67" Name="Diagram1">
-        <EntityTypeShape EntityType="HarvestModel.IngredientCategory" Width="1.5" PointX="1.5" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.Inventory" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.LastLaunched" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.MealHistory" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.MealTime" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.Metric" Width="1.5" PointX="1.5" PointY="16.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.PlannedMeals" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.Recipe" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="HarvestModel.RecipeIngredient" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.IngredientCategory" Width="2.25" PointX="4.125" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Inventory" Width="1.5" PointX="0.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.LastLaunched" Width="1.5" PointX="10.625" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.MealHistory" Width="1.5" PointX="7.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.MealTime" Width="1.5" PointX="10.625" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Metric" Width="1.5" PointX="7.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.PlannedMeals" Width="1.5" PointX="4.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.Recipe" Width="1.5" PointX="0.5" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.RecipeIngredient" Width="1.875" PointX="4.125" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="HarvestModel.FK_Inventory_FoodType" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_Inventory_Metric" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Inventory" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_MealHistory_MealTime" ManuallyRouted="false" />
-        <AssociationConnector Association="HarvestModel.FK_MealHistory_Recipe" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_MealHistory_Recipe" ManuallyRouted="false" >
+        </AssociationConnector>
         <AssociationConnector Association="HarvestModel.FK_MealTime" ManuallyRouted="false" />
-        <AssociationConnector Association="HarvestModel.FK_MealTime_MealTime" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Metric" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_Recipe" ManuallyRouted="false" />
-        <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Recipe" ManuallyRouted="false" />
+        <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Recipe" ManuallyRouted="false" >
+        </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

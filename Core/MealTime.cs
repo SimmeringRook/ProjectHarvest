@@ -27,7 +27,5 @@ namespace Core
         public virtual ICollection<MealHistory> MealHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlannedMeals> PlannedMeals { get; set; }
-        public virtual MealTime MealTime1 { get; set; }
-        public virtual MealTime MealTime2 { get; set; }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Core.RecipeMangement;
 using Core.MeasurementConversions;
+using Core;
 
 namespace CoreTestProject
 {
     [TestClass]
     public class VolumeUnitConversionTests
     {
+        private const float AcceptableConversionDelta = 0.0001f;
         [TestClass]
         public class Convert
         {
@@ -20,29 +21,29 @@ namespace CoreTestProject
                 public void Convert_FromTeaSpoonToTableSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TableSpoon); //Correct Answer
 
                     float amountToConvert = 1 / MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToTableSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -52,32 +53,32 @@ namespace CoreTestProject
                 public void Convert_FromTeaSpoonToFluidOunce_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToFluidOunce_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -87,33 +88,33 @@ namespace CoreTestProject
                 public void Convert_FromTeaSpoonToCup_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Cup); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Cup); //Correct Answer
 
                     float amountToConvert = 1 
                         / MeasurementConversionFactors.FluidOunceToCupRatio 
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio 
                         / MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToCup_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Cup); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Cup); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -123,7 +124,7 @@ namespace CoreTestProject
                 public void Convert_FromTeaSpoonToPint_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Pint); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Pint); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.CupToPintRatio
@@ -131,26 +132,26 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToPint_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Pint); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Pint); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -160,7 +161,7 @@ namespace CoreTestProject
                 public void Convert_FromTeaSpoonToQuart_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Quart); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Quart); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.PintToQuartRatio
@@ -169,26 +170,26 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToQuart_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Quart); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -198,7 +199,7 @@ namespace CoreTestProject
                 public void Convert_FromTeaSpoonToGallon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Gallon); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.QuartToGallonRatio
@@ -208,26 +209,26 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToGallon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -241,29 +242,29 @@ namespace CoreTestProject
                         * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -278,29 +279,29 @@ namespace CoreTestProject
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TeaSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTeaSpoonToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -314,28 +315,28 @@ namespace CoreTestProject
                 public void Convert_FromTableSpoonToTeaSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
                     float amountToConvert = 1 * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToTeaSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TableSpoon);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -345,29 +346,29 @@ namespace CoreTestProject
                 public void Convert_FromTableSpoonToFluidOunce_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.FluidOunce);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.FluidOunce);  //Correct Answer
 
                     float amountToConvert = 1 / MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToFluidOunce_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TableSpoon);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -377,31 +378,31 @@ namespace CoreTestProject
                 public void Convert_FromTableSpoonToCup_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Cup); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Cup); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToCup_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Cup); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Cup); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -411,32 +412,32 @@ namespace CoreTestProject
                 public void Convert_FromTableSpoonToPint_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Pint); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Pint); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToPint_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Pint); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Pint); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -446,7 +447,7 @@ namespace CoreTestProject
                 public void Convert_FromTableSpoonToQuart_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Quart); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Quart); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.PintToQuartRatio
@@ -454,25 +455,25 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToQuart_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Quart); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -482,7 +483,7 @@ namespace CoreTestProject
                 public void Convert_FromTableSpoonToGallon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Gallon); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.QuartToGallonRatio
@@ -491,25 +492,25 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToGallon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -522,29 +523,29 @@ namespace CoreTestProject
                     float expectedAmount = 1.0f
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TableSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -558,29 +559,29 @@ namespace CoreTestProject
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.TableSpoon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromTableSpoonToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -594,30 +595,30 @@ namespace CoreTestProject
                 public void Convert_FromFluidOunceToTeaSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
                     float amountToConvert = 1 
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToTeaSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -627,29 +628,29 @@ namespace CoreTestProject
                 public void Convert_FromFluidOunceToTableSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
 
                     float amountToConvert = 1 * MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToTableSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -659,30 +660,30 @@ namespace CoreTestProject
                 public void Convert_FromFluidOunceToCup_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Cup); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Cup); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToCup_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Cup); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Cup); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -692,31 +693,31 @@ namespace CoreTestProject
                 public void Convert_FromFluidOunceToPint_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Pint); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Pint); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToPint_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Pint); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Pint); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -726,32 +727,32 @@ namespace CoreTestProject
                 public void Convert_FromFluidOunceToQuart_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Quart); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Quart); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.PintToQuartRatio
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToQuart_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Quart); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -761,7 +762,7 @@ namespace CoreTestProject
                 public void Convert_FromFluidOunceToGallon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Gallon); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.QuartToGallonRatio
@@ -769,25 +770,25 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToGallon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -799,29 +800,29 @@ namespace CoreTestProject
                     //Arrange
                     float expectedAmount = 1.0f
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -834,29 +835,29 @@ namespace CoreTestProject
                     float expectedAmount = 1.0f
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.FluidOunce);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromFluidOunceToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.FluidOunce);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -870,31 +871,31 @@ namespace CoreTestProject
                 public void Convert_FromCupToTeaSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
                     float amountToConvert = 1
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToTeaSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -904,31 +905,31 @@ namespace CoreTestProject
                 public void Convert_FromCupToTableSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToTableSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -938,30 +939,30 @@ namespace CoreTestProject
                 public void Convert_FromCupToFluidOunce_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToFluidOunce_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -971,30 +972,30 @@ namespace CoreTestProject
                 public void Convert_FromCupToPint_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Pint); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Pint); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToPint_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Pint); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Pint); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1004,32 +1005,32 @@ namespace CoreTestProject
                 public void Convert_FromCupToQuart_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Quart); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Quart); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.PintToQuartRatio
                         / MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToQuart_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Quart); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1039,33 +1040,33 @@ namespace CoreTestProject
                 public void Convert_FromCupToGallon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Gallon); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.QuartToGallonRatio
                         / MeasurementConversionFactors.PintToQuartRatio
                         / MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToGallon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1078,29 +1079,29 @@ namespace CoreTestProject
                     float expectedAmount = 1.0f
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1114,29 +1115,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Cup);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromCupToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Cup);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1150,32 +1151,32 @@ namespace CoreTestProject
                 public void Convert_FromPintToTeaSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
                     float amountToConvert = 1
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToTeaSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1185,32 +1186,32 @@ namespace CoreTestProject
                 public void Convert_FromPintToTableSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToTableSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1220,31 +1221,31 @@ namespace CoreTestProject
                 public void Convert_FromPintToFluidOunce_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToFluidOunce_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1254,30 +1255,30 @@ namespace CoreTestProject
                 public void Convert_FromPintToCup_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Cup); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Cup); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToCup_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Cup); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Cup); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1287,31 +1288,31 @@ namespace CoreTestProject
                 public void Convert_FromPintToQuart_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Quart); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Quart); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.PintToQuartRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToQuart_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Quart); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1321,32 +1322,32 @@ namespace CoreTestProject
                 public void Convert_FromPintToGallon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Gallon); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.QuartToGallonRatio
                         / MeasurementConversionFactors.PintToQuartRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToGallon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1360,29 +1361,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.FluidOunceToCupRatio
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1397,29 +1398,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Pint);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromPintToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Pint);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1433,33 +1434,33 @@ namespace CoreTestProject
                 public void Convert_FromQuartToTeaSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
                     float amountToConvert = 1
                         * MeasurementConversionFactors.PintToQuartRatio
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToTeaSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1469,33 +1470,33 @@ namespace CoreTestProject
                 public void Convert_FromQuartToTableSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.PintToQuartRatio
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToTableSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1505,32 +1506,32 @@ namespace CoreTestProject
                 public void Convert_FromQuartToFluidOunce_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.PintToQuartRatio
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToFluidOunce_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1540,31 +1541,31 @@ namespace CoreTestProject
                 public void Convert_FromQuartToCup_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Cup); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Cup); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.PintToQuartRatio
                         * MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToCup_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Cup); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Cup); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1574,31 +1575,31 @@ namespace CoreTestProject
                 public void Convert_FromQuartToPint_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Pint); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Pint); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.PintToQuartRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToPint_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Pint); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Pint); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1608,31 +1609,31 @@ namespace CoreTestProject
                 public void Convert_FromQuartToGallon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Gallon); //Correct Answer
 
                     float amountToConvert = 1
                         / MeasurementConversionFactors.QuartToGallonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToGallon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Gallon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1647,29 +1648,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.CupToPintRatio
                         / MeasurementConversionFactors.PintToQuartRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1685,29 +1686,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.PintToQuartRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Quart);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromQuartToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Quart);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1721,7 +1722,7 @@ namespace CoreTestProject
                 public void Convert_FromGallonToTeaSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TeaSpoon);  //Correct Answer
                     float amountToConvert = 1
                         * MeasurementConversionFactors.QuartToGallonRatio
                         * MeasurementConversionFactors.PintToQuartRatio
@@ -1729,26 +1730,26 @@ namespace CoreTestProject
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio
                         * MeasurementConversionFactors.TeaSpoonToTableSpoonRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToTeaSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TeaSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1758,7 +1759,7 @@ namespace CoreTestProject
                 public void Convert_FromGallonToTableSpoon_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.TableSpoon);  //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.QuartToGallonRatio
@@ -1766,26 +1767,26 @@ namespace CoreTestProject
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio
                         * MeasurementConversionFactors.TableSpoonToFluidOunceRatio;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToTableSpoon_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(3.0f, MeasurementUnit.TableSpoon); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1795,7 +1796,7 @@ namespace CoreTestProject
                 public void Convert_FromGallonToFluidOunce_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.QuartToGallonRatio
@@ -1803,25 +1804,25 @@ namespace CoreTestProject
                         * MeasurementConversionFactors.CupToPintRatio
                         * MeasurementConversionFactors.FluidOunceToCupRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon); // 
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon); // 
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToFluidOunce_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.FluidOunce); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1831,32 +1832,32 @@ namespace CoreTestProject
                 public void Convert_FromGallonToCup_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Cup); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Cup); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.QuartToGallonRatio
                         * MeasurementConversionFactors.PintToQuartRatio
                         * MeasurementConversionFactors.CupToPintRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToCup_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Cup); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Cup); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1866,32 +1867,32 @@ namespace CoreTestProject
                 public void Convert_FromGallonToPint_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Pint); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Pint); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.QuartToGallonRatio
                         * MeasurementConversionFactors.PintToQuartRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToPint_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Pint); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Pint); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1901,31 +1902,31 @@ namespace CoreTestProject
                 public void Convert_FromGallonToQuart_ReturnsCorrectAmount()
                 {
                     //Arrange
-                    Ingredient expected = new Ingredient(1.0f, MeasurementUnit.Quart); //Correct Answer
+                    Inventory expected = new Inventory(1.0f, MeasurementUnit.Quart); //Correct Answer
 
                     float amountToConvert = 1
                         * MeasurementConversionFactors.QuartToGallonRatio;
 
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToQuart_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Quart); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(3.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Quart); //Incorrect Answer
+                    Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1941,29 +1942,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.PintToQuartRatio
                         / MeasurementConversionFactors.QuartToGallonRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio();
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.MilliLiter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToMilliliter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.MilliLiter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);
@@ -1980,29 +1981,29 @@ namespace CoreTestProject
                         / MeasurementConversionFactors.QuartToGallonRatio
                         / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio()
                         * MeasurementConversionFactors.MillilitersToLiters;
-                    Ingredient expected = new Ingredient(expectedAmount, MeasurementUnit.Liter); //Correct Answer
+                    Inventory expected = new Inventory(expectedAmount, MeasurementUnit.Liter); //Correct Answer
 
                     float amountToConvert = 1.0f;
-                    Ingredient unconverted = new Ingredient(amountToConvert, MeasurementUnit.Gallon);
+                    Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, expected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
-                    Assert.AreEqual(expected.Amount, result.Amount, 0.0000001f);
+                    Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
                 }
 
                 [TestMethod]
                 public void Convert_FromGallonToLiter_ReturnsIncorrectAmount()
                 {
                     //Arrange
-                    Ingredient notExpected = new Ingredient(1.0f, MeasurementUnit.Liter); //Incorrect Answer
-                    Ingredient unconverted = new Ingredient(1.0f, MeasurementUnit.Gallon);
+                    Inventory notExpected = new Inventory(1.0f, MeasurementUnit.Liter); //Incorrect Answer
+                    Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Ingredient result = VolumeUnitConverter.Convert(unconverted, notExpected.Measurement);
-                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.Measurement);
+                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
                     Assert.AreNotEqual(notExpected.Amount, result.Amount);

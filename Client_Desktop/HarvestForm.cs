@@ -1,5 +1,5 @@
 ﻿using Core;
-using Core.EntityFramework_Utils;
+using Core.DatabaseUtilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,25 +38,31 @@ namespace Client_Desktop
         /// </summary>
         private void ForceRefreshOfCurrentView()
         {
-            using (HarvestEntities context = new HarvestEntities())
+            try
             {
-                switch (pantryTabControl.SelectedIndex)
+                using (HarvestEntities context = new HarvestEntities())
                 {
-                    case 0:
-                        //Meal Planning stuff goes here
-                        break;
-                    case 1:
-                        context.Inventory.Load();
-                        InventoryGridView.DataSource = context.Inventory.Local.ToBindingList();
-                        break;
-                    case 2:
-                        context.Recipe.Load();
-                        RecipeGridView.DataSource = context.Recipe.Local.ToBindingList();
-                        break;
-                }
-            };
-            
-            pantryTabControl.SelectedTab.Refresh();
+                    switch (pantryTabControl.SelectedIndex)
+                    {
+                        case 0:
+                            //Meal Planning stuff goes here
+                            break;
+                        case 1:
+                            context.Inventory.Load();
+                            InventoryGridView.DataSource = context.Inventory.Local.ToBindingList();
+                            break;
+                        case 2:
+                            context.Recipe.Load();
+                            RecipeGridView.DataSource = context.Recipe.Local.ToBindingList();
+                            break;
+                    }
+                };
+                pantryTabControl.SelectedTab.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         #region Meal Tab
@@ -73,10 +79,10 @@ namespace Client_Desktop
         private void InventoryGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
-                e.Value = InventoryTranslator.GetFoodCategoryByRowPostion(e.RowIndex);
+                e.Value = InventoryUtility.GetFoodCategoryByRowPostion(e.RowIndex);
 
             if (InventoryGridView.Columns[e.ColumnIndex].Name == "Measurement")
-                e.Value = InventoryTranslator.GetMeasurementNameByItemID(e.RowIndex);
+                e.Value = InventoryUtility.GetMeasurementNameByItemID(e.RowIndex);
 
             if (InventoryGridView.Columns[e.ColumnIndex].Name == "ModifyInventory")
                 e.Value = "...";
@@ -131,17 +137,13 @@ namespace Client_Desktop
 
             if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                InventoryTranslator.RemoveItemsFromDatabase(ref inventoryItemsToRemove);
+                InventoryUtility.RemoveItemsFromDatabase(ref inventoryItemsToRemove);
                 ForceRefreshOfCurrentView();
             }
         }
         #endregion
 
         #region Recipe Tab
-        private void InitializeRecipeTab()
-        {
-
-        }
 
         /// <summary>
         /// This is where we make changes to the Recipe DataGridView for displaying at run time.
@@ -181,14 +183,9 @@ namespace Client_Desktop
                 //We need to reference the recipe that was clicked
                 //and pass that to the form that will handle the modifications
                 //for the recipe
-
-                Core.Recipe recipeToModify = (Core.Recipe) RecipeGridView.Rows[e.RowIndex].DataBoundItem;
-
-                //If form.ShowDialog() == DialogResult.OK
-                //{
-                ////Do Update code here
-                //}
+                AddOrModifiyRecipeItem((Recipe)RecipeGridView.Rows[e.RowIndex].DataBoundItem);
             }
+
             //Remove checkbox
             else if (recipeGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
             {
@@ -200,7 +197,7 @@ namespace Client_Desktop
             }
         }
 
-        private List<Core.Recipe> recipesToRemove = new List<Core.Recipe>();
+        private List<Recipe> recipesToRemove = new List<Recipe>();
         private void RecipeRemoveSelectedButton_Click(object sender, EventArgs e)
         {
             //Make sure user wants to delete the selected recipes
@@ -208,25 +205,31 @@ namespace Client_Desktop
 
             if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                foreach (Core.Recipe recipe in recipesToRemove)
+                try
                 {
-                    //delete recipe
+                    foreach (Recipe recipe in recipesToRemove)
+                        RecipeUtility.RemoveRecipeFromDatabase(recipe);
+                    recipesToRemove = new List<Recipe>();
                 }
-                recipesToRemove = new List<Core.Recipe>();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             
         }
 
+        private void AddOrModifiyRecipeItem(Recipe recipeToModify)
+        {
+            // Display the Add Recipe form
+            using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
+                addRecipe.Show();
+            ForceRefreshOfCurrentView();
+        }
+
         private void RecipeAddNewRecipeButton_Click(object sender, EventArgs e)
         {
-
-            // Display the Add Recipe form
-            Recipe addRecipe = new Recipe();
-            addRecipe.Show();
-            //if (addRecipe.ShowDialog() == DialogResult.Ok)
-            //{
-            //    Core.Recipe recipeToAdd = addRecipe.GetCreatedRecipe();
-            //}
+            AddOrModifiyRecipeItem(null);
         }
 
 

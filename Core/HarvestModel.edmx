@@ -305,9 +305,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealTime" ToRole="MealHistory" />
           <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_MealTime" FromRole="MealTime" ToRole="PlannedMeals" />
-          <NavigationProperty Name="MealTime1" Relationship="Self.FK_MealTime_MealTime" FromRole="MealTime" ToRole="MealTime1" />
-          <NavigationProperty Name="MealTime2" Relationship="Self.FK_MealTime_MealTime" FromRole="MealTime1" ToRole="MealTime" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="Metric">
           <Key>
             <PropertyRef Name="Measurement" />
@@ -426,18 +424,6 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MealTime_MealTime">
-          <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
-          <End Role="MealTime1" Type="Self.MealTime" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="MealTime">
-              <PropertyRef Name="MealName" />
-            </Principal>
-            <Dependent Role="MealTime1">
-              <PropertyRef Name="MealName" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Recipe_Inventory_Metric">
           <End Role="Metric" Type="Self.Metric" Multiplicity="1" />
           <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
@@ -507,10 +493,6 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <AssociationSet Name="FK_MealTime" Association="Self.FK_MealTime">
             <End Role="MealTime" EntitySet="MealTime" />
             <End Role="PlannedMeals" EntitySet="PlannedMeals" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MealTime_MealTime" Association="Self.FK_MealTime_MealTime">
-            <End Role="MealTime" EntitySet="MealTime" />
-            <End Role="MealTime1" EntitySet="MealTime" />
           </AssociationSet>
           <AssociationSet Name="FK_Recipe_Inventory_Metric" Association="Self.FK_Recipe_Inventory_Metric">
             <End Role="Metric" EntitySet="Metric" />
