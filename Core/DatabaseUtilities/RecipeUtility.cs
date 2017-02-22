@@ -29,6 +29,7 @@ namespace Core.DatabaseUtilities
                 {
                     context.Recipe.Add(modifiedRecipe);
                 }
+                context.SaveChanges();
             }
         }
 
@@ -48,7 +49,10 @@ namespace Core.DatabaseUtilities
             {
                 context.Inventory.Load();
                 List<Inventory> ingredientsThatAlreadyExist = new List<Inventory>();
-                List<Inventory> ingredientsAssociatedWithRecipe = recipe.AssociatedItems;
+
+                List<Inventory> ingredientsAssociatedWithRecipe = new List<Inventory>();
+                foreach (Inventory item in recipe.AssociatedItems)
+                    ingredientsAssociatedWithRecipe.Add(item);
                 //TODO - consider swapping which list is itterated over
                 //As the inventory will most likely always contain more records than
                 //the ingredients associated with a new recipe

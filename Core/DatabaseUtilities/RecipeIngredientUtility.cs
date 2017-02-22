@@ -17,6 +17,14 @@ namespace Core.DatabaseUtilities
 
         public static void UpdateTable(Recipe recipe)
         {
+            if (recipe.RecipeID == 0)
+            {
+                using(HarvestEntities context = new HarvestEntities())
+                {
+                    int ID = context.Recipe.SingleOrDefault(r => r.RecipeName.Equals(recipe.RecipeName)).RecipeID;
+                    recipe.RecipeID = ID;
+                }
+            }
             HandleNonExistantIngredients(recipe);
 
             using (HarvestEntities context = new HarvestEntities())
@@ -32,7 +40,7 @@ namespace Core.DatabaseUtilities
 
                     context.RecipeIngredient.Add(ri); //This -should- work?
                 }
-
+                context.SaveChanges();
             }
         }
 

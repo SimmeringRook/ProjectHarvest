@@ -25,6 +25,8 @@
         <AssociationConnector Association="HarvestModel.FK_Recipe" ManuallyRouted="false" />
         <AssociationConnector Association="HarvestModel.FK_Recipe_Inventory_Recipe" ManuallyRouted="false" >
         </AssociationConnector>
+        <EntityTypeShape EntityType="HarvestModel.RecipeClass" Width="1.5" PointX="0.75" PointY="7.875" />
+        <AssociationConnector Association="HarvestModel.FK_Recipe_RecipeClass" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

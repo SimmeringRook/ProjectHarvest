@@ -14,6 +14,7 @@ namespace Client_Desktop
         public HarvestForm()
         {
             InitializeComponent();
+            ForceRefreshOfCurrentView();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -46,6 +47,7 @@ namespace Client_Desktop
                     {
                         case 0:
                             //Meal Planning stuff goes here
+                            LoadWeek();
                             break;
                         case 1:
                             context.Inventory.Load();
@@ -66,9 +68,40 @@ namespace Client_Desktop
         }
 
         #region Meal Tab
-        private void InitializeMealTab()
-        {
 
+        private void LoadWeek()
+        {
+            foreach (Control c in weekTableLayout.Controls)
+                c.Controls.Add(CreatePlanMealButton());
+        }
+
+        private Button CreateMealButton(Recipe selectedRecipe)
+        {
+            Button template = new Button();
+            template.Anchor = AnchorStyles.Top;
+            template.Text = selectedRecipe.RecipeName;
+            return template;
+        }
+        private Button CreatePlanMealButton()
+        {
+            Button template = new Button();
+            template.Anchor = AnchorStyles.Top;
+            template.Text = "- Plan -";
+            template.Click += new System.EventHandler(this.PlanMealButton_Click);
+            return template;
+        }
+        private void PlanMealButton_Click(object sender, EventArgs e)
+        {
+            using(RecipePickerForm picker = new RecipePickerForm())
+            {
+                if (picker.ShowDialog() == DialogResult.OK)
+                {
+                    Control parentOfClickedButton = ((Button)sender).Parent;
+                    parentOfClickedButton.Controls.Remove((Button)sender);
+                    parentOfClickedButton.Controls.Add(CreateMealButton(picker.SelectedRecipe));
+                    parentOfClickedButton.Controls.Add(CreatePlanMealButton());
+                }
+            }
         }
         #endregion
 
@@ -223,8 +256,12 @@ namespace Client_Desktop
         {
             // Display the Add Recipe form
             using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
-                addRecipe.Show();
-            ForceRefreshOfCurrentView();
+            {
+                if (addRecipe.ShowDialog() == DialogResult.OK)
+                    ForceRefreshOfCurrentView();
+            }
+                
+           
         }
 
         private void RecipeAddNewRecipeButton_Click(object sender, EventArgs e)
@@ -233,8 +270,9 @@ namespace Client_Desktop
         }
 
 
+
         #endregion
 
-   
+
     }
 }

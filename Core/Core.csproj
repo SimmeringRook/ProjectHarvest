@@ -89,11 +89,15 @@
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelExtensions\Inventory.cs" />
+    <Compile Include="ModelExtensions\MealTime.cs" />
     <Compile Include="ModelExtensions\Recipe.cs" />
     <Compile Include="PlannedMeals.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Recipe.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecipeClass.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RecipeIngredient.cs">

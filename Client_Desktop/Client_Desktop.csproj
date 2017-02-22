@@ -63,6 +63,7 @@
       <DependentUpon>HarvestForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\IngredientInformation.cs" />
+    <Compile Include="Helpers\PlannedMealDay.cs" />
     <Compile Include="InventoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +77,12 @@
     </Compile>
     <Compile Include="RecipeForm.Designer.cs">
       <DependentUpon>RecipeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RecipePickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecipePickerForm.Designer.cs">
+      <DependentUpon>RecipePickerForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="HarvestForm.resx">
       <DependentUpon>HarvestForm.cs</DependentUpon>
@@ -95,15 +102,20 @@
     <EmbeddedResource Include="RecipeForm.resx">
       <DependentUpon>RecipeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RecipePickerForm.resx">
+      <DependentUpon>RecipePickerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Core.DatabaseUtilities.InventoryUtility.datasource" />
     <None Include="Properties\DataSources\Core.DatabaseUtilities.RecipeIngredientUtility.datasource" />
     <None Include="Properties\DataSources\Core.DatabaseUtilities.RecipeUtility.datasource" />
     <None Include="Properties\DataSources\Core.FoodType.datasource" />
+    <None Include="Properties\DataSources\Core.HarvestEntities.datasource" />
     <None Include="Properties\DataSources\Core.IngredientCategory.datasource" />
     <None Include="Properties\DataSources\Core.Inventory.datasource" />
     <None Include="Properties\DataSources\Core.Metric.datasource" />
     <None Include="Properties\DataSources\Core.Recipe.datasource" />
+    <None Include="Properties\DataSources\Core.RecipeClass.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

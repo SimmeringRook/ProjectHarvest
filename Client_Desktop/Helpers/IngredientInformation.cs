@@ -1,4 +1,5 @@
 ﻿using Core;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Helpers
@@ -11,11 +12,12 @@ namespace Client_Desktop.Helpers
         public ComboBox Type;
         public CheckBox Selected;
 
-        public IngredientInformation()
+        public IngredientInformation(BindingList<Metric> units)
         {
             Name = GetTextboxTemplate();
             Quantity = GetTextboxTemplate();
-            Unit = GetCboBoxTemplate();
+            Unit = GetCboBoxTemplate(units);
+            
             Type = GetCboBoxTemplate();
             Selected = GetCheckBoxTemplate();
         }
@@ -25,9 +27,10 @@ namespace Client_Desktop.Helpers
             Inventory item = new Inventory();
             item.IngredientName = Name.Text;
             item.Amount = double.Parse(Quantity.Text);
-            item.Measurement = Unit.SelectedItem.ToString();
-            item.Category = Type.SelectedItem.ToString();
-
+            item.Measurement = Unit.SelectedValue.ToString();
+            //TODO use once the combo is added
+            //item.Category = Type.SelectedValue.ToString();
+            item.Category = "Grain";
             return item;
         }
 
@@ -42,6 +45,17 @@ namespace Client_Desktop.Helpers
         {
             ComboBox template = new ComboBox();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
+            return template;
+        }
+
+        private ComboBox GetCboBoxTemplate(BindingList<Metric> units)
+        {
+            ComboBox template = new ComboBox();
+            template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
+            template.DataBindings.Add(new Binding("SelectedValue", units, "Measurement", true));
+            template.DataSource = units;
+            template.DisplayMember = "Measurement";
+            template.ValueMember = "Measurement";
             return template;
         }
 

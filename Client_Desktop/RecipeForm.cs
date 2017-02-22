@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using Core;
 using Core.DatabaseUtilities;
 using Client_Desktop.Helpers;
+using System.Data.Entity;
+using System.ComponentModel;
 
 namespace Client_Desktop
 {
@@ -19,9 +21,19 @@ namespace Client_Desktop
                 DisplayRecipeToModify();
 
             InitializeComponent();
+
+            using (HarvestEntities context = new HarvestEntities())
+            {
+                context.RecipeClass.Load();
+                categoryCombo.DataSource = context.RecipeClass.Local.ToBindingList();
+               
+            }
+
             numberOfRows = recipeTableLayout.RowCount - 1;
             AddNewIngredientRow();
             subtractButton.Enabled = false;
+
+
         }
 
         private void DisplayRecipeToModify()
@@ -35,11 +47,32 @@ namespace Client_Desktop
             AddNewIngredientRow();
         }
 
+        private BindingList<Metric> GetListForMetric()
+        {
+            BindingList<Metric> units = new BindingList<Metric>();
+            try
+            {
+                using (HarvestEntities context = new HarvestEntities())
+                {
+                    context.Metric.Load();
+                    units = context.Metric.Local.ToBindingList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                
+            }
+            return units;
+        }
+
         private void AddNewIngredientRow()
         {
             recipeTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            IngredientInformation rowToBeAdded = new IngredientInformation();
+
+
+            IngredientInformation rowToBeAdded = new IngredientInformation(GetListForMetric());
 
             recipeTableLayout.Controls.Add(rowToBeAdded.Name, 0, numberOfRows);
             recipeTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, numberOfRows);
@@ -87,18 +120,22 @@ namespace Client_Desktop
 
                 RecipeUtility.UpdateRecipeInDatabase(newRecipe);
                 RecipeIngredientUtility.UpdateTable(newRecipe);
+
+                this.DialogResult = DialogResult.OK;
             }
             catch( Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            
         }
 
         private Recipe GetRecipeFromControls()
         {
             Recipe temp = new Recipe();
             temp.RecipeName = RecipeNameTextBox.Text;
-
+            temp.RCategory = categoryCombo.SelectedValue.ToString();
+            temp.Servings = int.Parse(servingsTextbox.Text);
             return temp;
         }
     }
