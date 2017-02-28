@@ -74,6 +74,25 @@ namespace Core.DatabaseUtilities
 
         #endregion
         
+        public static int GetRecipeCategoryFromRecipe(Recipe recipe)
+        {
+            using(HarvestEntities context = new HarvestEntities())
+            {
+                //Get the index of the recipe category
+                context.RecipeClass.Load();
+                var categories = context.RecipeClass.Local.ToList();
+
+                int index = -1;
+                
+                foreach (var category in categories)
+                {
+                    if (category.RCategory.Equals(recipe.RCategory))
+                        index = categories.IndexOf(category);
+                }
+
+                return index;
+            }
+        }
 
        
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 
@@ -84,6 +85,25 @@ namespace Core.DatabaseUtilities
             }
 
             return items;
+        }
+
+        public static int GetIngredientUnitIndex(RecipeIngredient ingredient)
+        {
+            using (HarvestEntities context = new HarvestEntities())
+            {
+                context.Metric.Load();
+                var units = context.Metric.ToList();
+                return units.IndexOf(units.SingleOrDefault(u => u.Measurement.Equals(ingredient.Measurement)));
+            }
+        }
+
+        public static BindingList<Metric> GetBindingListOfUnits()
+        {
+            using (HarvestEntities context = new HarvestEntities())
+            {
+                context.Metric.Load();
+                return context.Metric.Local.ToBindingList();
+            }
         }
     }
 }

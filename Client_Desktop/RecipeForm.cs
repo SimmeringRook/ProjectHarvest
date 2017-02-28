@@ -17,29 +17,62 @@ namespace Client_Desktop
 
         public RecipeForm(Recipe recipeToModify)
         {
-            if (recipeToModify != null)
-                DisplayRecipeToModify();
-
+            //Make sure controls exist and are not null before loading anything
             InitializeComponent();
 
+            //Need to Populate the Combo Before -possibly- loading a recipe to modify
             using (HarvestEntities context = new HarvestEntities())
             {
                 context.RecipeClass.Load();
                 categoryCombo.DataSource = context.RecipeClass.Local.ToBindingList();
-               
             }
 
             numberOfRows = recipeTableLayout.RowCount - 1;
-            AddNewIngredientRow();
-            subtractButton.Enabled = false;
-
-
+            //Handle the possiblity of modifying an existing recipe
+            if (recipeToModify != null)
+            {
+                DisplayRecipeToModify(recipeToModify);
+            }
+            else
+            {
+                AddNewIngredientRow();
+                subtractButton.Enabled = false;
+            }
         }
 
-        private void DisplayRecipeToModify()
+        private void DisplayRecipeToModify(Recipe recipeToModify)
         {
+           
+            int index = RecipeUtility.GetRecipeCategoryFromRecipe(recipeToModify);
+            if (index == -1)
+            {
+                //TODO:: Do something useful with this error
+                MessageBox.Show("There was an error looking up the recipe's information.");
+            }
+            else
+            {
+                //Recipe First
+                RecipeNameTextBox.Text = recipeToModify.RecipeName;
+                categoryCombo.SelectedItem = categoryCombo.Items[index];
+                servingsTextbox.Text = recipeToModify.Servings.ToString();
+                
+                //Now Ingredients:
+                using (HarvestEntities context = new HarvestEntities())
+                {
+                    var ingredients = context.RecipeIngredient.Where(r => r.RecipeID == recipeToModify.RecipeID).ToList();
+                    
+                    for (int i = 0; i < ingredients.Count; i++)
+                    {
+                        AddNewIngredientRow();
+                        Ingredients[i].LoadExistingData(ingredients[i]);
+                    }
+                }
+            }
 
+            
         }
+
+   
 
         #region Row Management
         private void addButton_Click(object sender, EventArgs e)
@@ -72,11 +105,24 @@ namespace Client_Desktop
 
 
 
-            IngredientInformation rowToBeAdded = new IngredientInformation(GetListForMetric());
+            IngredientInformation rowToBeAdded = new IngredientInformation();
+            var units = GetListForMetric();
+
 
             recipeTableLayout.Controls.Add(rowToBeAdded.Name, 0, numberOfRows);
             recipeTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, numberOfRows);
             recipeTableLayout.Controls.Add(rowToBeAdded.Unit, 2, numberOfRows);
+
+            //Apparently the databinding needs to happen after the ComboBox has been added to the form
+            //otherwise Unit.Items will always be "0" and not let you set the pre-set value when loading in a recipe
+            rowToBeAdded.Unit.DataBindings.Add(new Binding("SelectedValue", units, "Measurement", true));
+            rowToBeAdded.Unit.DataSource = units.ToList();
+            rowToBeAdded.Unit.DisplayMember = "Measurement";
+            rowToBeAdded.Unit.ValueMember = "Measurement";
+
+            //This also means that we should only need one combo box template function in IngredientInformation,
+            //Since the assignment needs to occur after the control has been added.
+
             //TODO fix
             //recipeTableLayout.Controls.Add(rowToBeAdded.Type, 3, numberOfRows);
             recipeTableLayout.Controls.Add(rowToBeAdded.Selected, 3, numberOfRows);

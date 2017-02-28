@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using System;
+using Core.DatabaseUtilities;
 
 namespace Client_Desktop.Helpers
 {
@@ -13,11 +15,11 @@ namespace Client_Desktop.Helpers
         public ComboBox Type;
         public CheckBox Selected;
 
-        public IngredientInformation(BindingList<Metric> units)
+        public IngredientInformation()
         {
             Name = GetTextboxTemplate();
             Quantity = GetTextboxTemplate();
-            Unit = GetUnitComboTemplate(units);
+            Unit = GetUnitComboTemplate();
             
             Type = GetCategoryComboTemplate();
             Selected = GetCheckBoxTemplate();
@@ -49,14 +51,10 @@ namespace Client_Desktop.Helpers
             return template;
         }
 
-        private ComboBox GetUnitComboTemplate(BindingList<Metric> units)
+        private ComboBox GetUnitComboTemplate()
         {
             ComboBox template = new ComboBox();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
-            template.DataBindings.Add(new Binding("SelectedValue", units, "Measurement", true));
-            template.DataSource = units.ToList();
-            template.DisplayMember = "Measurement";
-            template.ValueMember = "Measurement";
             return template;
         }
 
@@ -65,6 +63,16 @@ namespace Client_Desktop.Helpers
             CheckBox template = new CheckBox();
             template.Anchor = AnchorStyles.None;
             return template;
+        }
+
+        public void LoadExistingData(RecipeIngredient ingredient)
+        {
+            Name.Text = ingredient.Inventory.IngredientName;
+            Quantity.Text = ingredient.Amount.ToString();
+            Unit.SelectedIndex = RecipeIngredientUtility.GetIngredientUnitIndex(ingredient);
+
+            //Type = GetCategoryComboTemplate();
+            Selected.Checked = false;
         }
     }
 }
