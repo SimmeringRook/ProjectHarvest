@@ -28,6 +28,9 @@ namespace Client_Desktop
 
         private void selectButton_Click(object sender, EventArgs e)
         {
+            //int index = dataGridView1.SelectedRows[0].Index;
+            int rowCount = dataGridView1.Rows.Count;
+            SelectedRecipe = (Recipe) dataGridView1.Rows[selectedIndex].DataBoundItem;
             this.DialogResult = DialogResult.OK;
         }
 
@@ -37,5 +40,11 @@ namespace Client_Desktop
 
         }
         #endregion
+
+        private int selectedIndex = 0;
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            selectedIndex = dataGridView1.CurrentCell.RowIndex;
+        }
     }
 }

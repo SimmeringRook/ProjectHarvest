@@ -36,11 +36,11 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.selectButton = new System.Windows.Forms.Button();
-            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.recipeNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.servingsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rCategoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.selectButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -131,20 +131,7 @@
             this.dataGridView1.RowTemplate.Height = 33;
             this.dataGridView1.Size = new System.Drawing.Size(791, 254);
             this.dataGridView1.TabIndex = 6;
-            // 
-            // selectButton
-            // 
-            this.selectButton.Location = new System.Drawing.Point(339, 493);
-            this.selectButton.Name = "selectButton";
-            this.selectButton.Size = new System.Drawing.Size(139, 48);
-            this.selectButton.TabIndex = 7;
-            this.selectButton.Text = "Select";
-            this.selectButton.UseVisualStyleBackColor = true;
-            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
-            // recipeBindingSource
-            // 
-            this.recipeBindingSource.DataSource = typeof(Core.Recipe);
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // recipeNameDataGridViewTextBoxColumn
             // 
@@ -167,6 +154,20 @@
             this.rCategoryDataGridViewTextBoxColumn.HeaderText = "Category";
             this.rCategoryDataGridViewTextBoxColumn.Name = "rCategoryDataGridViewTextBoxColumn";
             this.rCategoryDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // recipeBindingSource
+            // 
+            this.recipeBindingSource.DataSource = typeof(Core.Recipe);
+            // 
+            // selectButton
+            // 
+            this.selectButton.Location = new System.Drawing.Point(339, 493);
+            this.selectButton.Name = "selectButton";
+            this.selectButton.Size = new System.Drawing.Size(139, 48);
+            this.selectButton.TabIndex = 7;
+            this.selectButton.Text = "Select";
+            this.selectButton.UseVisualStyleBackColor = true;
+            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
             // 
             // updateButton
             // 

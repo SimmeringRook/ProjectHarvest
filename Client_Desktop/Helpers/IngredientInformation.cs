@@ -1,5 +1,6 @@
 ﻿using Core;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Helpers
@@ -16,9 +17,9 @@ namespace Client_Desktop.Helpers
         {
             Name = GetTextboxTemplate();
             Quantity = GetTextboxTemplate();
-            Unit = GetCboBoxTemplate(units);
+            Unit = GetUnitComboTemplate(units);
             
-            Type = GetCboBoxTemplate();
+            Type = GetCategoryComboTemplate();
             Selected = GetCheckBoxTemplate();
         }
 
@@ -41,19 +42,19 @@ namespace Client_Desktop.Helpers
             return template;
         }
 
-        private ComboBox GetCboBoxTemplate()
+        private ComboBox GetCategoryComboTemplate()
         {
             ComboBox template = new ComboBox();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
             return template;
         }
 
-        private ComboBox GetCboBoxTemplate(BindingList<Metric> units)
+        private ComboBox GetUnitComboTemplate(BindingList<Metric> units)
         {
             ComboBox template = new ComboBox();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
             template.DataBindings.Add(new Binding("SelectedValue", units, "Measurement", true));
-            template.DataSource = units;
+            template.DataSource = units.ToList();
             template.DisplayMember = "Measurement";
             template.ValueMember = "Measurement";
             return template;
