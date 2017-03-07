@@ -80,6 +80,24 @@ namespace Client_Desktop
             AddNewIngredientRow();
         }
 
+        private BindingList<IngredientCategory> GetListForType()
+        {
+            BindingList<IngredientCategory> category = new BindingList<IngredientCategory>();
+            try
+            {
+                using (HarvestEntities context = new HarvestEntities())
+                {
+                    context.IngredientCategory.Load();
+                    category = context.IngredientCategory.Local.ToBindingList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong!!!");
+            }
+            return category;
+        }
+
         private BindingList<Metric> GetListForMetric()
         {
             BindingList<Metric> units = new BindingList<Metric>();
@@ -107,11 +125,20 @@ namespace Client_Desktop
 
             IngredientInformation rowToBeAdded = new IngredientInformation();
             var units = GetListForMetric();
-
+            var category = GetListForType();
 
             recipeTableLayout.Controls.Add(rowToBeAdded.Name, 0, numberOfRows);
-            recipeTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, numberOfRows);
-            recipeTableLayout.Controls.Add(rowToBeAdded.Unit, 2, numberOfRows);
+
+            recipeTableLayout.Controls.Add(rowToBeAdded.Type, 1, numberOfRows);
+                        
+            rowToBeAdded.Type.DataBindings.Add(new Binding("SelectedValue", category, "Category", true));
+            rowToBeAdded.Type.DataSource = category.ToList();
+            rowToBeAdded.Type.DisplayMember = "Category";
+            rowToBeAdded.Type.ValueMember = "Category";
+
+
+            recipeTableLayout.Controls.Add(rowToBeAdded.Quantity, 2, numberOfRows);
+            recipeTableLayout.Controls.Add(rowToBeAdded.Unit, 3, numberOfRows);
 
             //Apparently the databinding needs to happen after the ComboBox has been added to the form
             //otherwise Unit.Items will always be "0" and not let you set the pre-set value when loading in a recipe
@@ -123,9 +150,7 @@ namespace Client_Desktop
             //This also means that we should only need one combo box template function in IngredientInformation,
             //Since the assignment needs to occur after the control has been added.
 
-            //TODO fix
-            //recipeTableLayout.Controls.Add(rowToBeAdded.Type, 3, numberOfRows);
-            recipeTableLayout.Controls.Add(rowToBeAdded.Selected, 3, numberOfRows);
+            recipeTableLayout.Controls.Add(rowToBeAdded.Selected, 4, numberOfRows);
 
             Ingredients.Add(rowToBeAdded);
             numberOfRows++;
@@ -183,6 +208,6 @@ namespace Client_Desktop
             temp.RCategory = categoryCombo.SelectedValue.ToString();
             temp.Servings = int.Parse(servingsTextbox.Text);
             return temp;
-        }
+        }       
     }
 }
