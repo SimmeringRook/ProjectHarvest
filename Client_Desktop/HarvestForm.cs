@@ -71,8 +71,13 @@ namespace Client_Desktop
 
         private void LoadWeek()
         {
-            foreach (Control c in weekTableLayout.Controls)
-                c.Controls.Add(CreatePlanMealButton());
+            foreach (Control flow in weekTableLayout.Controls)
+            {
+                if (flow.Controls.Count < 1)
+                    flow.Controls.Add(CreatePlanMealButton());
+            }
+
+                
         }
 
         private Button CreateMealButton(Recipe selectedRecipe)
