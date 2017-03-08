@@ -123,7 +123,7 @@
             this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addButton.Location = new System.Drawing.Point(12, 377);
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(33, 23);
+            this.addButton.Size = new System.Drawing.Size(45, 23);
             this.addButton.TabIndex = 8;
             this.addButton.Text = "+";
             this.addButton.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
             this.subtractButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.subtractButton.Location = new System.Drawing.Point(63, 377);
             this.subtractButton.Name = "subtractButton";
-            this.subtractButton.Size = new System.Drawing.Size(29, 23);
+            this.subtractButton.Size = new System.Drawing.Size(41, 23);
             this.subtractButton.TabIndex = 9;
             this.subtractButton.Text = "-";
             this.subtractButton.UseVisualStyleBackColor = true;
@@ -188,7 +188,7 @@
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.26366F));
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
-            this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.recipeTableLayout.Location = new System.Drawing.Point(0, 3);
             this.recipeTableLayout.Name = "recipeTableLayout";
             this.recipeTableLayout.RowCount = 1;
@@ -207,7 +207,7 @@
             // 
             // addModifyRecipeButton
             // 
-            this.addModifyRecipeButton.Location = new System.Drawing.Point(139, 425);
+            this.addModifyRecipeButton.Location = new System.Drawing.Point(192, 377);
             this.addModifyRecipeButton.Name = "addModifyRecipeButton";
             this.addModifyRecipeButton.Size = new System.Drawing.Size(136, 23);
             this.addModifyRecipeButton.TabIndex = 15;
@@ -229,7 +229,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(554, 416);
+            this.ClientSize = new System.Drawing.Size(554, 418);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.addModifyRecipeButton);
             this.Controls.Add(this.label4);

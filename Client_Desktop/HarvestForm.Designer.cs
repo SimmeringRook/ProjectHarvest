@@ -121,7 +121,7 @@
             this.mainMenuStrip.Location = new System.Drawing.Point(4, 6);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(8, 4, 0, 4);
-            this.mainMenuStrip.Size = new System.Drawing.Size(1320, 44);
+            this.mainMenuStrip.Size = new System.Drawing.Size(1330, 27);
             this.mainMenuStrip.TabIndex = 0;
             this.mainMenuStrip.Text = "menuStrip1";
             // 
@@ -130,13 +130,13 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(64, 36);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 19);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 38);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -159,11 +159,11 @@
             // mealPlannerTabPage
             // 
             this.mealPlannerTabPage.Controls.Add(this.mealPlannerMainTableLayout);
-            this.mealPlannerTabPage.Location = new System.Drawing.Point(8, 39);
+            this.mealPlannerTabPage.Location = new System.Drawing.Point(4, 22);
             this.mealPlannerTabPage.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mealPlannerTabPage.Name = "mealPlannerTabPage";
             this.mealPlannerTabPage.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.mealPlannerTabPage.Size = new System.Drawing.Size(1514, 994);
+            this.mealPlannerTabPage.Size = new System.Drawing.Size(1522, 1015);
             this.mealPlannerTabPage.TabIndex = 0;
             this.mealPlannerTabPage.Text = "Meal Planner";
             this.mealPlannerTabPage.UseVisualStyleBackColor = true;
@@ -605,20 +605,21 @@
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(148, 846);
             this.tableLayoutPanel3.TabIndex = 2;
+            this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 692);
+            this.label3.Location = new System.Drawing.Point(4, 436);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(140, 25);
+            this.label3.Size = new System.Drawing.Size(140, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Evening";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -627,10 +628,10 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 410);
+            this.label2.Location = new System.Drawing.Point(4, 23);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(140, 25);
+            this.label2.Size = new System.Drawing.Size(140, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Afternoon";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -639,10 +640,10 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 128);
+            this.label1.Location = new System.Drawing.Point(4, 3);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(140, 25);
+            this.label1.Size = new System.Drawing.Size(140, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Morning";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -650,11 +651,11 @@
             // inventoryTabPage
             // 
             this.inventoryTabPage.Controls.Add(this.InventoryMainTableLayout);
-            this.inventoryTabPage.Location = new System.Drawing.Point(8, 39);
+            this.inventoryTabPage.Location = new System.Drawing.Point(4, 22);
             this.inventoryTabPage.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.inventoryTabPage.Name = "inventoryTabPage";
             this.inventoryTabPage.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.inventoryTabPage.Size = new System.Drawing.Size(1834, 1324);
+            this.inventoryTabPage.Size = new System.Drawing.Size(1522, 1015);
             this.inventoryTabPage.TabIndex = 1;
             this.inventoryTabPage.Text = "Inventory";
             this.inventoryTabPage.UseVisualStyleBackColor = true;
@@ -678,7 +679,7 @@
             this.InventoryMainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.InventoryMainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.InventoryMainTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.InventoryMainTableLayout.Size = new System.Drawing.Size(1524, 952);
+            this.InventoryMainTableLayout.Size = new System.Drawing.Size(1212, 643);
             this.InventoryMainTableLayout.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -692,21 +693,21 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel5.Controls.Add(this.RemoveInventoryButton, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.AddInventoryButton, 1, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(156, 4);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(125, 4);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1211, 87);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(961, 56);
             this.tableLayoutPanel5.TabIndex = 4;
             // 
             // RemoveInventoryButton
             // 
             this.RemoveInventoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.RemoveInventoryButton.Location = new System.Drawing.Point(911, 17);
+            this.RemoveInventoryButton.Location = new System.Drawing.Point(724, 4);
             this.RemoveInventoryButton.Margin = new System.Windows.Forms.Padding(4);
             this.RemoveInventoryButton.Name = "RemoveInventoryButton";
-            this.RemoveInventoryButton.Size = new System.Drawing.Size(296, 52);
+            this.RemoveInventoryButton.Size = new System.Drawing.Size(233, 48);
             this.RemoveInventoryButton.TabIndex = 0;
             this.RemoveInventoryButton.Text = "Remove Selected Item";
             this.RemoveInventoryButton.UseVisualStyleBackColor = true;
@@ -715,10 +716,10 @@
             // AddInventoryButton
             // 
             this.AddInventoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddInventoryButton.Location = new System.Drawing.Point(609, 17);
+            this.AddInventoryButton.Location = new System.Drawing.Point(484, 4);
             this.AddInventoryButton.Margin = new System.Windows.Forms.Padding(4);
             this.AddInventoryButton.Name = "AddInventoryButton";
-            this.AddInventoryButton.Size = new System.Drawing.Size(294, 52);
+            this.AddInventoryButton.Size = new System.Drawing.Size(232, 48);
             this.AddInventoryButton.TabIndex = 1;
             this.AddInventoryButton.Text = "Add New Item";
             this.AddInventoryButton.UseVisualStyleBackColor = true;
@@ -739,12 +740,12 @@
             this.RemoveInventory});
             this.InventoryGridView.DataSource = this.inventoryBindingSource;
             this.InventoryGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InventoryGridView.Location = new System.Drawing.Point(156, 101);
+            this.InventoryGridView.Location = new System.Drawing.Point(125, 70);
             this.InventoryGridView.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.InventoryGridView.Name = "InventoryGridView";
             this.InventoryGridView.ReadOnly = true;
             this.InventoryGridView.RowTemplate.Height = 24;
-            this.InventoryGridView.Size = new System.Drawing.Size(1211, 749);
+            this.InventoryGridView.Size = new System.Drawing.Size(961, 502);
             this.InventoryGridView.TabIndex = 3;
             this.InventoryGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.InventoryGridView_CellContentClick);
             this.InventoryGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.InventoryGridView_CellFormatting);
@@ -794,10 +795,10 @@
             // recipeTabPage
             // 
             this.recipeTabPage.Controls.Add(this.tableLayoutPanel1);
-            this.recipeTabPage.Location = new System.Drawing.Point(8, 39);
+            this.recipeTabPage.Location = new System.Drawing.Point(4, 22);
             this.recipeTabPage.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.recipeTabPage.Name = "recipeTabPage";
-            this.recipeTabPage.Size = new System.Drawing.Size(1834, 1324);
+            this.recipeTabPage.Size = new System.Drawing.Size(1522, 1015);
             this.recipeTabPage.TabIndex = 2;
             this.recipeTabPage.Text = "Recipes";
             this.recipeTabPage.UseVisualStyleBackColor = true;
@@ -821,7 +822,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1628, 952);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1316, 643);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // RecipeGridView
@@ -839,12 +840,12 @@
             this.Modify,
             this.Remove});
             this.RecipeGridView.DataSource = this.recipeBindingSource;
-            this.RecipeGridView.Location = new System.Drawing.Point(166, 99);
+            this.RecipeGridView.Location = new System.Drawing.Point(135, 68);
             this.RecipeGridView.Margin = new System.Windows.Forms.Padding(4);
             this.RecipeGridView.Name = "RecipeGridView";
             this.RecipeGridView.RowHeadersWidth = 42;
             this.RecipeGridView.RowTemplate.Height = 33;
-            this.RecipeGridView.Size = new System.Drawing.Size(1294, 753);
+            this.RecipeGridView.Size = new System.Drawing.Size(1044, 506);
             this.RecipeGridView.TabIndex = 0;
             this.RecipeGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RecipeGridView_CellContentClick);
             this.RecipeGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.RecipeGridView_DataBindingComplete);
@@ -893,21 +894,21 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.Controls.Add(this.RecipeRemoveSelectedButton, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.RecipeAddNewRecipeButton, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(166, 4);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(135, 4);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1294, 87);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1044, 56);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // RecipeRemoveSelectedButton
             // 
             this.RecipeRemoveSelectedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.RecipeRemoveSelectedButton.Location = new System.Drawing.Point(974, 17);
+            this.RecipeRemoveSelectedButton.Location = new System.Drawing.Point(787, 4);
             this.RecipeRemoveSelectedButton.Margin = new System.Windows.Forms.Padding(4);
             this.RecipeRemoveSelectedButton.Name = "RecipeRemoveSelectedButton";
-            this.RecipeRemoveSelectedButton.Size = new System.Drawing.Size(316, 52);
+            this.RecipeRemoveSelectedButton.Size = new System.Drawing.Size(253, 48);
             this.RecipeRemoveSelectedButton.TabIndex = 0;
             this.RecipeRemoveSelectedButton.Text = "Remove Selected Recipes";
             this.RecipeRemoveSelectedButton.UseVisualStyleBackColor = true;
@@ -916,10 +917,10 @@
             // RecipeAddNewRecipeButton
             // 
             this.RecipeAddNewRecipeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.RecipeAddNewRecipeButton.Location = new System.Drawing.Point(651, 17);
+            this.RecipeAddNewRecipeButton.Location = new System.Drawing.Point(526, 4);
             this.RecipeAddNewRecipeButton.Margin = new System.Windows.Forms.Padding(4);
             this.RecipeAddNewRecipeButton.Name = "RecipeAddNewRecipeButton";
-            this.RecipeAddNewRecipeButton.Size = new System.Drawing.Size(315, 52);
+            this.RecipeAddNewRecipeButton.Size = new System.Drawing.Size(253, 48);
             this.RecipeAddNewRecipeButton.TabIndex = 1;
             this.RecipeAddNewRecipeButton.Text = "Add New Recipe";
             this.RecipeAddNewRecipeButton.UseVisualStyleBackColor = true;
@@ -928,7 +929,7 @@
             // HarvestForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1328, 729);
+            this.ClientSize = new System.Drawing.Size(1338, 729);
             this.Controls.Add(this.pantryTabControl);
             this.Controls.Add(this.mainMenuStrip);
             this.MainMenuStrip = this.mainMenuStrip;

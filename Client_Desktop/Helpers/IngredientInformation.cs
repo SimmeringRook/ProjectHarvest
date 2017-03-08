@@ -32,8 +32,8 @@ namespace Client_Desktop.Helpers
             item.Amount = double.Parse(Quantity.Text);
             item.Measurement = Unit.SelectedValue.ToString();
             //TODO use once the combo is added
-            //item.Category = Type.SelectedValue.ToString();
-            item.Category = "Grain";
+            item.Category = Type.SelectedValue.ToString();
+            //item.Category = "Grain";
             return item;
         }
 

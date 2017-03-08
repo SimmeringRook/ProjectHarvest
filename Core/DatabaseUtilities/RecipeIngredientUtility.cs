@@ -63,13 +63,15 @@ namespace Core.DatabaseUtilities
 
                 foreach (Inventory ingredient in ingredientsThatNeedToBeCreated)
                 {
+                    int ID = context.Inventory.OrderByDescending(i => i.InventoryID).First().InventoryID;
+                    ingredient.InventoryID = ID + 1;
                     //TODO : Clarify what values we want to be stored in these empty records
+                    ingredient.Category = "Grain";
                     ingredient.Measurement = "Ounces";
                     ingredient.Amount = 0.0d;
 
                     context.Inventory.Add(ingredient);
                 }
-
             }
         }
 
