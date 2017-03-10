@@ -14,6 +14,7 @@ namespace Client_Desktop
         public HarvestForm()
         {
             InitializeComponent();
+            ForceRefreshOfCurrentView();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -46,6 +47,7 @@ namespace Client_Desktop
                     {
                         case 0:
                             //Meal Planning stuff goes here
+                            LoadWeek();
                             break;
                         case 1:
                             context.Inventory.Load();
@@ -66,9 +68,45 @@ namespace Client_Desktop
         }
 
         #region Meal Tab
-        private void InitializeMealTab()
-        {
 
+        private void LoadWeek()
+        {
+            foreach (Control flow in weekTableLayout.Controls)
+            {
+                if (flow.Controls.Count < 1)
+                    flow.Controls.Add(CreatePlanMealButton());
+            }
+
+                
+        }
+
+        private Button CreateMealButton(Recipe selectedRecipe)
+        {
+            Button template = new Button();
+            template.Anchor = AnchorStyles.Top;
+            template.Text = selectedRecipe.RecipeName;
+            return template;
+        }
+        private Button CreatePlanMealButton()
+        {
+            Button template = new Button();
+            template.Anchor = AnchorStyles.Top;
+            template.Text = "- Plan -";
+            template.Click += new System.EventHandler(this.PlanMealButton_Click);
+            return template;
+        }
+        private void PlanMealButton_Click(object sender, EventArgs e)
+        {
+            using(RecipePickerForm picker = new RecipePickerForm())
+            {
+                if (picker.ShowDialog() == DialogResult.OK)
+                {
+                    Control parentOfClickedButton = ((Button)sender).Parent;
+                    parentOfClickedButton.Controls.Remove((Button)sender);
+                    parentOfClickedButton.Controls.Add(CreateMealButton(picker.SelectedRecipe));
+                    parentOfClickedButton.Controls.Add(CreatePlanMealButton());
+                }
+            }
         }
         #endregion
 
@@ -78,14 +116,30 @@ namespace Client_Desktop
         /// </summary>
         private void InventoryGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
-                e.Value = InventoryUtility.GetFoodCategoryByRowPostion(e.RowIndex);
+            try
+            {
+                using (HarvestUtility harvest = new HarvestUtility(new MetricQuery()))
+                {
+                    Inventory item = (Inventory)InventoryGridView.Rows[e.RowIndex].DataBoundItem;
 
-            if (InventoryGridView.Columns[e.ColumnIndex].Name == "Measurement")
-                e.Value = InventoryUtility.GetMeasurementNameByItemID(e.RowIndex);
+                    if (InventoryGridView.Columns[e.ColumnIndex].Name == "Measurement")
+                        e.Value = (harvest.Get(item.InventoryID) as Metric).Measurement;
 
-            if (InventoryGridView.Columns[e.ColumnIndex].Name == "ModifyInventory")
-                e.Value = "...";
+
+                    harvest.HarvestQuery = new IngredientCategoryQuery() as IHarvestQuery;
+
+                    if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
+                        e.Value = (harvest.Get(item.InventoryID) as IngredientCategory).Category;
+
+
+                    if (InventoryGridView.Columns[e.ColumnIndex].Name == "ModifyInventory")
+                        e.Value = "...";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         /// <summary>
@@ -137,7 +191,15 @@ namespace Client_Desktop
 
             if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                InventoryUtility.RemoveItemsFromDatabase(ref inventoryItemsToRemove);
+                using(HarvestUtility harvest = new HarvestUtility(new InventoryQuery()))
+                {
+                    foreach (Inventory itemToRemove in inventoryItemsToRemove)
+                    {
+                        //TODO handle bound to recipe
+                        harvest.Remove(itemToRemove);
+                    }
+                }
+                
                 ForceRefreshOfCurrentView();
             }
         }
@@ -208,7 +270,7 @@ namespace Client_Desktop
                 try
                 {
                     foreach (Recipe recipe in recipesToRemove)
-                        RecipeUtility.RemoveRecipeFromDatabase(recipe);
+                        throw new NotImplementedException();
                     recipesToRemove = new List<Recipe>();
                 }
                 catch (Exception ex)
@@ -223,8 +285,12 @@ namespace Client_Desktop
         {
             // Display the Add Recipe form
             using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
-                addRecipe.Show();
-            ForceRefreshOfCurrentView();
+            {
+                if (addRecipe.ShowDialog() == DialogResult.OK)
+                    ForceRefreshOfCurrentView();
+            }
+                
+           
         }
 
         private void RecipeAddNewRecipeButton_Click(object sender, EventArgs e)
@@ -233,8 +299,8 @@ namespace Client_Desktop
         }
 
 
-        #endregion
 
-   
+
+        #endregion
     }
 }

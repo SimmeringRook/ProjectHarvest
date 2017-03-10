@@ -51,9 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseUtilities\InventoryUtility.cs" />
-    <Compile Include="DatabaseUtilities\RecipeIngredientUtility.cs" />
-    <Compile Include="DatabaseUtilities\RecipeUtility.cs" />
+    <Compile Include="DatabaseUtilities\HarvestUtility.cs" />
+    <Compile Include="DatabaseUtilities\Queries\IHarvestQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\IngredientCategoryQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\InventoryQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\MetricQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\RecipeCategoryQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\RecipeIngredientQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\RecipeQuery.cs" />
     <Compile Include="HarvestModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,11 +94,15 @@
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelExtensions\Inventory.cs" />
+    <Compile Include="ModelExtensions\MealTime.cs" />
     <Compile Include="ModelExtensions\Recipe.cs" />
     <Compile Include="PlannedMeals.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Recipe.cs">
+      <DependentUpon>HarvestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecipeClass.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RecipeIngredient.cs">

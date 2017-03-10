@@ -33,5 +33,6 @@ namespace Core
         public virtual ICollection<PlannedMeals> PlannedMeals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
+        public virtual RecipeClass RecipeClass { get; set; }
     }
 }

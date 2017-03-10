@@ -24,26 +24,38 @@ namespace Client_Desktop
         /// </summary>
         private void InventoryForm_Load(object sender, EventArgs e)
         {
-            using (HarvestEntities context = new HarvestEntities())
+            try
             {
-                //Load the food categories
-                context.IngredientCategory.Load();
-                foodCategoryCombo.DataSource = context.IngredientCategory.Local.ToList();
+                //Databind the ComboBoxes
+                using (HarvestEntities harvestDatabase = new HarvestEntities())
+                {
+                    harvestDatabase.IngredientCategory.Load();
+                    foodCategoryCombo.DataSource = harvestDatabase.IngredientCategory.Local.ToList();
 
-                //Load the metrics
-                context.Metric.Load();
-                measurementCombo.DataSource = context.Metric.Local.ToList();
+                    harvestDatabase.Metric.Load();
+                    measurementCombo.DataSource = harvestDatabase.Metric.Local.ToList();
+                }
+
+                //If we're modifying an item, populate the controls with information
+                if (itemToModify != null)
+                {
+                    itemNameTextbox.Text = itemToModify.IngredientName;
+                    amountTextbox.Text = itemToModify.Amount.ToString();
+
+                    using (HarvestUtility harvest = new HarvestUtility(new IngredientCategoryQuery()))
+                    {
+                        foodCategoryCombo.SelectedValue = (harvest.Get(itemToModify.InventoryID) as IngredientCategory).Category;
+
+                        harvest.HarvestQuery = new MetricQuery();
+                        measurementCombo.SelectedValue = (harvest.Get(itemToModify.InventoryID) as Metric).Measurement;
+                    }
+                }
             }
-
-            //If we're modifying an item, populate the controls with information
-            if (itemToModify != null)
+            catch( Exception ex)
             {
-                itemNameTextbox.Text = itemToModify.IngredientName;
-                amountTextbox.Text = itemToModify.Amount.ToString();
-                // TO DO FIX
-                //foodCategoryCombo.SelectedIndex = InventoryTranslator.GetFoodCategoryIndexByItemFoodTypeID(itemToModify.TypeID.Value);
-                measurementCombo.SelectedIndex = InventoryUtility.GetMeasurementIndexByItemMetricName(itemToModify.Measurement);
+                MessageBox.Show(ex.Message);
             }
+            
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
@@ -55,9 +67,21 @@ namespace Client_Desktop
                 return;
             }
 
-            CreateNewItem();
-            InventoryUtility.UpdateItemInDatabaseByItem(CreateNewItem());
-            itemToModify = null; //We don't need a reference to the object that no longer exists in the database
+            using (HarvestUtility harvestDatabase = new HarvestUtility(new InventoryQuery()))
+            {
+                Inventory newItem = CreateNewItem();
+                if (itemToModify != null)
+                {
+                    newItem.InventoryID = itemToModify.InventoryID;
+                    harvestDatabase.Update(newItem);
+                    itemToModify = null;
+                }
+                else
+                {
+                    harvestDatabase.Insert(newItem);
+                }
+            }
+
             this.DialogResult = DialogResult.OK;
         }
 
@@ -66,7 +90,6 @@ namespace Client_Desktop
             Inventory ItemCreated = new Inventory();
             ItemCreated.IngredientName = itemNameTextbox.Text;
             ItemCreated.Amount = float.Parse(amountTextbox.Text);
-            // TO DO Look at the combobox
             ItemCreated.Measurement = measurementCombo.SelectedValue.ToString();
             ItemCreated.Category = foodCategoryCombo.SelectedValue.ToString();
             return ItemCreated;

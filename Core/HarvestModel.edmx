@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HarvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HarvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="IngredientCategory">
           <Key>
             <PropertyRef Name="Category" />
@@ -69,11 +69,12 @@
           <Property Name="Servings" Type="float" Nullable="false" />
           <Property Name="RCategory" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="RecipeClass">
-          <Property Name="RCategory" Type="varchar" MaxLength="20" />
-        </EntityType>-->
+          <Key>
+            <PropertyRef Name="RCategory" />
+          </Key>
+          <Property Name="RCategory" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="RecipeIngredient">
           <Key>
             <PropertyRef Name="RecipeID" />
@@ -144,18 +145,6 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MealTime_MealTime">
-          <End Role="MealTime" Type="Self.MealTime" Multiplicity="1" />
-          <End Role="MealTime1" Type="Self.MealTime" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="MealTime">
-              <PropertyRef Name="MealName" />
-            </Principal>
-            <Dependent Role="MealTime1">
-              <PropertyRef Name="MealName" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Recipe">
           <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
           <End Role="PlannedMeals" Type="Self.PlannedMeals" Multiplicity="*" />
@@ -204,6 +193,18 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Recipe_RecipeClass">
+          <End Role="RecipeClass" Type="Self.RecipeClass" Multiplicity="1" />
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RecipeClass">
+              <PropertyRef Name="RCategory" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="RCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="HarvestModelStoreContainer">
           <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
@@ -213,6 +214,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <EntitySet Name="Metric" EntityType="Self.Metric" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlannedMeals" EntityType="Self.PlannedMeals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecipeClass" EntityType="Self.RecipeClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
             <End Role="IngredientCategory" EntitySet="IngredientCategory" />
@@ -234,10 +236,6 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             <End Role="MealTime" EntitySet="MealTime" />
             <End Role="PlannedMeals" EntitySet="PlannedMeals" />
           </AssociationSet>
-          <AssociationSet Name="FK_MealTime_MealTime" Association="Self.FK_MealTime_MealTime">
-            <End Role="MealTime" EntitySet="MealTime" />
-            <End Role="MealTime1" EntitySet="MealTime" />
-          </AssociationSet>
           <AssociationSet Name="FK_Recipe" Association="Self.FK_Recipe">
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="PlannedMeals" EntitySet="PlannedMeals" />
@@ -254,9 +252,12 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
+          <AssociationSet Name="FK_Recipe_RecipeClass" Association="Self.FK_Recipe_RecipeClass">
+            <End Role="RecipeClass" EntitySet="RecipeClass" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HarvestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -338,6 +339,7 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_Recipe" FromRole="Recipe" ToRole="MealHistory" />
           <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_Recipe" FromRole="Recipe" ToRole="PlannedMeals" />
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe" ToRole="RecipeIngredient" />
+          <NavigationProperty Name="RecipeClass" Relationship="HarvestModel.FK_Recipe_RecipeClass" FromRole="Recipe" ToRole="RecipeClass" />
         </EntityType>
         <EntityType Name="RecipeIngredient">
           <Key>
@@ -506,7 +508,31 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
+          <EntitySet Name="RecipeClass" EntityType="HarvestModel.RecipeClass" />
+          <AssociationSet Name="FK_Recipe_RecipeClass" Association="HarvestModel.FK_Recipe_RecipeClass">
+            <End Role="RecipeClass" EntitySet="RecipeClass" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="RecipeClass">
+          <Key>
+            <PropertyRef Name="RCategory" />
+          </Key>
+          <Property Name="RCategory" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Recipe" Relationship="HarvestModel.FK_Recipe_RecipeClass" FromRole="RecipeClass" ToRole="Recipe" />
+          </EntityType>
+        <Association Name="FK_Recipe_RecipeClass">
+          <End Type="HarvestModel.RecipeClass" Role="RecipeClass" Multiplicity="1" />
+          <End Type="HarvestModel.Recipe" Role="Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RecipeClass">
+              <PropertyRef Name="RCategory" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="RCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -588,6 +614,13 @@ warning 6013: The table/view 'Harvest.dbo.RecipeClass' does not have a primary k
                 <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Measurement" ColumnName="Measurement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecipeClass">
+            <EntityTypeMapping TypeName="HarvestModel.RecipeClass">
+              <MappingFragment StoreEntitySet="RecipeClass">
+                <ScalarProperty Name="RCategory" ColumnName="RCategory" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
