@@ -51,6 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseUtilities\BindingListQueries\IHarvestBindingList.cs" />
+    <Compile Include="DatabaseUtilities\BindingListQueries\IngredientCategoryBindingListQuery.cs" />
+    <Compile Include="DatabaseUtilities\BindingListQueries\InventoryBindingListQuery.cs" />
+    <Compile Include="DatabaseUtilities\BindingListQueries\MetricBindingListQuery.cs" />
+    <Compile Include="DatabaseUtilities\BindingListQueries\RecipeBindingListQuery.cs" />
+    <Compile Include="DatabaseUtilities\BindingListQueries\RecipeCategoryBindingList.cs" />
+    <Compile Include="DatabaseUtilities\HarvestBindingListUtility.cs" />
     <Compile Include="DatabaseUtilities\HarvestUtility.cs" />
     <Compile Include="DatabaseUtilities\Queries\IHarvestQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\IngredientCategoryQuery.cs" />

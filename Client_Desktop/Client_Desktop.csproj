@@ -62,6 +62,8 @@
     <Compile Include="HarvestForm.Designer.cs">
       <DependentUpon>HarvestForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CreateRecipeUtility.cs" />
+    <Compile Include="Helpers\HarvestFormUtility.cs" />
     <Compile Include="Helpers\IngredientInformation.cs" />
     <Compile Include="Helpers\PlannedMealDay.cs" />
     <Compile Include="InventoryForm.cs">

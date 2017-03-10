@@ -1,7 +1,10 @@
-﻿using Core;
+﻿using Client_Desktop.Helpers;
+using Core;
 using Core.DatabaseUtilities;
+using Core.DatabaseUtilities.BindingListQueries;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Windows.Forms;
 
@@ -14,58 +17,35 @@ namespace Client_Desktop
         public HarvestForm()
         {
             InitializeComponent();
-            ForceRefreshOfCurrentView();
-        }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            /*  TODO:
-             *  Any pre-exit operations that need to be conducted should be called either in here,
-             *  or overide the Dispose().
-             *  
-             *  Ex: Ensure all changes to the inventory have been commited to the database before exit;
-             *      or prompt user, warning of unsaved changes.
-             */ 
-            this.Dispose();
-        }
-
-        private void pantryTabControl_Selected(object sender, TabControlEventArgs e)
-        {
-            ForceRefreshOfCurrentView();
-        }
-
-        /// <summary>
-        /// Loads the relevant table for the current TabPage, and rebinds the table to the datagridview
-        /// </summary>
-        private void ForceRefreshOfCurrentView()
-        {
             try
             {
-                using (HarvestEntities context = new HarvestEntities())
-                {
-                    switch (pantryTabControl.SelectedIndex)
-                    {
-                        case 0:
-                            //Meal Planning stuff goes here
-                            LoadWeek();
-                            break;
-                        case 1:
-                            context.Inventory.Load();
-                            InventoryGridView.DataSource = context.Inventory.Local.ToBindingList();
-                            break;
-                        case 2:
-                            context.Recipe.Load();
-                            RecipeGridView.DataSource = context.Recipe.Local.ToBindingList();
-                            break;
-                    }
-                };
-                pantryTabControl.SelectedTab.Refresh();
+                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        private void pantryTabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            try
+            {
+                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        
 
         #region Meal Tab
 
@@ -178,7 +158,7 @@ namespace Client_Desktop
         {
             using (InventoryForm inventoryManagement = new InventoryForm(itemToModify))
                 if (inventoryManagement.ShowDialog() == DialogResult.OK)
-                    ForceRefreshOfCurrentView();
+                    HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
         }
         
         private void RemoveInventoryButton_Click(object sender, EventArgs e)
@@ -199,8 +179,8 @@ namespace Client_Desktop
                         harvest.Remove(itemToRemove);
                     }
                 }
-                
-                ForceRefreshOfCurrentView();
+
+                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
             }
         }
         #endregion
@@ -287,7 +267,7 @@ namespace Client_Desktop
             using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
             {
                 if (addRecipe.ShowDialog() == DialogResult.OK)
-                    ForceRefreshOfCurrentView();
+                    HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
             }
                 
            
