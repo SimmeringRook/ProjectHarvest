@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 
@@ -17,6 +18,14 @@ namespace Core.DatabaseUtilities
 
         public static void UpdateTable(Recipe recipe)
         {
+            if (recipe.RecipeID == 0)
+            {
+                using(HarvestEntities context = new HarvestEntities())
+                {
+                    int ID = context.Recipe.SingleOrDefault(r => r.RecipeName.Equals(recipe.RecipeName)).RecipeID;
+                    recipe.RecipeID = ID;
+                }
+            }
             HandleNonExistantIngredients(recipe);
 
             using (HarvestEntities context = new HarvestEntities())
@@ -32,7 +41,7 @@ namespace Core.DatabaseUtilities
 
                     context.RecipeIngredient.Add(ri); //This -should- work?
                 }
-
+                context.SaveChanges();
             }
         }
 
@@ -54,13 +63,15 @@ namespace Core.DatabaseUtilities
 
                 foreach (Inventory ingredient in ingredientsThatNeedToBeCreated)
                 {
+                    int ID = context.Inventory.OrderByDescending(i => i.InventoryID).First().InventoryID;
+                    ingredient.InventoryID = ID + 1;
                     //TODO : Clarify what values we want to be stored in these empty records
+                    ingredient.Category = "Grain";
                     ingredient.Measurement = "Ounces";
                     ingredient.Amount = 0.0d;
 
                     context.Inventory.Add(ingredient);
                 }
-
             }
         }
 
@@ -76,6 +87,25 @@ namespace Core.DatabaseUtilities
             }
 
             return items;
+        }
+
+        public static int GetIngredientUnitIndex(RecipeIngredient ingredient)
+        {
+            using (HarvestEntities context = new HarvestEntities())
+            {
+                context.Metric.Load();
+                var units = context.Metric.ToList();
+                return units.IndexOf(units.SingleOrDefault(u => u.Measurement.Equals(ingredient.Measurement)));
+            }
+        }
+
+        public static BindingList<Metric> GetBindingListOfUnits()
+        {
+            using (HarvestEntities context = new HarvestEntities())
+            {
+                context.Metric.Load();
+                return context.Metric.Local.ToBindingList();
+            }
         }
     }
 }
