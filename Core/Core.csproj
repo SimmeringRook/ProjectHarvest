@@ -101,7 +101,7 @@
     <Compile Include="Metric.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelExtensions\HarvestEntityFactor.cs" />
+    <Compile Include="ModelExtensions\HarvestEntityFactory.cs" />
     <Compile Include="ModelExtensions\Inventory.cs" />
     <Compile Include="ModelExtensions\MealTime.cs" />
     <Compile Include="ModelExtensions\Recipe.cs" />
