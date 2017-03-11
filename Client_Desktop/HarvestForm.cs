@@ -2,6 +2,7 @@
 using Core;
 using Core.DatabaseUtilities;
 using Core.DatabaseUtilities.BindingListQueries;
+using Core.DatabaseUtilities.Queries;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

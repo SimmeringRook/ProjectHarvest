@@ -1,4 +1,5 @@
 ﻿using Core.DatabaseUtilities;
+using Core.DatabaseUtilities.Queries;
 using System.Collections.Generic;
 
 namespace Core

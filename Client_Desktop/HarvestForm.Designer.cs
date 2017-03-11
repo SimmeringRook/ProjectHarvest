@@ -996,13 +996,11 @@
         private System.Windows.Forms.Button RecipeAddNewRecipeButton;
         private System.Windows.Forms.TableLayoutPanel InventoryMainTableLayout;
         private System.Windows.Forms.DataGridView InventoryGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource recipeBindingSource;
         private System.Windows.Forms.BindingSource inventoryBindingSource;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Button RemoveInventoryButton;
         private System.Windows.Forms.Button AddInventoryButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn RecipeName;
         private System.Windows.Forms.DataGridViewTextBoxColumn servingsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn RCategory;

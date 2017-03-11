@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 
-namespace Core.DatabaseUtilities
+namespace Core.DatabaseUtilities.Queries
 {
     public class RecipeQuery : IHarvestQuery
     {

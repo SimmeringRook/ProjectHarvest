@@ -1,9 +1,11 @@
 ﻿using Core;
 using Core.DatabaseUtilities;
+using Core.DatabaseUtilities.BindingListQueries;
+using Core.DatabaseUtilities.Queries;
+using Core.ModelExtensions;
+using Core.ValidationUtilities;
 using System;
 using System.ComponentModel;
-using System.Data.Entity;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop
@@ -26,42 +28,34 @@ namespace Client_Desktop
         {
             try
             {
-                //Databind the ComboBoxes
-                using (HarvestEntities harvestDatabase = new HarvestEntities())
+                using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new IngredientCategoryBindingListQuery()))
                 {
-                    harvestDatabase.IngredientCategory.Load();
-                    foodCategoryCombo.DataSource = harvestDatabase.IngredientCategory.Local.ToList();
+                    foodCategoryCombo.DataSource = harvestBindingList.GetBindingList() as BindingList<IngredientCategory>;
 
-                    harvestDatabase.Metric.Load();
-                    measurementCombo.DataSource = harvestDatabase.Metric.Local.ToList();
+                    harvestBindingList.HarvestBindingList = new MetricBindingListQuery();
+                    measurementCombo.DataSource = harvestBindingList.GetBindingList() as BindingList<Metric>;
                 }
 
-                //If we're modifying an item, populate the controls with information
                 if (itemToModify != null)
                 {
+                    itemToModify.PopulateGUIProperties();
                     itemNameTextbox.Text = itemToModify.IngredientName;
                     amountTextbox.Text = itemToModify.Amount.ToString();
-
-                    using (HarvestUtility harvest = new HarvestUtility(new IngredientCategoryQuery()))
-                    {
-                        foodCategoryCombo.SelectedValue = (harvest.Get(itemToModify.InventoryID) as IngredientCategory).Category;
-
-                        harvest.HarvestQuery = new MetricQuery();
-                        measurementCombo.SelectedValue = (harvest.Get(itemToModify.InventoryID) as Metric).Measurement;
-                    }
+                    foodCategoryCombo.SelectedValue = itemToModify.FoodCategory;
+                    measurementCombo.SelectedValue = itemToModify.Measurement;
                 }
             }
             catch( Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
         {
-            //Ensure validation was attempted before processing the button event
-            if (!ValidateItemName() || !ValidateAmount())
+            
+            if (HarvestValidator.Validate(itemNameTextbox, HarvestRegex.Name, InventoryError) == false
+                || HarvestValidator.Validate(amountTextbox, HarvestRegex.Amount, InventoryError) == false)
             {
                 this.DialogResult = DialogResult.None;
                 return;
@@ -69,90 +63,34 @@ namespace Client_Desktop
 
             using (HarvestUtility harvestDatabase = new HarvestUtility(new InventoryQuery()))
             {
-                Inventory newItem = CreateNewItem();
+                Inventory newItem = HarvestEntityFactory.CreateInventory(
+                    itemNameTextbox.Text,
+                    float.Parse(amountTextbox.Text),
+                    measurementCombo.SelectedValue.ToString(),
+                    foodCategoryCombo.SelectedValue.ToString(),
+                        (itemToModify != null)
+                        ? itemToModify.InventoryID
+                        : 0
+                    );
                 if (itemToModify != null)
-                {
-                    newItem.InventoryID = itemToModify.InventoryID;
                     harvestDatabase.Update(newItem);
-                    itemToModify = null;
-                }
                 else
-                {
                     harvestDatabase.Insert(newItem);
-                }
             }
-
+            itemToModify = null;
             this.DialogResult = DialogResult.OK;
         }
 
-        private Inventory CreateNewItem()
-        {
-            Inventory ItemCreated = new Inventory();
-            ItemCreated.IngredientName = itemNameTextbox.Text;
-            ItemCreated.Amount = float.Parse(amountTextbox.Text);
-            ItemCreated.Measurement = measurementCombo.SelectedValue.ToString();
-            ItemCreated.Category = foodCategoryCombo.SelectedValue.ToString();
-            return ItemCreated;
-        }
-
         #region Input Validation
-        /// <summary>
-        /// When the control looses focus, check for any invalid characters (or null/white space)
-        /// and trigger the ErrorProvider if any errors are discovered.
-        /// </summary>
         private void itemNameTextbox_Validating(object sender, CancelEventArgs e)
         {
-            ValidateItemName();
-        }
-
-        private bool ValidateItemName()
-        {
-            if (string.IsNullOrWhiteSpace(itemNameTextbox.Text))
-            {
-                InventoryError.SetError(itemNameTextbox, "You must enter a name");
-                return false;
-            }
-
-            foreach (char c in itemNameTextbox.Text)
-            {
-                if (char.IsLetterOrDigit(c) == false && c.Equals(' ') == false)
-                {
-                    InventoryError.SetError(itemNameTextbox, "Only A-Z and 0-9 are permitted values.");
-                    return false;
-                }
-            }
-
-            InventoryError.SetError(itemNameTextbox, "");
-            return true;
+            HarvestValidator.Validate((sender as TextBox), HarvestRegex.Name, InventoryError);
         }
 
         private void amountTextbox_Validating(object sender, CancelEventArgs e)
         {
-            ValidateAmount();
-        }
-
-        private bool ValidateAmount()
-        {
-            if (string.IsNullOrWhiteSpace(amountTextbox.Text))
-            {
-                InventoryError.SetError(amountTextbox, "You must enter a value.");
-                return false;
-            }
-
-            float parseTest;
-            if (float.TryParse(amountTextbox.Text, out parseTest))
-            {
-                InventoryError.SetError(amountTextbox, "");
-                return true;
-            }
-            else
-            {
-                InventoryError.SetError(amountTextbox, "Only 0-9 and '.' are permitted values.");
-                return false;
-            }
+            HarvestValidator.Validate((sender as TextBox), HarvestRegex.Amount, InventoryError);
         }
         #endregion
-
-
     }
 }

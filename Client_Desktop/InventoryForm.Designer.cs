@@ -32,24 +32,24 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.itemNameLabel = new System.Windows.Forms.Label();
-            this.itemNameTextbox = new System.Windows.Forms.TextBox();
             this.amountLabel = new System.Windows.Forms.Label();
             this.amountTextbox = new System.Windows.Forms.TextBox();
             this.foodCategoryLabel = new System.Windows.Forms.Label();
             this.foodCategoryCombo = new System.Windows.Forms.ComboBox();
+            this.ingredientCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.measurementCombo = new System.Windows.Forms.ComboBox();
+            this.metricBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.cancelButton = new System.Windows.Forms.Button();
             this.acceptButton = new System.Windows.Forms.Button();
             this.InventoryError = new System.Windows.Forms.ErrorProvider(this.components);
-            this.ingredientCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.metricBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.itemNameTextbox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.InventoryError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ingredientCategoryBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metricBindingSource1)).BeginInit();
+            this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.InventoryError)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -109,16 +109,6 @@
             this.itemNameLabel.TabIndex = 0;
             this.itemNameLabel.Text = "Item Name:";
             // 
-            // itemNameTextbox
-            // 
-            this.itemNameTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.itemNameTextbox.Location = new System.Drawing.Point(240, 23);
-            this.itemNameTextbox.Margin = new System.Windows.Forms.Padding(10, 0, 20, 0);
-            this.itemNameTextbox.Name = "itemNameTextbox";
-            this.itemNameTextbox.Size = new System.Drawing.Size(200, 31);
-            this.itemNameTextbox.TabIndex = 1;
-            this.itemNameTextbox.Validating += new System.ComponentModel.CancelEventHandler(this.itemNameTextbox_Validating);
-            // 
             // amountLabel
             // 
             this.amountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -165,6 +155,10 @@
             this.foodCategoryCombo.TabIndex = 5;
             this.foodCategoryCombo.ValueMember = "Category";
             // 
+            // ingredientCategoryBindingSource
+            // 
+            this.ingredientCategoryBindingSource.DataSource = typeof(Core.IngredientCategory);
+            // 
             // measurementCombo
             // 
             this.measurementCombo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -177,6 +171,10 @@
             this.measurementCombo.Size = new System.Drawing.Size(191, 33);
             this.measurementCombo.TabIndex = 9;
             this.measurementCombo.ValueMember = "Measurement";
+            // 
+            // metricBindingSource1
+            // 
+            this.metricBindingSource1.DataSource = typeof(Core.Metric);
             // 
             // tableLayoutPanel3
             // 
@@ -226,13 +224,15 @@
             // 
             this.InventoryError.ContainerControl = this;
             // 
-            // ingredientCategoryBindingSource
+            // itemNameTextbox
             // 
-            this.ingredientCategoryBindingSource.DataSource = typeof(Core.IngredientCategory);
-            // 
-            // metricBindingSource1
-            // 
-            this.metricBindingSource1.DataSource = typeof(Core.Metric);
+            this.itemNameTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemNameTextbox.Location = new System.Drawing.Point(240, 23);
+            this.itemNameTextbox.Margin = new System.Windows.Forms.Padding(10, 0, 20, 0);
+            this.itemNameTextbox.Name = "itemNameTextbox";
+            this.itemNameTextbox.Size = new System.Drawing.Size(200, 31);
+            this.itemNameTextbox.TabIndex = 1;
+            this.itemNameTextbox.Validating += new System.ComponentModel.CancelEventHandler(this.itemNameTextbox_Validating);
             // 
             // InventoryForm
             // 
@@ -248,10 +248,10 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.InventoryError)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ingredientCategoryBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metricBindingSource1)).EndInit();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.InventoryError)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,7 +265,6 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button acceptButton;
         private System.Windows.Forms.Label itemNameLabel;
-        private System.Windows.Forms.TextBox itemNameTextbox;
         private System.Windows.Forms.Label foodCategoryLabel;
         private System.Windows.Forms.ComboBox foodCategoryCombo;
         private System.Windows.Forms.TextBox amountTextbox;
@@ -274,5 +273,6 @@
         private System.Windows.Forms.ErrorProvider InventoryError;
         private System.Windows.Forms.BindingSource ingredientCategoryBindingSource;
         private System.Windows.Forms.BindingSource metricBindingSource1;
+        private System.Windows.Forms.TextBox itemNameTextbox;
     }
 }
