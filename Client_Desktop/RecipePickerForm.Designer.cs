@@ -35,7 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.RecipeGridView = new System.Windows.Forms.DataGridView();
             this.recipeNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.servingsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rCategoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,7 +43,7 @@
             this.selectButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RecipeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,24 +114,24 @@
             this.comboBox2.Size = new System.Drawing.Size(130, 33);
             this.comboBox2.TabIndex = 3;
             // 
-            // dataGridView1
+            // RecipeGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.RecipeGridView.AllowUserToAddRows = false;
+            this.RecipeGridView.AllowUserToDeleteRows = false;
+            this.RecipeGridView.AutoGenerateColumns = false;
+            this.RecipeGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RecipeGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.recipeNameDataGridViewTextBoxColumn,
             this.servingsDataGridViewTextBoxColumn,
             this.rCategoryDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.recipeBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(20, 193);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.Size = new System.Drawing.Size(791, 254);
-            this.dataGridView1.TabIndex = 6;
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            this.RecipeGridView.DataSource = this.recipeBindingSource;
+            this.RecipeGridView.Location = new System.Drawing.Point(20, 193);
+            this.RecipeGridView.Name = "RecipeGridView";
+            this.RecipeGridView.ReadOnly = true;
+            this.RecipeGridView.RowTemplate.Height = 33;
+            this.RecipeGridView.Size = new System.Drawing.Size(791, 254);
+            this.RecipeGridView.TabIndex = 6;
+            this.RecipeGridView.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // recipeNameDataGridViewTextBoxColumn
             // 
@@ -186,14 +186,14 @@
             this.ClientSize = new System.Drawing.Size(823, 553);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.selectButton);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.RecipeGridView);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.filtersLabel);
             this.Name = "RecipePickerForm";
             this.Text = "RecipePickerForm";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RecipeGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -208,7 +208,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView RecipeGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn recipeNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn servingsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn rCategoryDataGridViewTextBoxColumn;

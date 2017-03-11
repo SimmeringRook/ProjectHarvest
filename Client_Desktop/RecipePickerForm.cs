@@ -1,4 +1,6 @@
 ﻿using Core;
+using Core.DatabaseUtilities;
+using Core.DatabaseUtilities.BindingListQueries;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,18 +21,14 @@ namespace Client_Desktop
         {
             InitializeComponent();
 
-            using (HarvestEntities context = new HarvestEntities())
-            {
-                context.Recipe.Load();
-                dataGridView1.DataSource = context.Recipe.Local.ToBindingList();
-            }
+            using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeBindingListQuery()))
+                RecipeGridView.DataSource = harvestBindingList.GetBindingList() as BindingList<Recipe>;
         }
 
         private void selectButton_Click(object sender, EventArgs e)
         {
-            //int index = dataGridView1.SelectedRows[0].Index;
-            int rowCount = dataGridView1.Rows.Count;
-            SelectedRecipe = (Recipe) dataGridView1.Rows[selectedIndex].DataBoundItem;
+            if (selectedIndex != -1)
+                SelectedRecipe = (Recipe) RecipeGridView.Rows[selectedIndex].DataBoundItem;
             this.DialogResult = DialogResult.OK;
         }
 
@@ -41,10 +39,10 @@ namespace Client_Desktop
         }
         #endregion
 
-        private int selectedIndex = 0;
+        private int selectedIndex = -1;
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            selectedIndex = dataGridView1.CurrentCell.RowIndex;
+            selectedIndex = RecipeGridView.CurrentCell.RowIndex;
         }
     }
 }
