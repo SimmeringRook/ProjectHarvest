@@ -46,49 +46,10 @@ namespace Client_Desktop
             }
         }
 
-        
-
         #region Meal Tab
 
-        private void LoadWeek()
-        {
-            foreach (Control flow in weekTableLayout.Controls)
-            {
-                if (flow.Controls.Count < 1)
-                    flow.Controls.Add(CreatePlanMealButton());
-            }
 
-                
-        }
 
-        private Button CreateMealButton(Recipe selectedRecipe)
-        {
-            Button template = new Button();
-            template.Anchor = AnchorStyles.Top;
-            template.Text = selectedRecipe.RecipeName;
-            return template;
-        }
-        private Button CreatePlanMealButton()
-        {
-            Button template = new Button();
-            template.Anchor = AnchorStyles.Top;
-            template.Text = "- Plan -";
-            template.Click += new System.EventHandler(this.PlanMealButton_Click);
-            return template;
-        }
-        private void PlanMealButton_Click(object sender, EventArgs e)
-        {
-            using(RecipePickerForm picker = new RecipePickerForm())
-            {
-                if (picker.ShowDialog() == DialogResult.OK)
-                {
-                    Control parentOfClickedButton = ((Button)sender).Parent;
-                    parentOfClickedButton.Controls.Remove((Button)sender);
-                    parentOfClickedButton.Controls.Add(CreateMealButton(picker.SelectedRecipe));
-                    parentOfClickedButton.Controls.Add(CreatePlanMealButton());
-                }
-            }
-        }
         #endregion
 
         #region Inventory Tab
@@ -102,16 +63,12 @@ namespace Client_Desktop
                 using (HarvestUtility harvest = new HarvestUtility(new MetricQuery()))
                 {
                     Inventory item = (Inventory)InventoryGridView.Rows[e.RowIndex].DataBoundItem;
-
                     if (InventoryGridView.Columns[e.ColumnIndex].Name == "Measurement")
                         e.Value = (harvest.Get(item.InventoryID) as Metric).Measurement;
 
-
                     harvest.HarvestQuery = new IngredientCategoryQuery() as IHarvestQuery;
-
                     if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
                         e.Value = (harvest.Get(item.InventoryID) as IngredientCategory).Category;
-
 
                     if (InventoryGridView.Columns[e.ColumnIndex].Name == "ModifyInventory")
                         e.Value = "...";
@@ -283,5 +240,43 @@ namespace Client_Desktop
 
 
         #endregion
+
+        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<PlannedMealDay> plannedMealsForTheWeek = new List<PlannedMealDay>();
+
+            for( int i = 0; i < weekTableLayout.ColumnCount; i++)
+                plannedMealsForTheWeek.Add(new PlannedMealDay(DateTime.Today.AddDays(i)));
+           
+            foreach (Control flowControl in weekTableLayout.Controls)
+            {
+                int mealTime = weekTableLayout.GetRow(flowControl);
+                List<string> recipeNames = new List<string>();
+
+                foreach (Control plannedMeal in flowControl.Controls)
+                    if (plannedMeal.Tag.Equals("Recipe"))
+                        recipeNames.Add(plannedMeal.Text);
+
+                plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
+            }
+
+
+            // --Note-- This code only exists to verify that the objects are being created correctly
+            // Replace this bit with something to the effect of:
+
+            // using (GroceryListForm groceryList = new GroceryListForm(plannedMealsForTheWeek))
+
+            foreach (var plan in plannedMealsForTheWeek)
+            {
+                string recipeNames = plan.Day.ToString() + "\n";
+                foreach (KeyValuePair<MealTime, List<Recipe>> keyValuePair in plan.MealsPlanned)
+                    foreach (Recipe recipe in keyValuePair.Value)
+                        recipeNames += recipe.RecipeName + "\n";
+
+                if (!recipeNames.Equals(plan.Day.ToString() + "\n"))
+                    MessageBox.Show(recipeNames);
+            }
+
+        }
     }
 }

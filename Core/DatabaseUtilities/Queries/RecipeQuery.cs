@@ -10,6 +10,8 @@ namespace Core.DatabaseUtilities.Queries
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Recipe.Load();
+                if (itemID == -1)
+                    return harvestDatabase.Recipe.ToList();
                 return harvestDatabase.Recipe.SingleOrDefault(inventory => inventory.RecipeID.Equals(itemID));
             }
         }

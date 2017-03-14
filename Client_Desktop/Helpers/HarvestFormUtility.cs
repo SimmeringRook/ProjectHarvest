@@ -22,8 +22,11 @@ namespace Client_Desktop.Helpers
             switch (pantryTabs.SelectedIndex)
             {
                 case 0:
-                    //Meal Planning stuff goes here
-                    //LoadWeek();
+                    foreach (Control control in pantryTabs.SelectedTab.Controls)
+                        if (control is TableLayoutPanel)
+                            foreach(Control cntrl in control.Controls)
+                                if (cntrl.Tag.Equals("Week"))
+                                    LoadWeek(cntrl as TableLayoutPanel);
                     break;
                 case 1:
                     using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new InventoryBindingListQuery()))
@@ -48,5 +51,44 @@ namespace Client_Desktop.Helpers
             return null;
         }
 
+        private static void LoadWeek(TableLayoutPanel weekTableLayout)
+        {
+            foreach (Control flow in weekTableLayout.Controls)
+            {
+                if (flow.Controls.Count < 1)
+                    flow.Controls.Add(CreatePlanMealButton());
+            }
+        }
+
+        private static Button CreatePlanMealButton()
+        {
+            Button template = new Button();
+            template.Anchor = AnchorStyles.Top;
+            template.Text = "- Plan -";
+            template.Tag = "Plan";
+            template.Click += new System.EventHandler(PlanMealButton_Click);
+            return template;
+        }
+
+        private static void PlanMealButton_Click(object sender, EventArgs e)
+        {
+            using (RecipePickerForm picker = new RecipePickerForm())
+            {
+                if (picker.ShowDialog() == DialogResult.OK)
+                {
+                    Control parentOfClickedButton = ((Button)sender).Parent;
+                    parentOfClickedButton.Controls.Add(CreateMealButton(picker.SelectedRecipe));
+                }
+            }
+        }
+
+        private static Button CreateMealButton(Recipe selectedRecipe)
+        {
+            Button template = new Button();
+            template.Anchor = AnchorStyles.Top;
+            template.Text = selectedRecipe.RecipeName;
+            template.Tag = "Recipe";
+            return template;
+        }
     }
 }

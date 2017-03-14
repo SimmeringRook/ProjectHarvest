@@ -1,4 +1,6 @@
 ﻿using Core;
+using Core.DatabaseUtilities;
+using Core.DatabaseUtilities.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +14,55 @@ namespace Client_Desktop.Helpers
         public DateTime Day;
         public Dictionary<MealTime, List<Recipe>> MealsPlanned;
 
+        private MealTime breakfast = new MealTime("Breakfast");
+        private MealTime lunch = new MealTime("Lunch");
+        private MealTime dinner = new MealTime("Dinner");
+
         public PlannedMealDay(DateTime dayBeingPlanned)
         {
             Day = dayBeingPlanned;
             MealsPlanned = new Dictionary<MealTime, List<Recipe>>()
             {
-                {new MealTime("Breakfast"), new List<Recipe>() },
-                {new MealTime("Lunch"), new List<Recipe>() },
-                {new MealTime("Dinner"), new List<Recipe>() }
+                {breakfast, new List<Recipe>() },
+                {lunch, new List<Recipe>() },
+                {dinner, new List<Recipe>() }
             };
 
         }
 
+        private void AddRecipeToMealTime(Meal_Time mealTime, Recipe recipe)
+        {
+            switch (mealTime)
+            {
+                case Meal_Time.Breakfast:
+                    MealsPlanned[breakfast].Add(recipe);
+                    break;
+                case Meal_Time.Lunch:
+                    MealsPlanned[lunch].Add(recipe);
+                    break;
+                case Meal_Time.Dinner:
+                    MealsPlanned[dinner].Add(recipe);
+                    break;
+            }
+        }
 
+        public void ConvertRecipeNamesIntoRecipes(int mealTime, List<string> recipeNames)
+        {
+            List<Recipe> recipes = new List<Recipe>();
+            using (HarvestUtility harvest = new HarvestUtility(new RecipeQuery()))
+                recipes = harvest.Get(-1) as List<Recipe>;
+
+            foreach (string recipeName in recipeNames)
+            {
+                AddRecipeToMealTime((Meal_Time) mealTime, recipes.Single(r => r.RecipeName.Equals(recipeName)));
+            }
+        }
+    }
+
+    public enum Meal_Time
+    {
+        Breakfast= 0,
+        Lunch = 1,
+        Dinner = 2
     }
 }
