@@ -1,18 +1,18 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 
-namespace Core.DatabaseUtilities.Queries
+namespace Core.DatabaseUtilities
 {
     public class RecipeQuery : IHarvestQuery
     {
-        public object Get(int itemID)
+        public object Get(object itemID)
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Recipe.Load();
-                if (itemID == -1)
+                if ((int)itemID == -1)
                     return harvestDatabase.Recipe.ToList();
-                return harvestDatabase.Recipe.SingleOrDefault(inventory => inventory.RecipeID.Equals(itemID));
+                return harvestDatabase.Recipe.SingleOrDefault(inventory => inventory.RecipeID.Equals((int)itemID));
             }
         }
 

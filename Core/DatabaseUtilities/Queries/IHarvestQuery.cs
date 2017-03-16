@@ -1,4 +1,4 @@
-﻿namespace Core.DatabaseUtilities.Queries
+﻿namespace Core.DatabaseUtilities
 {
     public interface IHarvestQuery
     {
@@ -8,6 +8,6 @@
 
         void Remove(object itemToRemove);
 
-        object Get(int itemID);
+        object Get(object itemID);
     }
 }

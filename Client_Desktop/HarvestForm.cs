@@ -1,12 +1,9 @@
 ﻿using Client_Desktop.Helpers;
 using Core;
 using Core.DatabaseUtilities;
-using Core.DatabaseUtilities.BindingListQueries;
 using Core.DatabaseUtilities.Queries;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity;
 using System.Windows.Forms;
 
 namespace Client_Desktop

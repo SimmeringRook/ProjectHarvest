@@ -7,12 +7,12 @@ namespace Core.DatabaseUtilities.Queries
     public class MetricQuery : IHarvestQuery
     {
 
-        public object Get(int itemID)
+        public object Get(object itemID)
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Inventory.Load();
-                Inventory item = harvestDatabase.Inventory.SingleOrDefault(i => i.InventoryID == itemID);
+                Inventory item = harvestDatabase.Inventory.SingleOrDefault(i => i.InventoryID == (int)itemID);
 
                 harvestDatabase.Metric.Load();
                 return harvestDatabase.Metric.SingleOrDefault(m => m.Measurement.Equals(item.Measurement));
