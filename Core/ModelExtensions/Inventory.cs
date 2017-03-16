@@ -1,7 +1,4 @@
-﻿using Core.DatabaseUtilities;
-using Core.DatabaseUtilities.Queries;
-using Core.MeasurementConversions;
-using System;
+﻿using Core.DatabaseUtilities.Queries;
 
 namespace Core
 {

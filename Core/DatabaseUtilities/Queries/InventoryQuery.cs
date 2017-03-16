@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Core.DatabaseUtilities.Queries
@@ -40,8 +41,7 @@ namespace Core.DatabaseUtilities.Queries
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Inventory.Load();
-                Inventory itemInDatabase = Get((itemToChange as Inventory).InventoryID) as Inventory;
-                itemInDatabase = itemToChange as Inventory;
+                harvestDatabase.Inventory.AddOrUpdate(itemToChange as Inventory);
                 harvestDatabase.SaveChanges();
             }
         }

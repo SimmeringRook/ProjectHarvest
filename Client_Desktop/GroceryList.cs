@@ -5,7 +5,6 @@ using Core;
 using System.Linq;
 using Core.MeasurementConversions;
 using Core.DatabaseUtilities.Queries;
-using Core.DatabaseUtilities;
 
 namespace Client_Desktop
 {
@@ -14,8 +13,6 @@ namespace Client_Desktop
         private List<PlannedMealDay> plannedMealsForTheWeek;
         private List<RecipeIngredient> _ingredients = new List<RecipeIngredient>();
         private int numberOfRows;
-
-        
 
         public GroceryList(List<PlannedMealDay> plannedMealsForTheWeek)
         {

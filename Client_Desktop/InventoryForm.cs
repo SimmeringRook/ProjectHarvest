@@ -1,5 +1,4 @@
 ﻿using Core;
-using Core.DatabaseUtilities;
 using Core.DatabaseUtilities.BindingListQueries;
 using Core.DatabaseUtilities.Queries;
 using Core.ModelExtensions;
@@ -63,22 +62,29 @@ namespace Client_Desktop
 
             using (HarvestUtility harvestDatabase = new HarvestUtility(new InventoryQuery()))
             {
-                Inventory newItem = HarvestEntityFactory.CreateInventory(
-                    itemNameTextbox.Text,
-                    float.Parse(amountTextbox.Text),
-                    measurementCombo.SelectedValue.ToString(),
-                    foodCategoryCombo.SelectedValue.ToString(),
-                        (itemToModify != null)
-                        ? itemToModify.InventoryID
-                        : 0
-                    );
+                //Inventory newItem = 
+                Inventory item = CreateInventoryFromControls();
                 if (itemToModify != null)
-                    harvestDatabase.Update(newItem);
+                    harvestDatabase.Update(item);
                 else
-                    harvestDatabase.Insert(newItem);
+                    harvestDatabase.Insert(item);
             }
             itemToModify = null;
             this.DialogResult = DialogResult.OK;
+        }
+
+        private Inventory CreateInventoryFromControls()
+        {
+            Inventory temp = HarvestEntityFactory.CreateInventory(
+                    itemNameTextbox.Text,
+                    float.Parse(amountTextbox.Text),
+                    measurementCombo.SelectedValue.ToString(),
+                    foodCategoryCombo.SelectedValue.ToString()
+                    );
+            temp.InventoryID = (itemToModify != null)
+                        ? itemToModify.InventoryID
+                        : 0;
+            return temp;
         }
 
         #region Input Validation

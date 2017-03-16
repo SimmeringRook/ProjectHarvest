@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
-namespace Core.DatabaseUtilities
+namespace Core.DatabaseUtilities.Queries
 {
     public class PlannedMealQuery : IHarvestQuery
     {
@@ -40,8 +41,7 @@ namespace Core.DatabaseUtilities
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.PlannedMeals.Load();
-                PlannedMeals itemInDatabase = Get((itemToChange as PlannedMeals).DatePlanned) as PlannedMeals;
-                itemInDatabase = itemToChange as PlannedMeals;
+                harvestDatabase.PlannedMeals.AddOrUpdate(itemToChange as PlannedMeals);
                 harvestDatabase.SaveChanges();
             }
         }
