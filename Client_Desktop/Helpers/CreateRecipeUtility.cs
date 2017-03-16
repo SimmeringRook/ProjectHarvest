@@ -33,7 +33,13 @@ namespace Client_Desktop.Helpers
         private static void SubmitRecipeToDatabase(Recipe recipeFromControls)
         {
             using (HarvestUtility harvest = new HarvestUtility(new RecipeQuery()))
-                harvest.Insert(recipeFromControls);
+            {
+                if (recipeFromControls.RecipeID == 0)
+                    harvest.Update(recipeFromControls);
+                else
+                    harvest.Insert(recipeFromControls);
+            }
+                
         }
 
         private static Recipe GetRecentlyCreatedRecipe()
