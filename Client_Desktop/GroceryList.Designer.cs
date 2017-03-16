@@ -36,6 +36,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(81, 9);
+            this.label1.Location = new System.Drawing.Point(135, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(201, 37);
             this.label1.TabIndex = 0;
@@ -55,7 +56,7 @@
             this.panel1.Controls.Add(this.groceryTableLayout);
             this.panel1.Location = new System.Drawing.Point(12, 92);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(553, 351);
+            this.panel1.Size = new System.Drawing.Size(451, 351);
             this.panel1.TabIndex = 1;
             // 
             // groceryTableLayout
@@ -64,22 +65,22 @@
             this.groceryTableLayout.AutoSize = true;
             this.groceryTableLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.groceryTableLayout.ColumnCount = 4;
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
             this.groceryTableLayout.Location = new System.Drawing.Point(3, 3);
             this.groceryTableLayout.Name = "groceryTableLayout";
             this.groceryTableLayout.RowCount = 1;
             this.groceryTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.groceryTableLayout.Size = new System.Drawing.Size(540, 34);
-            this.groceryTableLayout.TabIndex = 0;
+            this.groceryTableLayout.Size = new System.Drawing.Size(443, 34);
+            this.groceryTableLayout.TabIndex = 0;            
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(71, 76);
+            this.label2.Location = new System.Drawing.Point(85, 76);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 2;
@@ -89,7 +90,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(200, 76);
+            this.label3.Location = new System.Drawing.Point(232, 76);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 13);
             this.label3.TabIndex = 3;
@@ -99,7 +100,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(276, 76);
+            this.label4.Location = new System.Drawing.Point(326, 76);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 13);
             this.label4.TabIndex = 4;
@@ -116,21 +117,31 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(256, 449);
+            this.button2.Location = new System.Drawing.Point(341, 449);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(96, 23);
             this.button2.TabIndex = 6;
             this.button2.Text = "Submit";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(194, 449);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(97, 23);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Save";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // GroceryList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(567, 497);
+            this.ClientSize = new System.Drawing.Size(471, 497);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
@@ -154,5 +165,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TableLayoutPanel groceryTableLayout;
+        private System.Windows.Forms.Button button3;
     }
 }
