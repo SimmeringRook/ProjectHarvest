@@ -36,12 +36,25 @@ namespace Client_Desktop
                 foreach (KeyValuePair<MealTime, List<Recipe>> keyValuePair in plan.MealsPlanned)
                     foreach (Recipe recipe in keyValuePair.Value)
                     {
-                        buildRow();
-                    }                
+                        foreach (RecipeIngredient recipeIngredient in recipe.AssociatedIngredients)
+                        {
+                            if (_ingredients.Any(ingredient => ingredient.InventoryID == recipeIngredient.InventoryID))
+                            {
+                                _ingredients.Single(i => i.InventoryID == recipeIngredient.InventoryID).Amount += recipeIngredient.Amount;
+                            }
+                            else
+                            {
+                                _ingredients.Add(recipeIngredient);
+                            }                           
+                        }
+                    }            
             }
+
+            foreach (RecipeIngredient ri in _ingredients)
+                buildRow(ri);
         }
 
-        public void buildRow()
+        public void buildRow(RecipeIngredient ri)
         {
             
             IngredientInformation rowToBeAdded = new IngredientInformation();
@@ -49,11 +62,15 @@ namespace Client_Desktop
 
 
             groceryTableLayout.Controls.Add(rowToBeAdded.NameLabel, 0, numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Type, 1, numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 2, numberOfRows);
+            rowToBeAdded.NameLabel.Text = ri.InventoryID.ToString();
+            groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, numberOfRows);
+            rowToBeAdded.Quantity.ReadOnly = true;  // Remove in future MVP
+            rowToBeAdded.Quantity.Text = ri.Amount.ToString();
+            groceryTableLayout.Controls.Add(rowToBeAdded.Unit, 2, numberOfRows);
+            rowToBeAdded.Unit.Text = ri.Measurement.ToString();            
             groceryTableLayout.Controls.Add(rowToBeAdded.Selected, 3, numberOfRows);
-
+            
             numberOfRows++;
-        }
+        }        
     }
 }

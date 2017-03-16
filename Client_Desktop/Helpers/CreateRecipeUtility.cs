@@ -51,7 +51,8 @@ namespace Client_Desktop.Helpers
                 foreach (IngredientInformation ingredientInfo in ingredients)
                 {
                     Inventory listedIngredient = ingredientInfo.GetInventoryFromControls();
-                    listedIngredient.InventoryID = harvestDatabase.Inventory.SingleOrDefault(item => item.IngredientName.Equals(listedIngredient.IngredientName)).InventoryID;
+                    Inventory itemInDB = harvestDatabase.Inventory.SingleOrDefault(item => item.IngredientName.Equals(listedIngredient.IngredientName));
+                    listedIngredient.InventoryID = (itemInDB != null) ? itemInDB.InventoryID : 0;
                     recipe.AssociatedInventoryItems.Add(listedIngredient);
                 }
             }
