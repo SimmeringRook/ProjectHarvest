@@ -56,7 +56,7 @@ namespace Client_Desktop.Helpers
             {
                 Recipe recipe = recipes.Single(r => r.RecipeName.Equals(recipeName));
                 recipe.PopulateGUIProperties();
-                AddRecipeToMealTime((Meal_Time) mealTime, recipe);
+                AddRecipeToMealTime((Meal_Time)mealTime, recipe);
             }
         }
     }
