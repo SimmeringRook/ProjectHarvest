@@ -59,6 +59,18 @@ namespace Client_Desktop.Helpers
                 AddRecipeToMealTime((Meal_Time)mealTime, recipe);
             }
         }
+
+        public List<RecipeIngredient> GetIngredientsForPlannedRecipes()
+        {
+            List<RecipeIngredient> allIngredients = new List<RecipeIngredient>();
+            foreach (KeyValuePair<MealTime, List<Recipe>> keyValuePair in MealsPlanned)
+                foreach (Recipe recipe in keyValuePair.Value)
+                    foreach (RecipeIngredient ingredient in recipe.AssociatedIngredients)
+                        if (allIngredients.Contains(ingredient) == false)
+                            allIngredients.Add(ingredient);
+
+            return allIngredients;
+        } 
     }
 
     public enum Meal_Time

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using Client_Desktop.Helpers;
 using Core;
+using System.Linq;
+using Core.MeasurementConversions;
 
 namespace Client_Desktop
 {
@@ -31,17 +26,38 @@ namespace Client_Desktop
         public void getIngredients()
         {
             numberOfRows = groceryTableLayout.RowCount - 1;
-            foreach (var plan in plannedMealsForTheWeek)
+
+            using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
             {
-                foreach (KeyValuePair<MealTime, List<Recipe>> keyValuePair in plan.MealsPlanned)
-                    foreach (Recipe recipe in keyValuePair.Value)
+                foreach (PlannedMealDay plan in plannedMealsForTheWeek)
+                {
+                    foreach (RecipeIngredient recipeIngredient in plan.GetIngredientsForPlannedRecipes())
                     {
-                        buildRow();
-                    }                
+                        if (_ingredients.Any(ingredient => ingredient.InventoryID == recipeIngredient.InventoryID))
+                        {
+                            RecipeIngredient ingredientToConvert = _ingredients.Single(ri => ri.InventoryID == recipeIngredient.InventoryID);
+
+                            if (conversion.IsCorrectMeasurementType(ingredientToConvert.GetMeasurementUnit()) == false)
+                                conversion.ConversionType = new WeightUnitConversion();
+                            ingredientToConvert = conversion.Convert(recipeIngredient, ingredientToConvert.GetMeasurementUnit());
+
+                            _ingredients.Single(i => i.InventoryID == recipeIngredient.InventoryID).Amount += ingredientToConvert.Amount;
+                        }
+                        else
+                        {
+                            _ingredients.Add(recipeIngredient);
+                        }
+                    }
+                }
             }
+                
+
+
+            foreach (RecipeIngredient ri in _ingredients)
+                buildRow(ri);
         }
 
-        public void buildRow()
+        public void buildRow(RecipeIngredient ri)
         {
             
             IngredientInformation rowToBeAdded = new IngredientInformation();
