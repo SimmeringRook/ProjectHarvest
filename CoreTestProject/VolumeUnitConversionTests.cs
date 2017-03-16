@@ -27,7 +27,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -42,7 +42,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -62,7 +62,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -77,7 +77,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -98,7 +98,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -113,7 +113,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -135,7 +135,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -150,7 +150,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -173,7 +173,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -188,7 +188,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -212,7 +212,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -227,7 +227,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -248,7 +248,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -263,7 +263,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -285,7 +285,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -300,7 +300,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -320,7 +320,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -335,7 +335,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -352,7 +352,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -367,7 +367,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -387,7 +387,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -401,7 +401,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -422,7 +422,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -436,7 +436,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -458,7 +458,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -472,7 +472,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -495,7 +495,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -509,7 +509,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -529,7 +529,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -544,7 +544,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -565,7 +565,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.TableSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -580,7 +580,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.TeaSpoon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -602,7 +602,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -617,7 +617,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -634,7 +634,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -649,7 +649,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -668,7 +668,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -682,7 +682,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -702,7 +702,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -716,7 +716,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -737,7 +737,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -751,7 +751,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -773,7 +773,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -787,7 +787,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -806,7 +806,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -821,7 +821,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -841,7 +841,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -856,7 +856,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.FluidOunce);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -879,7 +879,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -894,7 +894,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -913,7 +913,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -928,7 +928,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -947,7 +947,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -961,7 +961,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -980,7 +980,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -994,7 +994,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1014,7 +1014,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1029,7 +1029,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1050,7 +1050,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1065,7 +1065,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1085,7 +1085,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1100,7 +1100,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1121,7 +1121,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1136,7 +1136,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Cup);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1160,7 +1160,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1175,7 +1175,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1195,7 +1195,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1210,7 +1210,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1230,7 +1230,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -1244,7 +1244,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1263,7 +1263,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -1277,7 +1277,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1296,7 +1296,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1311,7 +1311,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1331,7 +1331,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1346,7 +1346,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1367,7 +1367,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1382,7 +1382,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1404,7 +1404,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1419,7 +1419,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Pint);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1444,7 +1444,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1459,7 +1459,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1480,7 +1480,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1495,7 +1495,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1516,7 +1516,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -1530,7 +1530,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1550,7 +1550,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -1564,7 +1564,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1583,7 +1583,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1598,7 +1598,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1617,7 +1617,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1632,7 +1632,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1654,7 +1654,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1669,7 +1669,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1692,7 +1692,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1707,7 +1707,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Quart);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1733,7 +1733,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1748,7 +1748,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1770,7 +1770,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1785,7 +1785,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1807,7 +1807,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon); // 
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -1821,7 +1821,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1842,7 +1842,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
                     //Assert
                     Assert.AreEqual(expected.Amount, result.Amount, AcceptableConversionDelta);
@@ -1856,7 +1856,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1876,7 +1876,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1891,7 +1891,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1910,7 +1910,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1925,7 +1925,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(3.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1948,7 +1948,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1963,7 +1963,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -1987,7 +1987,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(amountToConvert, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, expected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, expected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert
@@ -2002,7 +2002,7 @@ namespace CoreTestProject
                     Inventory unconverted = new Inventory(1.0f, MeasurementUnit.Gallon);
 
                     //Act
-                    Inventory result = VolumeUnitConverter.Convert(unconverted, notExpected.GetMeasurementUnit());
+                    Inventory result = VolumeUnitConversion.Convert(unconverted, notExpected.GetMeasurementUnit());
                     Debug.Print("Amount: {0}, Unit: {1}", result.Amount, result.GetMeasurementUnit());
 
                     //Assert

@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace Core.DatabaseUtilities
 {
-    public class RecipeIngredientQuery : IHarvestQuery
+    public class PlannedMealQuery : IHarvestQuery
     {
         public object Get(object itemID)
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
-                harvestDatabase.RecipeIngredient.Load();
-                return harvestDatabase.RecipeIngredient.Where(inventory => inventory.RecipeID.Equals((int)itemID)).ToList();
+                harvestDatabase.PlannedMeals.Load();
+                return harvestDatabase.PlannedMeals.SingleOrDefault(plannedMeal => plannedMeal.DatePlanned.Equals((DateTime)itemID));
             }
         }
 
@@ -19,8 +19,8 @@ namespace Core.DatabaseUtilities
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
-                harvestDatabase.RecipeIngredient.Load();
-                harvestDatabase.RecipeIngredient.Add(itemToAdd as RecipeIngredient);
+                harvestDatabase.PlannedMeals.Load();
+                harvestDatabase.PlannedMeals.Add(itemToAdd as PlannedMeals);
                 harvestDatabase.SaveChanges();
             }
         }
@@ -29,8 +29,8 @@ namespace Core.DatabaseUtilities
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
-                harvestDatabase.RecipeIngredient.Load();
-                harvestDatabase.RecipeIngredient.Remove(itemToRemove as RecipeIngredient);
+                harvestDatabase.PlannedMeals.Load();
+                harvestDatabase.PlannedMeals.Remove(itemToRemove as PlannedMeals);
                 harvestDatabase.SaveChanges();
             }
         }
@@ -39,9 +39,9 @@ namespace Core.DatabaseUtilities
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
-                harvestDatabase.RecipeIngredient.Load();
-                RecipeIngredient itemInDatabase = Get((itemToChange as RecipeIngredient).RecipeID) as RecipeIngredient;
-                itemInDatabase = itemToChange as RecipeIngredient;
+                harvestDatabase.PlannedMeals.Load();
+                PlannedMeals itemInDatabase = Get((itemToChange as PlannedMeals).DatePlanned) as PlannedMeals;
+                itemInDatabase = itemToChange as PlannedMeals;
                 harvestDatabase.SaveChanges();
             }
         }

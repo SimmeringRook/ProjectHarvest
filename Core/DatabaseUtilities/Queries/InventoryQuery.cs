@@ -6,12 +6,12 @@ namespace Core.DatabaseUtilities.Queries
     public class InventoryQuery : IHarvestQuery
     {
 
-        public object Get(int itemID)
+        public object Get(object itemID)
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Inventory.Load();
-                return harvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID.Equals(itemID));
+                return harvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID.Equals((int) itemID));
             }
         }
 

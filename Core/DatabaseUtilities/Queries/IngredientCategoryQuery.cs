@@ -2,17 +2,17 @@
 using System.Data.Entity;
 using System.Linq;
 
-namespace Core.DatabaseUtilities.Queries
+namespace Core.DatabaseUtilities
 {
     public class IngredientCategoryQuery : IHarvestQuery
     {
 
-        public object Get(int itemID)
+        public object Get(object itemID)
         {
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Inventory.Load();
-                Inventory item = harvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID == itemID);
+                Inventory item = harvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID == (int) itemID);
 
                 harvestDatabase.IngredientCategory.Load();
                 return harvestDatabase.IngredientCategory.SingleOrDefault(ingredientCategory => ingredientCategory.Category.Equals(item.Category));

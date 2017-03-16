@@ -26,7 +26,7 @@ namespace Client_Desktop.Helpers
                 ingredientsThatDontExist = null;
             }
 
-            AddIngredientsToDatabase(recipe);
+            AddIngredientsToDatabase(recipe, ingredients);
         }
 
         #region Recipe
@@ -51,7 +51,8 @@ namespace Client_Desktop.Helpers
                 foreach (IngredientInformation ingredientInfo in ingredients)
                 {
                     Inventory listedIngredient = ingredientInfo.GetInventoryFromControls();
-                    listedIngredient.InventoryID = harvestDatabase.Inventory.SingleOrDefault(item => item.IngredientName.Equals(listedIngredient.IngredientName)).InventoryID;
+                    Inventory itemInDB = harvestDatabase.Inventory.SingleOrDefault(item => item.IngredientName.Equals(listedIngredient.IngredientName));
+                    listedIngredient.InventoryID = (itemInDB != null) ? itemInDB.InventoryID : 0;
                     recipe.AssociatedInventoryItems.Add(listedIngredient);
                 }
             }
@@ -94,21 +95,21 @@ namespace Client_Desktop.Helpers
         #endregion
 
         #region Recipe Ingredients
-        private static void AddIngredientsToDatabase(Recipe recipe)
+        private static void AddIngredientsToDatabase(Recipe recipe, List<IngredientInformation> ingredients)
         {
             using (HarvestUtility harvest = new HarvestUtility(new RecipeIngredientQuery()))
             {
                 foreach (Inventory ingredient in recipe.AssociatedInventoryItems)
-                    harvest.Insert(CreateRecipeIngredient(recipe.RecipeID, ingredient));
+                    harvest.Insert(CreateRecipeIngredient(recipe.RecipeID, ingredient, ingredients));    
             }
         }
 
-        private static RecipeIngredient CreateRecipeIngredient(int recipeID, Inventory ingredient)
+        private static RecipeIngredient CreateRecipeIngredient(int recipeID, Inventory ingredient, List<IngredientInformation> ingredients)
         {
             RecipeIngredient recipeIngredient = new RecipeIngredient();
             recipeIngredient.RecipeID = recipeID;
             recipeIngredient.InventoryID = ingredient.InventoryID;
-            recipeIngredient.Amount = ingredient.Amount;
+            recipeIngredient.Amount = double.Parse(ingredients.Single(ri => ri.Name.Text.Equals(ingredient.IngredientName)).Quantity.Text);
             recipeIngredient.Measurement = ingredient.Measurement;
             return recipeIngredient;
         }
