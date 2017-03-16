@@ -35,9 +35,9 @@ namespace Client_Desktop.Helpers
             using (HarvestUtility harvest = new HarvestUtility(new RecipeQuery()))
             {
                 if (recipeFromControls.RecipeID == 0)
-                    harvest.Update(recipeFromControls);
-                else
                     harvest.Insert(recipeFromControls);
+                else
+                    harvest.Update(recipeFromControls);
             }
                 
         }

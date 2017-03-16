@@ -16,10 +16,10 @@ namespace Client_Desktop
         private int numberOfRows;
         private List<IngredientInformation> Ingredients = new List<IngredientInformation>();
         private Recipe recipeToModify;
-        public RecipeForm(Recipe recipeToModify)
+        public RecipeForm(Recipe recipe)
         {
             InitializeComponent();
-            this.recipeToModify = recipeToModify;
+            this.recipeToModify = recipe;
             try
             {
                 using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeCategoryBindingList()))
