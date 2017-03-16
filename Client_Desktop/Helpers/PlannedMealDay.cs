@@ -54,7 +54,9 @@ namespace Client_Desktop.Helpers
 
             foreach (string recipeName in recipeNames)
             {
-                AddRecipeToMealTime((Meal_Time) mealTime, recipes.Single(r => r.RecipeName.Equals(recipeName)));
+                Recipe recipe = recipes.Single(r => r.RecipeName.Equals(recipeName));
+                recipe.PopulateGUIProperties();
+                AddRecipeToMealTime((Meal_Time)mealTime, recipe);
             }
         }
     }

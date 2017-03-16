@@ -8,6 +8,7 @@ namespace Client_Desktop.Helpers
     public class IngredientInformation
     {
         public TextBox Name;
+        public Label NameLabel;
         public TextBox Quantity;
         public ComboBox Unit;
         public ComboBox Type;
@@ -16,6 +17,7 @@ namespace Client_Desktop.Helpers
         public IngredientInformation()
         {
             Name = GetTextboxTemplate();
+            NameLabel = GetLabelTemplate();
             Quantity = GetTextboxTemplate();
             Unit = GetUnitComboTemplate();
             
@@ -36,6 +38,13 @@ namespace Client_Desktop.Helpers
         private TextBox GetTextboxTemplate()
         {
             TextBox template = new TextBox();
+            template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
+            return template;
+        }
+
+        private Label GetLabelTemplate()
+        {
+            Label template = new Label();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
             return template;
         }

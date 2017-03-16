@@ -56,6 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroceryList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroceryList.Designer.cs">
+      <DependentUpon>GroceryList.cs</DependentUpon>
+    </Compile>
     <Compile Include="HarvestForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     <Compile Include="RecipePickerForm.Designer.cs">
       <DependentUpon>RecipePickerForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="GroceryList.resx">
+      <DependentUpon>GroceryList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HarvestForm.resx">
       <DependentUpon>HarvestForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -258,25 +258,15 @@ namespace Client_Desktop
                         recipeNames.Add(plannedMeal.Text);
 
                 plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
+                            
             }
 
 
             // --Note-- This code only exists to verify that the objects are being created correctly
             // Replace this bit with something to the effect of:
 
-            // using (GroceryListForm groceryList = new GroceryListForm(plannedMealsForTheWeek))
-
-            foreach (var plan in plannedMealsForTheWeek)
-            {
-                string recipeNames = plan.Day.ToString() + "\n";
-                foreach (KeyValuePair<MealTime, List<Recipe>> keyValuePair in plan.MealsPlanned)
-                    foreach (Recipe recipe in keyValuePair.Value)
-                        recipeNames += recipe.RecipeName + "\n";
-
-                if (!recipeNames.Equals(plan.Day.ToString() + "\n"))
-                    MessageBox.Show(recipeNames);
-            }
-
+            GroceryList groceryList = new GroceryList(plannedMealsForTheWeek);
+            groceryList.Show();
         }
     }
 }
