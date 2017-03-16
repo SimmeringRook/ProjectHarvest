@@ -4,6 +4,8 @@ using Client_Desktop.Helpers;
 using Core;
 using System.Linq;
 using Core.MeasurementConversions;
+using Core.DatabaseUtilities.Queries;
+using Core.DatabaseUtilities;
 
 namespace Client_Desktop
 {
@@ -50,8 +52,6 @@ namespace Client_Desktop
                     }
                 }
             }
-                
-
 
             foreach (RecipeIngredient ri in _ingredients)
                 buildRow(ri);
@@ -63,11 +63,17 @@ namespace Client_Desktop
             IngredientInformation rowToBeAdded = new IngredientInformation();
             groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-
             groceryTableLayout.Controls.Add(rowToBeAdded.NameLabel, 0, numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Type, 1, numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 2, numberOfRows);
+            groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, numberOfRows);
+            groceryTableLayout.Controls.Add(rowToBeAdded.Unit, 2, numberOfRows);
             groceryTableLayout.Controls.Add(rowToBeAdded.Selected, 3, numberOfRows);
+
+            using(HarvestUtility harvest = new HarvestUtility(new InventoryQuery()))
+                rowToBeAdded.NameLabel.Text = rowToBeAdded.NameLabel.Text = (harvest.Get(ri.InventoryID) as Inventory).IngredientName;
+
+            rowToBeAdded.Quantity.ReadOnly = true;  // Remove in future MVP
+            rowToBeAdded.Quantity.Text = ri.Amount.ToString();
+            rowToBeAdded.Unit.Text = ri.Measurement.ToString();
 
             numberOfRows++;
         }
