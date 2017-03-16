@@ -29,11 +29,12 @@ namespace Client_Desktop
         {
             numberOfRows = groceryTableLayout.RowCount - 1;
 
-            using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
+
+            foreach (PlannedMealDay plan in plannedMealsForTheWeek)
             {
-                foreach (PlannedMealDay plan in plannedMealsForTheWeek)
+                foreach (RecipeIngredient recipeIngredient in plan.GetIngredientsForPlannedRecipes())
                 {
-                    foreach (RecipeIngredient recipeIngredient in plan.GetIngredientsForPlannedRecipes())
+                    using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
                     {
                         if (_ingredients.Any(ingredient => ingredient.InventoryID == recipeIngredient.InventoryID))
                         {
@@ -49,7 +50,7 @@ namespace Client_Desktop
                         {
                             _ingredients.Add(recipeIngredient);
                         }
-                    }
+                     }
                 }
             }
 
