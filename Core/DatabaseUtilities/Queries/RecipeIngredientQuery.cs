@@ -12,6 +12,8 @@ namespace Core.DatabaseUtilities.Queries
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.RecipeIngredient.Load();
+                if ((int)itemID == -1)
+                    return harvestDatabase.RecipeIngredient.ToList();
                 return harvestDatabase.RecipeIngredient.Where(inventory => inventory.RecipeID.Equals((int)itemID)).ToList();
             }
         }
