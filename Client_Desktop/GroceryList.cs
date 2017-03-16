@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Client_Desktop.Helpers;
 using Core;
+using Core.DatabaseUtilities.Queries;
+
 
 namespace Client_Desktop
 {
@@ -55,14 +55,14 @@ namespace Client_Desktop
         }
 
         public void buildRow(RecipeIngredient ri)
-        {
-            
+        {;
             IngredientInformation rowToBeAdded = new IngredientInformation();
             groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
 
             groceryTableLayout.Controls.Add(rowToBeAdded.NameLabel, 0, numberOfRows);
-            rowToBeAdded.NameLabel.Text = ri.InventoryID.ToString();
+            InventoryQuery name = new InventoryQuery();
+            rowToBeAdded.NameLabel.Text = (name.Get(ri.InventoryID) as Inventory).IngredientName;
             groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, numberOfRows);
             rowToBeAdded.Quantity.ReadOnly = true;  // Remove in future MVP
             rowToBeAdded.Quantity.Text = ri.Amount.ToString();

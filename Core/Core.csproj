@@ -63,7 +63,7 @@
     <Compile Include="DatabaseUtilities\Queries\IHarvestQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\IngredientCategoryQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\InventoryQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\MetricQuery.cs" />
+    <Compile Include="MeasurementConversions\MetricQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\PlannedMealQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\RecipeCategoryQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\RecipeIngredientQuery.cs" />
