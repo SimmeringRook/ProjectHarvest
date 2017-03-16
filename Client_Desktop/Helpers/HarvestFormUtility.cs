@@ -1,12 +1,11 @@
 ﻿using Core;
 using Core.DatabaseUtilities;
 using Core.DatabaseUtilities.BindingListQueries;
+using Core.DatabaseUtilities.Queries;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Helpers
@@ -88,7 +87,24 @@ namespace Client_Desktop.Helpers
             template.Anchor = AnchorStyles.Top;
             template.Text = selectedRecipe.RecipeName;
             template.Tag = "Recipe";
+            template.Click += new System.EventHandler(ShowRecipe_Click);
             return template;
+        }
+
+        private static void ShowRecipe_Click(object sender, EventArgs e)
+        {
+            //TODO Clean this up
+            List<Recipe> recipes = new List<Recipe>();
+            using (HarvestUtility harvest = new HarvestUtility(new RecipeQuery()))
+                recipes = harvest.Get(-1) as List<Recipe>;
+
+            Recipe recipeToModify = recipes.Single(r => r.RecipeName.Equals((sender as Button).Text));
+
+            using (RecipeForm recipe = new RecipeForm(recipeToModify))
+            {
+                if (recipe.ShowDialog() == DialogResult.OK)
+                    return;
+            }
         }
     }
 }
