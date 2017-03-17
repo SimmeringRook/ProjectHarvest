@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Core;
-using Core.DatabaseUtilities;
 using Client_Desktop.Helpers;
 using System.ComponentModel;
+
 using Core.DatabaseUtilities.BindingListQueries;
 
 namespace Client_Desktop
@@ -14,11 +14,11 @@ namespace Client_Desktop
     {
         private int numberOfRows;
         private List<IngredientInformation> Ingredients = new List<IngredientInformation>();
-
-        public RecipeForm(Recipe recipeToModify)
+        private Recipe recipeToModify;
+        public RecipeForm(Recipe recipe)
         {
             InitializeComponent();
-
+            this.recipeToModify = recipe;
             try
             {
                 using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeCategoryBindingList()))
@@ -56,8 +56,6 @@ namespace Client_Desktop
                 Ingredients[i].LoadExistingData(recipeToModify.AssociatedIngredients[i]);
             }
         }
-
-
 
         #region Row Management
 
@@ -163,6 +161,7 @@ namespace Client_Desktop
             temp.RecipeName = RecipeNameTextBox.Text;
             temp.RCategory = categoryCombo.SelectedValue.ToString();
             temp.Servings = int.Parse(servingsTextbox.Text);
+            temp.RecipeID = (recipeToModify != null) ? recipeToModify.RecipeID : 0;
             return temp;
         }       
     }

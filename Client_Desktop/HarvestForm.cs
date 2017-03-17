@@ -1,6 +1,5 @@
 ﻿using Client_Desktop.Helpers;
 using Core;
-using Core.DatabaseUtilities;
 using Core.DatabaseUtilities.Queries;
 using System;
 using System.Collections.Generic;
@@ -45,7 +44,28 @@ namespace Client_Desktop
 
         #region Meal Tab
 
+        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<PlannedMealDay> plannedMealsForTheWeek = new List<PlannedMealDay>();
 
+            for (int i = 0; i < weekTableLayout.ColumnCount; i++)
+                plannedMealsForTheWeek.Add(new PlannedMealDay(DateTime.Today.AddDays(i)));
+
+            foreach (Control flowControl in weekTableLayout.Controls)
+            {
+                int mealTime = weekTableLayout.GetRow(flowControl);
+                List<string> recipeNames = new List<string>();
+
+                foreach (Control plannedMeal in flowControl.Controls)
+                    if (plannedMeal.Tag.Equals("Recipe"))
+                        recipeNames.Add(plannedMeal.Text);
+
+                plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
+            }
+
+            GroceryList groceryList = new GroceryList(plannedMealsForTheWeek);
+            groceryList.Show();
+        }
 
         #endregion
 
@@ -238,32 +258,6 @@ namespace Client_Desktop
 
         #endregion
 
-        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<PlannedMealDay> plannedMealsForTheWeek = new List<PlannedMealDay>();
-
-            for( int i = 0; i < weekTableLayout.ColumnCount; i++)
-                plannedMealsForTheWeek.Add(new PlannedMealDay(DateTime.Today.AddDays(i)));
-           
-            foreach (Control flowControl in weekTableLayout.Controls)
-            {
-                int mealTime = weekTableLayout.GetRow(flowControl);
-                List<string> recipeNames = new List<string>();
-
-                foreach (Control plannedMeal in flowControl.Controls)
-                    if (plannedMeal.Tag.Equals("Recipe"))
-                        recipeNames.Add(plannedMeal.Text);
-
-                plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
-                            
-            }
-
-
-            // --Note-- This code only exists to verify that the objects are being created correctly
-            // Replace this bit with something to the effect of:
-
-            GroceryList groceryList = new GroceryList(plannedMealsForTheWeek);
-            groceryList.Show();
-        }
+        
     }
 }

@@ -1,7 +1,6 @@
-﻿using Core.DatabaseUtilities.Queries;
-using System;
+﻿using System;
 
-namespace Core.DatabaseUtilities
+namespace Core.DatabaseUtilities.Queries
 {
     public class HarvestUtility : IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace Core.DatabaseUtilities
+﻿namespace Core.DatabaseUtilities.Queries
 {
     public interface IHarvestQuery
     {

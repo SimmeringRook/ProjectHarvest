@@ -1,5 +1,4 @@
 ﻿using Core;
-using Core.DatabaseUtilities;
 using Core.DatabaseUtilities.Queries;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace Client_Desktop.Helpers
             SubmitRecipeToDatabase(recipeFromControls);
 
             //Get the newly created record and build the AssociatedItems list
-            Recipe recipe = GetRecentlyCreatedRecipe();
+            Recipe recipe = (recipeFromControls.RecipeID > 0) ? recipeFromControls : GetRecentlyCreatedRecipe();
             BindAssociatedItemsToInventoryIDs(recipe, ingredients);
 
             List<Inventory> ingredientsThatDontExist = GetListOfInventoryItemsThatAreNotInDatabase(recipe);
@@ -33,7 +32,13 @@ namespace Client_Desktop.Helpers
         private static void SubmitRecipeToDatabase(Recipe recipeFromControls)
         {
             using (HarvestUtility harvest = new HarvestUtility(new RecipeQuery()))
-                harvest.Insert(recipeFromControls);
+            {
+                if (recipeFromControls.RecipeID == 0)
+                    harvest.Insert(recipeFromControls);
+                else
+                    harvest.Update(recipeFromControls);
+            }
+                
         }
 
         private static Recipe GetRecentlyCreatedRecipe()
@@ -99,8 +104,16 @@ namespace Client_Desktop.Helpers
         {
             using (HarvestUtility harvest = new HarvestUtility(new RecipeIngredientQuery()))
             {
+                List<RecipeIngredient> ingredientsThatExist = harvest.Get(-1) as List<RecipeIngredient>;
                 foreach (Inventory ingredient in recipe.AssociatedInventoryItems)
-                    harvest.Insert(CreateRecipeIngredient(recipe.RecipeID, ingredient, ingredients));    
+                {
+                    RecipeIngredient recipeIngredient = CreateRecipeIngredient(recipe.RecipeID, ingredient, ingredients);
+
+                    if (ingredientsThatExist.Any(ri => ri.RecipeID == recipe.RecipeID && ri.InventoryID == ingredient.InventoryID))
+                        harvest.Update(recipeIngredient);
+                    else
+                        harvest.Insert(recipeIngredient);
+                }  
             }
         }
 

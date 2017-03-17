@@ -1,7 +1,8 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
-namespace Core.DatabaseUtilities
+namespace Core.DatabaseUtilities.Queries
 {
     public class RecipeQuery : IHarvestQuery
     {
@@ -41,8 +42,7 @@ namespace Core.DatabaseUtilities
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.Recipe.Load();
-                Recipe itemInDatabase = Get((itemToChange as Recipe).RecipeID) as Recipe;
-                itemInDatabase = itemToChange as Recipe;
+                harvestDatabase.Recipe.AddOrUpdate(itemToChange as Recipe);
                 harvestDatabase.SaveChanges();
             }
         }

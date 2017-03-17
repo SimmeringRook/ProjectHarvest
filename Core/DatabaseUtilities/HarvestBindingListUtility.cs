@@ -1,11 +1,6 @@
-﻿using Core.DatabaseUtilities.BindingListQueries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace Core.DatabaseUtilities
+namespace Core.DatabaseUtilities.BindingListQueries
 {
     public class HarvestBindingListUtility : IDisposable
     {
