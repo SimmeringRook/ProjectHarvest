@@ -26,7 +26,7 @@ namespace Core.DatabaseUtilities.Queries
             HarvestQuery.Remove(itemToRemove);
         }
 
-        public object Get(int itemID)
+        public object Get(object itemID)
         {
             return HarvestQuery.Get(itemID);
         }

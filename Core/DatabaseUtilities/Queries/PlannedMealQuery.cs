@@ -12,7 +12,9 @@ namespace Core.DatabaseUtilities.Queries
             using (HarvestEntities harvestDatabase = new HarvestEntities())
             {
                 harvestDatabase.PlannedMeals.Load();
-                return harvestDatabase.PlannedMeals.SingleOrDefault(plannedMeal => plannedMeal.DatePlanned.Equals((DateTime)itemID));
+                if ((int)itemID == -1)
+                    return (harvestDatabase.PlannedMeals.ToList().Count > 0) ? harvestDatabase.PlannedMeals.ToList() : null;
+                return harvestDatabase.PlannedMeals.Where(plannedMeal => plannedMeal.DatePlanned.Equals((DateTime)itemID)).ToList();
             }
         }
 
