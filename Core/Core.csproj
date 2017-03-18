@@ -108,6 +108,7 @@
     <Compile Include="ModelExtensions\HarvestEntityFactory.cs" />
     <Compile Include="ModelExtensions\Inventory.cs" />
     <Compile Include="ModelExtensions\MealTime.cs" />
+    <Compile Include="ModelExtensions\PlannedMeals.cs" />
     <Compile Include="ModelExtensions\Recipe.cs" />
     <Compile Include="ModelExtensions\RecipeIngredient.cs" />
     <Compile Include="PlannedMeals.cs">

@@ -51,10 +51,22 @@ namespace Client_Desktop.Helpers
 
         private static void LoadWeek(TableLayoutPanel weekTableLayout)
         {
-            foreach (Control flow in weekTableLayout.Controls)
+            using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
             {
-                if (flow.Controls.Count < 1)
-                    flow.Controls.Add(CreatePlanMealButton());
+                foreach (Control flow in weekTableLayout.Controls)
+                {
+                    if (flow.Controls.Count < 1)
+                        flow.Controls.Add(CreatePlanMealButton());
+
+                    List<PlannedMeals> exisitingPlans = harvest.Get(-1) as List<PlannedMeals>;
+                    if (exisitingPlans != null)
+                    {
+                        foreach (var plan in exisitingPlans)
+                            if (plan.DatePlanned == DateTime.Today.AddDays(weekTableLayout.GetColumn(flow)))
+                                foreach (Recipe recipe in plan.GetRecipesPlannedForDay(weekTableLayout.GetRow(flow)))
+                                    flow.Controls.Add(CreateMealButton(recipe));
+                    }
+                }
             }
         }
 

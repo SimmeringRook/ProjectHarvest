@@ -1,12 +1,11 @@
-﻿using Core;
-using Core.DatabaseUtilities.Queries;
+﻿using Core.DatabaseUtilities.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Client_Desktop.Helpers
+namespace Core
 {
-    public class PlannedMealDay
+    public partial class PlannedMeals
     {
         public DateTime Day;
         public Dictionary<MealTime, List<Recipe>> MealsPlanned;
@@ -15,7 +14,12 @@ namespace Client_Desktop.Helpers
         private MealTime lunch = new MealTime("Lunch");
         private MealTime dinner = new MealTime("Dinner");
 
-        public PlannedMealDay(DateTime dayBeingPlanned)
+        public PlannedMeals()
+        {
+
+        }
+
+        public PlannedMeals(DateTime dayBeingPlanned)
         {
             Day = dayBeingPlanned;
             MealsPlanned = new Dictionary<MealTime, List<Recipe>>()
@@ -67,12 +71,41 @@ namespace Client_Desktop.Helpers
                             allIngredients.Add(ingredient);
 
             return allIngredients;
-        } 
+        }
+        
+        public List<Recipe> GetRecipesPlannedForDay(int meal_time)
+        {
+            List<Recipe> recipesForDay = new List<Recipe>();
+            List<Meal_Time> mealtimes = new List<Meal_Time>() { Meal_Time.Breakfast, Meal_Time.Lunch, Meal_Time.Dinner };
+            using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
+            {
+                List<PlannedMeals> plannedMealsForDay = harvest.Get(this.DatePlanned) as List<PlannedMeals>;
+
+                harvest.HarvestQuery = new RecipeQuery();
+                foreach (PlannedMeals meal in plannedMealsForDay)
+                {
+                    if (meal.MealName.Equals(mealtimes[meal_time]))
+                        recipesForDay.Add(harvest.Get(meal.RecipeID) as Recipe);
+                }
+            }
+
+            return recipesForDay;
+        }
+
+        public void BuildForDatabase()
+        {
+            /* So where I left off:
+             * 
+             * This class needs to reflect the database object
+             */ 
+            this.DatePlanned = Day;
+            //this.MealTime
+        }
     }
 
     public enum Meal_Time
     {
-        Breakfast= 0,
+        Breakfast = 0,
         Lunch = 1,
         Dinner = 2
     }

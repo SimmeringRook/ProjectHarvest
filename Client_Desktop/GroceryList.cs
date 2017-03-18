@@ -5,16 +5,18 @@ using Core;
 using System.Linq;
 using Core.MeasurementConversions;
 using Core.DatabaseUtilities.Queries;
+using Core.DatabaseUtilities.BindingListQueries;
+using System.ComponentModel;
 
 namespace Client_Desktop
 {
     public partial class GroceryList : Form
     {
-        private List<PlannedMealDay> plannedMealsForTheWeek;
+        private List<PlannedMeals> plannedMealsForTheWeek;
         private List<RecipeIngredient> _ingredients = new List<RecipeIngredient>();
         private int numberOfRows;
 
-        public GroceryList(List<PlannedMealDay> plannedMealsForTheWeek)
+        public GroceryList(List<PlannedMeals> plannedMealsForTheWeek)
         {
             this.plannedMealsForTheWeek = plannedMealsForTheWeek;
             InitializeComponent();
@@ -27,7 +29,7 @@ namespace Client_Desktop
             numberOfRows = groceryTableLayout.RowCount - 1;
 
 
-            foreach (PlannedMealDay plan in plannedMealsForTheWeek)
+            foreach (PlannedMeals plan in plannedMealsForTheWeek)
             {
                 foreach (RecipeIngredient recipeIngredient in plan.GetIngredientsForPlannedRecipes())
                 {
@@ -57,7 +59,6 @@ namespace Client_Desktop
 
         public void buildRow(RecipeIngredient ri)
         {
-            
             IngredientInformation rowToBeAdded = new IngredientInformation();
             groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
@@ -66,13 +67,22 @@ namespace Client_Desktop
             groceryTableLayout.Controls.Add(rowToBeAdded.Unit, 2, numberOfRows);
             groceryTableLayout.Controls.Add(rowToBeAdded.Selected, 3, numberOfRows);
 
-            using(HarvestUtility harvest = new HarvestUtility(new InventoryQuery()))
-                rowToBeAdded.NameLabel.Text = rowToBeAdded.NameLabel.Text = (harvest.Get(ri.InventoryID) as Inventory).IngredientName;
+            BindingList<Metric> units = null;
+            using (HarvestBindingListUtility harvestBinding = new HarvestBindingListUtility(new MetricBindingListQuery()))
+                units = harvestBinding.GetBindingList() as BindingList<Metric>;
+            rowToBeAdded.Unit.DataSource = units.ToList();
+            rowToBeAdded.Unit.SelectedValue = ri.GetMeasurementUnit().ToString();
 
-            rowToBeAdded.Quantity.ReadOnly = true;  // Remove in future MVP
-            rowToBeAdded.Quantity.Text = ri.Amount.ToString();
-            rowToBeAdded.Unit.Text = ri.Measurement.ToString();
+            using (HarvestUtility harvest = new HarvestUtility(new InventoryQuery()))
+            {
+                rowToBeAdded.NameLabel.Text = (harvest.Get(ri.InventoryID) as Inventory).IngredientName;
+                Inventory itemInDB = harvest.Get(ri.InventoryID) as Inventory;
+                _itemInDB.Add(itemInDB);
+                rowToBeAdded.NameLabel.Text = itemInDB.IngredientName;
+                rowToBeAdded.Quantity.Text = (ri.Amount - itemInDB.Amount).ToString();
+            }
 
+            createFile(rowToBeAdded.NameLabel.Text, rowToBeAdded.Quantity.Text, rowToBeAdded.Unit.SelectedText);
             numberOfRows++;
         }
     }

@@ -46,10 +46,10 @@ namespace Client_Desktop
 
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<PlannedMealDay> plannedMealsForTheWeek = new List<PlannedMealDay>();
+            List<PlannedMeals> plannedMealsForTheWeek = new List<PlannedMeals>();
 
             for (int i = 0; i < weekTableLayout.ColumnCount; i++)
-                plannedMealsForTheWeek.Add(new PlannedMealDay(DateTime.Today.AddDays(i)));
+                plannedMealsForTheWeek.Add(new PlannedMeals(DateTime.Today.AddDays(i)));
 
             foreach (Control flowControl in weekTableLayout.Controls)
             {
@@ -62,6 +62,14 @@ namespace Client_Desktop
 
                 plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
             }
+
+            using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
+                foreach (PlannedMeals day in plannedMealsForTheWeek)
+                {
+                    day.BuildForDatabase();
+                    harvest.Insert(day);
+                }
+                    
 
             GroceryList groceryList = new GroceryList(plannedMealsForTheWeek);
             groceryList.Show();
