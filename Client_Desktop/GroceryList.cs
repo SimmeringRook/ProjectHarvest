@@ -7,20 +7,18 @@ using Core.MeasurementConversions;
 using Core.DatabaseUtilities.Queries;
 using System.IO;
 using System.Diagnostics;
-using Core.DatabaseUtilities.BindingListQueries;
-using System.ComponentModel;
 
 namespace Client_Desktop
 {
     public partial class GroceryList : Form
     {
-        private List<PlannedMealDay> plannedMealsForTheWeek;
+        private List<PlannedMeals> plannedMealsForTheWeek;
         private List<RecipeIngredient> _ingredients = new List<RecipeIngredient>();
         private List<Inventory> _itemInDB = new List<Inventory>();
 
         private int numberOfRows;
 
-        public GroceryList(List<PlannedMealDay> plannedMealsForTheWeek)
+        public GroceryList(List<PlannedMeals> plannedMealsForTheWeek)
         {
             this.plannedMealsForTheWeek = plannedMealsForTheWeek;
             InitializeComponent();
@@ -33,7 +31,7 @@ namespace Client_Desktop
             numberOfRows = groceryTableLayout.RowCount - 1;
 
 
-            foreach (PlannedMealDay plan in plannedMealsForTheWeek)
+            foreach (PlannedMeals plan in plannedMealsForTheWeek)
             {
                 foreach (RecipeIngredient recipeIngredient in plan.GetIngredientsForPlannedRecipes())
                 {
@@ -84,8 +82,7 @@ namespace Client_Desktop
                 rowToBeAdded.Unit.Text = ri.Measurement.ToString();
             }
 
-            createFile(rowToBeAdded.NameLabel.Text, rowToBeAdded.Quantity.Text,
-                        rowToBeAdded.Unit.Text);
+            createFile(rowToBeAdded.NameLabel.Text, rowToBeAdded.Quantity.Text, rowToBeAdded.Unit.Text);
             numberOfRows++;
         }
 
