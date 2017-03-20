@@ -166,10 +166,10 @@ namespace Client_Desktop
             #endregion
         }
 
-        public void button1_Click(object sender, System.EventArgs e)
+        private void printableButton_Click(object sender, System.EventArgs e)
         {
             Process.Start(@"G:");
-        } 
+        }
     } 
 }
 
