@@ -63,12 +63,12 @@ namespace Client_Desktop
                 plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
             }
 
-            using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
-                foreach (PlannedMeals day in plannedMealsForTheWeek)
-                {
-                    day.BuildForDatabase();
-                    harvest.Insert(day);
-                }
+            //using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
+            //    foreach (PlannedMeals day in plannedMealsForTheWeek)
+            //    {
+            //        day.BuildForDatabase();
+            //        harvest.Insert(day);
+            //    }
                     
 
             GroceryList groceryList = new GroceryList(plannedMealsForTheWeek);
