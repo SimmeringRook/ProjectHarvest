@@ -14,7 +14,6 @@ namespace Client_Desktop
     public partial class GroceryList : Form
     {
         private PlannedWeek plannedWeek;
-        private List<Inventory> _itemInDB = new List<Inventory>();
 
         private int numberOfRows;
 
@@ -56,19 +55,19 @@ namespace Client_Desktop
 
         private void createFile(string name, string qty, string measurement)
         {
-
-
+            string line = "";
+            int i;
             string path = @"G:\test.txt";
-
 
                 // Create a file to write to.
                 using (StreamWriter writer = new StreamWriter(path, false))
                 {
-                    writer.WriteLine(name.PadRight(25) + qty.PadRight(5) + measurement.PadRight(25))
-
-                    
+                    line = name.PadRight(25) + qty.PadRight(5) + measurement.PadRight(25);
+                writer.WriteLine(line);
+                   
                 }
-           
+            }
+            
         }
 
         private void printableButton_Click(object sender, System.EventArgs e)
@@ -77,3 +76,4 @@ namespace Client_Desktop
         }
     } 
 }
+
