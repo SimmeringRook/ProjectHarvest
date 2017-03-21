@@ -56,85 +56,24 @@ namespace Client_Desktop
 
         private void createFile(string name, string qty, string measurement)
         {
-            string lines = "";
-            int i;
-            string path = @"..\Documents\test.txt";
 
-            #region Does not Exists
-            if (!File.Exists(path))
-            {
+
+            string path = @"G:\test.txt";
+
+
                 // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(path))
+                using (StreamWriter writer = new StreamWriter(path, false))
                 {
-                    lines = name;
+                    writer.WriteLine(name.PadRight(25) + qty.PadRight(5) + measurement.PadRight(25))
 
-                    if (lines.Length < 25)
-                    {
-                        i = lines.Length;
-                        string space = " ";
-
-                        while (i < 25)
-                        {
-                            lines += space;
-                            i++;
-                        }
-
-                        lines += qty;
-
-                        while (i < 30)
-                        {
-                            lines += space;
-                            i++;
-                        }
-
-                        lines += measurement;
-
-                        sw.WriteLine(lines);
-                        sw.Close();
-                    }
+                    
                 }
-            }
-            #endregion
-            else
-            #region Does Exists
-            {
-                using (StreamWriter sw = File.AppendText(path))
-                {
-                    lines = name;
-
-                    if (lines.Length < 25)
-                    {
-                        i = lines.Length;
-                        string space = " ";
-
-                        while (i < 25)
-                        {
-                            lines += space;
-                            i++;
-                        }
-
-                        lines += qty;
-
-                        while (i < 30)
-                        {
-                            lines += space;
-                            i++;
-                        }
-
-                        lines += measurement;
-
-                        sw.WriteLine(lines);
-                        sw.Close();
-                    }
-                }                
-            }
-            #endregion
+           
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void printableButton_Click(object sender, System.EventArgs e)
         {
             Process.Start(@"G:");
-        } 
+        }
     } 
 }
-

@@ -34,7 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.printableButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
@@ -68,12 +68,12 @@
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.groceryTableLayout.Location = new System.Drawing.Point(3, 3);
             this.groceryTableLayout.Name = "groceryTableLayout";
             this.groceryTableLayout.RowCount = 1;
             this.groceryTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.groceryTableLayout.Size = new System.Drawing.Size(444, 34);
+            this.groceryTableLayout.Size = new System.Drawing.Size(446, 34);
             this.groceryTableLayout.TabIndex = 0;
             // 
             // label2
@@ -106,15 +106,15 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Unit";
             // 
-            // button1
+            // printableButton
             // 
-            this.button1.Location = new System.Drawing.Point(37, 449);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(101, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Printable";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.printableButton.Location = new System.Drawing.Point(37, 449);
+            this.printableButton.Name = "printableButton";
+            this.printableButton.Size = new System.Drawing.Size(101, 23);
+            this.printableButton.TabIndex = 5;
+            this.printableButton.Text = "Printable";
+            this.printableButton.UseVisualStyleBackColor = true;
+            this.printableButton.Click += new System.EventHandler(this.printableButton_Click);
             // 
             // button2
             // 
@@ -142,7 +142,7 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.printableButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
@@ -163,7 +163,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button printableButton;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TableLayoutPanel groceryTableLayout;
         private System.Windows.Forms.Button button3;
