@@ -9,11 +9,20 @@ namespace Core
         public List<RecipeIngredient> AssociatedIngredients = new List<RecipeIngredient>();
         public string RecipeCategory { get; set; }
 
+        public Recipe(int id)
+        {
+            this.RecipeID = id;
+            PopulateGUIProperties();
+        }
+
         public void PopulateGUIProperties()
         {
             using (HarvestUtility harvest = new HarvestUtility(new RecipeCategoryQuery()))
             {
                 this.RecipeCategory = (harvest.Get(this.RecipeID) as RecipeClass).RCategory;
+
+                harvest.HarvestQuery = new RecipeQuery();
+                this.RecipeName = (harvest.Get(this.RecipeID) as Recipe).RecipeName;
 
                 harvest.HarvestQuery = new RecipeIngredientQuery();
                 this.AssociatedIngredients = (harvest.Get(this.RecipeID) as List<RecipeIngredient>);

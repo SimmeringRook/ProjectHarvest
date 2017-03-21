@@ -17,11 +17,9 @@ namespace Core
         public System.DateTime DatePlanned { get; set; }
         public string MealName { get; set; }
         public int RecipeID { get; set; }
-        public string MealEaten { get; set; }
+        public bool MealEaten { get; set; }
     
         public virtual MealTime MealTime { get; set; }
         public virtual Recipe Recipe { get; set; }
-
-
     }
 }

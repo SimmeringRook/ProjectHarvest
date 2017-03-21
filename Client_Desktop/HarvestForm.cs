@@ -1,6 +1,7 @@
 ﻿using Client_Desktop.Helpers;
 using Core;
 using Core.DatabaseUtilities.Queries;
+using Core.MealPlanning;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace Client_Desktop
         public HarvestForm()
         {
             InitializeComponent();
-
+           
             try
             {
                 HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
@@ -46,33 +47,41 @@ namespace Client_Desktop
 
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<PlannedMeals> plannedMealsForTheWeek = new List<PlannedMeals>();
+            //TODO: fix this with information from datetime picker controls on Meal Planning Tab
+            DateTime start = DateTime.Today;
+            PlannedWeek plannedWeek = new PlannedWeek(start, start.AddDays(6));
 
-            for (int i = 0; i < weekTableLayout.ColumnCount; i++)
-                plannedMealsForTheWeek.Add(new PlannedMeals(DateTime.Today.AddDays(i)));
+            List<MealTime> mealTimes = new List<MealTime>();
+            using (HarvestUtility harvest = new HarvestUtility(new MealTimeQuery()))
+                mealTimes = harvest.Get(-1) as List<MealTime>;
 
             foreach (Control flowControl in weekTableLayout.Controls)
+                foreach (Control control in flowControl.Controls)
+                    if (control is RecipeButton)
+                    {
+                        RecipeButton button = control as RecipeButton;
+                        int dayIndex = weekTableLayout.GetColumn(flowControl);
+                        MealTime mealTime = mealTimes[weekTableLayout.GetRow(flowControl)];
+                        plannedWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Add(button.Recipe);
+                    }
+
+            try
             {
-                int mealTime = weekTableLayout.GetRow(flowControl);
-                List<string> recipeNames = new List<string>();
-
-                foreach (Control plannedMeal in flowControl.Controls)
-                    if (plannedMeal.Tag.Equals("Recipe"))
-                        recipeNames.Add(plannedMeal.Text);
-
-                plannedMealsForTheWeek[weekTableLayout.GetColumn(flowControl)].ConvertRecipeNamesIntoRecipes(mealTime, recipeNames);
+                using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
+                    foreach (PlannedDay day in plannedWeek.DaysOfWeek)
+                        foreach (PlannedMeals meal in day.ConvertPlannedDayIntoDatabaseObject())
+                            harvest.Insert(meal);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
 
-            //using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
-            //    foreach (PlannedMeals day in plannedMealsForTheWeek)
-            //    {
-            //        day.BuildForDatabase();
-            //        harvest.Insert(day);
-            //    }
-                    
-
-            GroceryList groceryList = new GroceryList(plannedMealsForTheWeek);
-            groceryList.Show();
+            using (GroceryList groceryList = new GroceryList(plannedWeek))
+            {
+                if (groceryList.ShowDialog() == DialogResult.OK)
+                    groceryList.Dispose();
+            }
         }
 
         #endregion
@@ -266,6 +275,5 @@ namespace Client_Desktop
 
         #endregion
 
-        
     }
 }

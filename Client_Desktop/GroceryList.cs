@@ -7,61 +7,29 @@ using Core.MeasurementConversions;
 using Core.DatabaseUtilities.Queries;
 using System.IO;
 using System.Diagnostics;
+using Core.MealPlanning;
 
 namespace Client_Desktop
 {
     public partial class GroceryList : Form
     {
-        private List<PlannedMeals> plannedMealsForTheWeek;
-        private List<RecipeIngredient> _ingredients = new List<RecipeIngredient>();
+        private PlannedWeek plannedWeek;
         private List<Inventory> _itemInDB = new List<Inventory>();
 
         private int numberOfRows;
 
-        public GroceryList(List<PlannedMeals> plannedMealsForTheWeek)
+        public GroceryList(PlannedWeek mealsForTheWeek)
         {
-            this.plannedMealsForTheWeek = plannedMealsForTheWeek;
+            this.plannedWeek = mealsForTheWeek;
+
             InitializeComponent();
-            getIngredients();
 
-        }
-
-        public void getIngredients()
-        {
             numberOfRows = groceryTableLayout.RowCount - 1;
-
-
-            foreach (PlannedMeals plan in plannedMealsForTheWeek)
-            {
-                foreach (RecipeIngredient recipeIngredient in plan.GetIngredientsForPlannedRecipes())
-                {
-                    using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
-                    {
-                        if (_ingredients.Any(ingredient => ingredient.InventoryID == recipeIngredient.InventoryID))
-                        {
-                            RecipeIngredient ingredientToConvert = _ingredients.Single(ri => ri.InventoryID == recipeIngredient.InventoryID);
-
-                            if (conversion.IsCorrectMeasurementType(ingredientToConvert.GetMeasurementUnit()) == false)
-                                conversion.ConversionType = new WeightUnitConversion();
-                            ingredientToConvert = conversion.Convert(recipeIngredient, ingredientToConvert.GetMeasurementUnit());
-
-                            _ingredients.Single(i => i.InventoryID == recipeIngredient.InventoryID).Amount += ingredientToConvert.Amount;
-                        }
-                        else
-                        {
-                            _ingredients.Add(recipeIngredient);
-                        }
-                    }
-                }
-            }
-
-            foreach (RecipeIngredient ri in _ingredients)
-            {
+            foreach (RecipeIngredient ri in plannedWeek.GetAllIngredientsForWeek())
                 buildRow(ri);
-            }
         }
 
-        public void buildRow(RecipeIngredient ri)
+        private void buildRow(RecipeIngredient ri)
         {
 
             IngredientInformation rowToBeAdded = new IngredientInformation();
@@ -86,11 +54,11 @@ namespace Client_Desktop
             numberOfRows++;
         }
 
-        public void createFile(string name, string qty, string measurement)
+        private void createFile(string name, string qty, string measurement)
         {
             string lines = "";
             int i;
-            string path = @"G:\test.txt";
+            string path = @"..\Documents\test.txt";
 
             #region Does not Exists
             if (!File.Exists(path))
@@ -163,7 +131,7 @@ namespace Client_Desktop
             #endregion
         }
 
-        public void button1_Click(object sender, System.EventArgs e)
+        private void button1_Click(object sender, System.EventArgs e)
         {
             Process.Start(@"G:");
         } 

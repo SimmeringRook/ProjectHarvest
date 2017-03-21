@@ -63,6 +63,7 @@
     <Compile Include="DatabaseUtilities\Queries\IHarvestQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\IngredientCategoryQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\InventoryQuery.cs" />
+    <Compile Include="DatabaseUtilities\Queries\MealTimeQuery.cs" />
     <Compile Include="MeasurementConversions\MetricQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\PlannedMealQuery.cs" />
     <Compile Include="DatabaseUtilities\Queries\RecipeCategoryQuery.cs" />
@@ -111,9 +112,11 @@
     <Compile Include="ModelExtensions\PlannedMeals.cs" />
     <Compile Include="ModelExtensions\Recipe.cs" />
     <Compile Include="ModelExtensions\RecipeIngredient.cs" />
+    <Compile Include="MealPlanning\PlannedDay.cs" />
     <Compile Include="PlannedMeals.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MealPlanning\PlannedWeek.cs" />
     <Compile Include="Recipe.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>

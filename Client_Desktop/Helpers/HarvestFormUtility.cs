@@ -1,6 +1,7 @@
 ﻿using Core;
 using Core.DatabaseUtilities.BindingListQueries;
 using Core.DatabaseUtilities.Queries;
+using Core.MealPlanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,22 +52,24 @@ namespace Client_Desktop.Helpers
 
         private static void LoadWeek(TableLayoutPanel weekTableLayout)
         {
-            using (HarvestUtility harvest = new HarvestUtility(new PlannedMealQuery()))
-            {
-                foreach (Control flow in weekTableLayout.Controls)
-                {
-                    if (flow.Controls.Count < 1)
-                        flow.Controls.Add(CreatePlanMealButton());
+            //TODO UpdateWeekDayHeader()
+            List<MealTime> mealTimes = new List<MealTime>();
+            using (HarvestUtility harvest = new HarvestUtility(new MealTimeQuery()))
+                mealTimes = harvest.Get(-1) as List<MealTime>;
+            PlannedWeek thisWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
 
-                    //List<PlannedMeals> exisitingPlans = harvest.Get(-1) as List<PlannedMeals>;
-                    //if (exisitingPlans != null)
-                    //{
-                    //    foreach (var plan in exisitingPlans)
-                    //        if (plan.DatePlanned == DateTime.Today.AddDays(weekTableLayout.GetColumn(flow)))
-                    //            foreach (Recipe recipe in plan.GetRecipesPlannedForDay(weekTableLayout.GetRow(flow)))
-                    //                flow.Controls.Add(CreateMealButton(recipe));
-                    //}
-                }
+            foreach (Control flowLayout in weekTableLayout.Controls)
+            {
+                if (flowLayout.Controls.Count < 1)
+                    flowLayout.Controls.Add(CreatePlanMealButton());
+
+                int currentMealTime = weekTableLayout.GetRow(flowLayout);
+                int currentDay = weekTableLayout.GetColumn(flowLayout);
+                MealTime mealTime = mealTimes[currentMealTime];
+
+                if (thisWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
+                    foreach (Recipe plannedRecipe in thisWeek.DaysOfWeek[currentDay].MealsForDay[mealTimes[currentMealTime]])
+                        flowLayout.Controls.Add(new RecipeButton(plannedRecipe));
             }
         }
 
@@ -85,36 +88,7 @@ namespace Client_Desktop.Helpers
             using (RecipePickerForm picker = new RecipePickerForm())
             {
                 if (picker.ShowDialog() == DialogResult.OK)
-                {
-                    Control parentOfClickedButton = ((Button)sender).Parent;
-                    parentOfClickedButton.Controls.Add(CreateMealButton(picker.SelectedRecipe));
-                }
-            }
-        }
-
-        private static Button CreateMealButton(Recipe selectedRecipe)
-        {
-            Button template = new Button();
-            template.Anchor = AnchorStyles.Top;
-            template.Text = selectedRecipe.RecipeName;
-            template.Tag = "Recipe";
-            template.Click += new System.EventHandler(ShowRecipe_Click);
-            return template;
-        }
-
-        private static void ShowRecipe_Click(object sender, EventArgs e)
-        {
-            //TODO Clean this up
-            List<Recipe> recipes = new List<Recipe>();
-            using (HarvestUtility harvest = new HarvestUtility(new RecipeQuery()))
-                recipes = harvest.Get(-1) as List<Recipe>;
-
-            Recipe recipeToModify = recipes.Single(r => r.RecipeName.Equals((sender as Button).Text));
-
-            using (RecipeForm recipe = new RecipeForm(recipeToModify))
-            {
-                if (recipe.ShowDialog() == DialogResult.OK)
-                    return;
+                    ((Button)sender).Parent.Controls.Add(new RecipeButton(picker.SelectedRecipe));
             }
         }
     }

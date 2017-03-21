@@ -58,7 +58,7 @@
           <Property Name="DatePlanned" Type="date" Nullable="false" />
           <Property Name="MealName" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="RecipeID" Type="int" Nullable="false" />
-          <Property Name="MealEaten" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="MealEaten" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Recipe">
           <Key>
@@ -324,7 +324,7 @@
           <Property Name="DatePlanned" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RecipeID" Type="Int32" Nullable="false" />
-          <Property Name="MealEaten" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MealEaten" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MealTime" Relationship="Self.FK_MealTime" FromRole="PlannedMeals" ToRole="MealTime" />
           <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe" FromRole="PlannedMeals" ToRole="Recipe" />
         </EntityType>
