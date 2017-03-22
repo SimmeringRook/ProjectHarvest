@@ -1,5 +1,4 @@
-﻿using Core.DatabaseUtilities.Queries;
-using Core.MeasurementConversions;
+﻿using Core.Utilities.UnitConversions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +47,26 @@ namespace Core.MealPlanning
                     conversion.ConversionType = new WeightUnitConversion();
                 return conversion.Convert(ingredientToConvert, unitToConvertTo.GetMeasurementUnit()).Amount;
             }
+        }
+
+        public List<PlannedMeals> GetPlannedMeals()
+        {
+            List<PlannedMeals> plannedMeals = new List<PlannedMeals>();
+            foreach (PlannedDay day in DaysOfWeek)
+            {
+                foreach (var mealPlan in day.MealsForDay)
+                {
+                    var plannedMeal = new PlannedMeals();
+                    plannedMeal.DatePlanned = day.Day;
+                    plannedMeal.MealName = mealPlan.Key.MealName;
+                    foreach (var meal in mealPlan.Value)
+                    {
+                        plannedMeal.RecipeID = meal.RecipeID;
+                        plannedMeals.Add(plannedMeal);
+                    }
+                }
+            }
+            return plannedMeals;
         }
     }
 }

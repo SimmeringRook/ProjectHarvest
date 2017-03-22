@@ -1,10 +1,14 @@
-﻿namespace Core
+﻿using System;
+
+namespace Core
 {
-    public partial class MealTime
+    public partial class MealTime : ICloneable
     {
-        public MealTime(string mealTime)
+        public object Clone()
         {
-            this.MealName = mealTime;
+            MealTime deepClone = new MealTime();//(MealTime)this.MemberwiseClone();
+            deepClone.MealName = string.Copy(this.MealName);
+            return deepClone;
         }
 
         public override bool Equals(object obj)
@@ -15,7 +19,7 @@
 
         public override int GetHashCode()
         {
-            return this.MealName.GetHashCode();
+            return Utilities.General.HashGenerator.Hash(this.MealName);
         }
     }
 }

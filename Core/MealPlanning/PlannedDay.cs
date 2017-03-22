@@ -1,8 +1,7 @@
-﻿using Core.DatabaseUtilities.Queries;
-using Core.MeasurementConversions;
+﻿using Core.Utilities.Database.Queries.Tables;
+using Core.Utilities.UnitConversions;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace Core.MealPlanning
@@ -15,21 +14,41 @@ namespace Core.MealPlanning
         public PlannedDay(DateTime day)
         {
             Day = day;
+            buildMealDictionary();
+        }
+
+        private void buildMealDictionary()
+        {
             MealsForDay = new Dictionary<MealTime, List<Recipe>>();
-            List<PlannedMeals> onlyRelevantPlans = new List<PlannedMeals>();
-            using (HarvestUtility harvest = new HarvestUtility(new MealTimeQuery()))
+
+            List<MealTime> mealTimes = new List<MealTime>();
+            List<Recipe> recipes = new List<Recipe>();
+            List<PlannedMeals> plansForDay = new List<PlannedMeals>();
+
+            using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
             {
-                foreach (MealTime mealTime in harvest.Get(-1) as List<MealTime>)
-                    MealsForDay.Add(mealTime, new List<Recipe>());
+                (harvest.Get(-1) as List<MealTime>).ToList().ForEach(item => { mealTimes.Add((MealTime)item.Clone()); });
 
                 harvest.HarvestQuery = new PlannedMealQuery();
-                //If a record exists, populate information
-                var allPlans = harvest.Get(-1) as List<PlannedMeals>;
-                onlyRelevantPlans = allPlans.Where(plannedMeal => plannedMeal.DatePlanned.Date == day.Date).ToList();
-                foreach (PlannedMeals meal in onlyRelevantPlans)
-                    MealsForDay[meal.MealTime].Add(meal.Recipe);
+                (harvest.Get(Day) as List<PlannedMeals>).ToList().ForEach(item => { plansForDay.Add((PlannedMeals)item.Clone()); });
+
+                harvest.HarvestQuery = new RecipeQuery();
+                (harvest.Get(-1) as List<Recipe>).ForEach(item => { recipes.Add((Recipe)item.Clone()); });
             }
 
+            foreach (MealTime mealTime in mealTimes)
+                MealsForDay.Add(mealTime.Clone() as MealTime, new List<Recipe>());
+            foreach (PlannedMeals planned in plansForDay)
+            {
+                MealTime mealtime = mealTimes.Where(m => m.MealName.Equals(planned.MealName)).First();
+                Recipe r = recipes.Where(rcp => rcp.RecipeID == planned.RecipeID).First();
+                MealsForDay[mealtime].Add(r.Clone() as Recipe);
+            }
+
+            //Dispose of lists
+            mealTimes = null;
+            recipes = null;
+            plansForDay = null;
         }
 
         public List<RecipeIngredient> GetIngredientsForToday()
@@ -38,7 +57,7 @@ namespace Core.MealPlanning
 
             foreach (KeyValuePair<MealTime, List<Recipe>> keyValuePair in MealsForDay)
                 foreach (Recipe recipe in keyValuePair.Value)
-                    foreach (RecipeIngredient ingredient in recipe.AssociatedIngredients)
+                    foreach (RecipeIngredient ingredient in recipe.GetIngredients())
                         if (allIngredients.Any(ing => ing.InventoryID == ingredient.InventoryID))
                         {
                             RecipeIngredient ri = allIngredients.Single(i => i.InventoryID == ingredient.InventoryID);
@@ -65,7 +84,7 @@ namespace Core.MealPlanning
 
             foreach (KeyValuePair<MealTime, List<Recipe>> meals in MealsForDay)
                 foreach (Recipe recipe in meals.Value)
-                    plannedMeals.Add(PlannedMeals.CreateRecord(this.Day, recipe.RecipeID, meals.Key));
+                    plannedMeals.Add(PlannedMeals.CreateRecord(this.Day, recipe.RecipeID, meals.Key.MealName));
 
             return plannedMeals;
         }

@@ -21,5 +21,6 @@ namespace Core
     
         public virtual MealTime MealTime { get; set; }
         public virtual Recipe Recipe { get; set; }
+
     }
 }

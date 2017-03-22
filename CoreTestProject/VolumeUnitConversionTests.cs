@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Core.MeasurementConversions;
-using Core;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CoreTestProject
 {

@@ -52,23 +52,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseUtilities\BindingListQueries\IHarvestBindingList.cs" />
-    <Compile Include="DatabaseUtilities\BindingListQueries\IngredientCategoryBindingListQuery.cs" />
-    <Compile Include="DatabaseUtilities\BindingListQueries\InventoryBindingListQuery.cs" />
-    <Compile Include="DatabaseUtilities\BindingListQueries\MetricBindingListQuery.cs" />
-    <Compile Include="DatabaseUtilities\BindingListQueries\RecipeBindingListQuery.cs" />
-    <Compile Include="DatabaseUtilities\BindingListQueries\RecipeCategoryBindingList.cs" />
-    <Compile Include="DatabaseUtilities\HarvestBindingListUtility.cs" />
-    <Compile Include="DatabaseUtilities\HarvestUtility.cs" />
-    <Compile Include="DatabaseUtilities\Queries\IHarvestQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\IngredientCategoryQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\InventoryQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\MealTimeQuery.cs" />
-    <Compile Include="MeasurementConversions\MetricQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\PlannedMealQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\RecipeCategoryQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\RecipeIngredientQuery.cs" />
-    <Compile Include="DatabaseUtilities\Queries\RecipeQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\IHarvestBindingList.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\IngredientCategoryBindingListQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\InventoryBindingListQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\MetricBindingListQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\RecipeBindingListQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\RecipeCategoryBindingList.cs" />
+    <Compile Include="Utilities\Database\Queries\BindingLists\HarvestBindingListUtility.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\HarvestTableUtility.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\IHarvestQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\IngredientCategoryQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\InventoryQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\MealTimeQuery.cs" />
+    <Compile Include="Utilities\General\CreateRecipeUtility.cs" />
+    <Compile Include="Utilities\General\HashGenerator.cs" />
+    <Compile Include="Utilities\General\IngredientInformation.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\MetricQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\PlannedMealQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\RecipeCategoryQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\RecipeIngredientQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\RecipeQuery.cs" />
     <Compile Include="HarvestModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,14 +102,14 @@
     <Compile Include="MealTime.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MeasurementConversions\HarvestConverter.cs" />
-    <Compile Include="MeasurementConversions\IUnitConvertable.cs" />
-    <Compile Include="MeasurementConversions\MeasurementConversionFactors.cs" />
-    <Compile Include="MeasurementConversions\WeightUnitConversion.cs" />
+    <Compile Include="Utilities\UnitConversions\HarvestConverter.cs" />
+    <Compile Include="Utilities\UnitConversions\IUnitConvertable.cs" />
+    <Compile Include="Utilities\UnitConversions\MeasurementConversionFactors.cs" />
+    <Compile Include="Utilities\UnitConversions\WeightUnitConversion.cs" />
     <Compile Include="Metric.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelExtensions\HarvestEntityFactory.cs" />
+    <Compile Include="Utilities\General\HarvestEntityFactory.cs" />
     <Compile Include="ModelExtensions\Inventory.cs" />
     <Compile Include="ModelExtensions\MealTime.cs" />
     <Compile Include="ModelExtensions\PlannedMeals.cs" />
@@ -126,10 +129,10 @@
     <Compile Include="RecipeIngredient.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MeasurementConversions\MeasurementUnit.cs" />
-    <Compile Include="MeasurementConversions\VolumeUnitConversion.cs" />
+    <Compile Include="Utilities\UnitConversions\MeasurementUnit.cs" />
+    <Compile Include="Utilities\UnitConversions\VolumeUnitConversion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValidationUtilities\HarvestValidator.cs" />
+    <Compile Include="Utilities\Validation\HarvestValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -159,6 +162,7 @@
       <LastGenOutput>HarvestModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
