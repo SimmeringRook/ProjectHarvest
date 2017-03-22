@@ -16,10 +16,10 @@ namespace Client_Desktop
         public HarvestForm()
         {
             InitializeComponent();
-            HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+            
             try
             {
-                
+                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
             }
             catch (Exception ex)
             {
