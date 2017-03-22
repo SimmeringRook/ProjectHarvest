@@ -18,6 +18,7 @@ namespace Client_Desktop
         {
             InitializeComponent();
             this._recipeToModify = (Recipe) recipe.Clone();
+            recipe = null;
             try
             {
                 using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeCategoryBindingList()))
@@ -161,6 +162,23 @@ namespace Client_Desktop
             temp.Servings = int.Parse(servingsTextbox.Text);
             temp.RecipeID = (_recipeToModify != null) ? _recipeToModify.RecipeID : 0;
             return temp;
-        }       
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+
+            _recipeToModify = null;
+            _Ingredients = null;
+
+            base.Dispose(disposing);
+        }
     }
 }

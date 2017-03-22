@@ -24,7 +24,9 @@ namespace Core.Utilities.Database.Queries.Tables
         public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
-            HarvestDatabase.Recipe.Remove(itemToRemove as Recipe);
+            var recipe = (itemToRemove as Recipe);
+            var recipeToDelete = HarvestDatabase.Recipe.Single(r => r.RecipeID == recipe.RecipeID);
+            HarvestDatabase.Recipe.Remove(recipeToDelete);
             HarvestDatabase.SaveChanges();
         }
 

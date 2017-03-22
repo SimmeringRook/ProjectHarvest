@@ -41,23 +41,22 @@ namespace Core
             }
             return _AssociatedIngredients;
         }
-
-        //Unused at this time
-        //public List<Inventory> GetInventoryItems()
-        //{
-        //    if (AssociatedInventoryItems.Count < 1)
-        //    {
-        //        var ingredients = GetIngredients();
-        //        using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
-        //        {
-        //            foreach(var ingredient in ingredients)
-        //            {
-        //                var item = harvest.Get(this.RecipeID) as Inventory;
-        //                AssociatedInventoryItems.Add((Inventory)item.Clone());
-        //            }
-        //        }
-        //    }
-        //    return AssociatedInventoryItems;
-        //}
+        
+        public List<Inventory> GetInventoryItems()
+        {
+            if (AssociatedInventoryItems.Count < 1)
+            {
+                var ingredients = GetIngredients();
+                using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
+                {
+                    foreach (var ingredient in ingredients)
+                    {
+                        var item = harvest.Get(this.RecipeID) as Inventory;
+                        AssociatedInventoryItems.Add((Inventory)item.Clone());
+                    }
+                }
+            }
+            return AssociatedInventoryItems;
+        }
     }
 }

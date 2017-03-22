@@ -26,7 +26,14 @@ namespace Core.Utilities.Database.Queries.Tables
         public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
-            HarvestDatabase.PlannedMeals.Remove(itemToRemove as PlannedMeals);
+            PlannedMeals item = itemToRemove as PlannedMeals;
+            var planToDelete = HarvestDatabase.PlannedMeals.Single(
+                p => 
+                p.RecipeID == item.RecipeID &&
+                DbFunctions.TruncateTime(p.DatePlanned) == DbFunctions.TruncateTime(item.DatePlanned) &&
+                p.MealName == item.MealName
+                );
+            HarvestDatabase.PlannedMeals.Remove(planToDelete);
             HarvestDatabase.SaveChanges();
         }
 

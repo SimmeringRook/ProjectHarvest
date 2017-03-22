@@ -260,9 +260,20 @@ namespace Client_Desktop
             {
                 try
                 {
-                    foreach (Recipe recipe in recipesToRemove)
-                        throw new NotImplementedException();
-                    recipesToRemove = new List<Recipe>();
+                    using (HarvestTableUtility harvest = new HarvestTableUtility(new RecipeIngredientQuery()))
+                        foreach (Recipe recipe in recipesToRemove)
+                        {
+                            recipe.GetIngredients().ForEach(ingredient => { harvest.Remove(ingredient); });
+
+                            harvest.HarvestQuery = new PlannedMealQuery();
+                            var plansWithThisRecipe = (harvest.Get(-1) as List<PlannedMeals>).Where(p => p.RecipeID == recipe.RecipeID).ToList();
+                            plansWithThisRecipe.ForEach(plan => { harvest.Remove(plan); });
+
+                            harvest.HarvestQuery = new RecipeQuery();
+                            harvest.Remove(recipe);
+                        }
+                    recipesToRemove.Clear();
+                    HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
                 }
                 catch (Exception ex)
                 {
