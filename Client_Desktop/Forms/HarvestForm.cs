@@ -1,9 +1,11 @@
 ﻿using Client_Desktop.Extensions;
 using Core;
 using Core.MealPlanning;
+using Core.Utilities.Database.Queries.BindingLists;
 using Core.Utilities.Database.Queries.Tables;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -19,14 +21,14 @@ namespace Client_Desktop
             
             try
             {
-                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+                RefreshCurrentTab();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
+        #region Main Form Functionality
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Dispose();
@@ -36,13 +38,90 @@ namespace Client_Desktop
         {
             try
             {
-                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+                RefreshCurrentTab();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Loads the relevant table for the current TabPage, and rebinds the table to the datagridview
+        /// </summary>
+        public void RefreshCurrentTab()
+        {
+            DataGridView gridOnTab = GetDataGridForTabPage(pantryTabControl.SelectedTab);
+            switch (pantryTabControl.SelectedIndex)
+            {
+                case 0:
+                    foreach (Control control in pantryTabControl.SelectedTab.Controls)
+                        if (control is TableLayoutPanel)
+                            foreach (Control cntrl in control.Controls)
+                                if (cntrl.Tag.Equals("Week"))
+                                    LoadWeek(cntrl as TableLayoutPanel);
+                    break;
+                case 1:
+                    using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new InventoryBindingListQuery()))
+                        gridOnTab.DataSource = (harvestBindingList.GetBindingList() as BindingList<Inventory>).ToList();
+                    break;
+                case 2:
+                    using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeBindingListQuery()))
+                        gridOnTab.DataSource = (harvestBindingList.GetBindingList() as BindingList<Recipe>).ToList();
+                    break;
+            }
+            pantryTabControl.SelectedTab.Refresh();
+        }
+
+        private static DataGridView GetDataGridForTabPage(TabPage selectedTab)
+        {
+            foreach (Control control in selectedTab.Controls)
+                if (control is TableLayoutPanel)
+                    foreach (Control ctrl in control.Controls)
+                        if (ctrl is DataGridView)
+                            return ctrl as DataGridView;
+
+            return null;
+        }
+
+        private static void LoadWeek(TableLayoutPanel weekTableLayout)
+        {
+            ClearControls(weekTableLayout);
+
+            //TODO UpdateWeekDayHeader()
+            List<MealTime> mealTimes = new List<MealTime>();
+            using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
+                mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
+            PlannedWeek thisWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
+
+            foreach (Control flowLayout in weekTableLayout.Controls)
+            {
+                flowLayout.Controls.Add(HarvestFormUtility.CreatePlanMealButton());
+
+                int currentMealTime = weekTableLayout.GetRow(flowLayout);
+                int currentDay = weekTableLayout.GetColumn(flowLayout);
+                MealTime mealTime = mealTimes[currentMealTime];
+
+                if (thisWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
+                    foreach (Recipe plannedRecipe in thisWeek.DaysOfWeek[currentDay].MealsForDay[mealTimes[currentMealTime]])
+                        flowLayout.Controls.Add(new RecipeButton(plannedRecipe));
+            }
+        }
+
+        private static void ClearControls(TableLayoutPanel weekTableLayout)
+        {
+            foreach (Control flowLayout in weekTableLayout.Controls)
+            {
+                var buttons = flowLayout.Controls;
+                flowLayout.Controls.Clear();
+                foreach (Control button in buttons)
+                    button.Dispose();
+                buttons = null;
+            }
+
+        }
+
+        #endregion
 
         #region Meal Tab
 
@@ -102,6 +181,7 @@ namespace Client_Desktop
                     groceryList.Dispose();
             }
         }
+
 
         #endregion
 
@@ -169,7 +249,7 @@ namespace Client_Desktop
         {
             using (InventoryForm inventoryManagement = new InventoryForm(itemToModify))
                 if (inventoryManagement.ShowDialog() == DialogResult.OK)
-                    HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+                    RefreshCurrentTab();
         }
         
         private void RemoveInventoryButton_Click(object sender, EventArgs e)
@@ -179,19 +259,29 @@ namespace Client_Desktop
 
             //Make sure user wants to delete the selected recipes
             string warningMessage = "Are you sure you want to delete the selected items?";
+            
 
             if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                using(HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
+                using(HarvestTableUtility harvest = new HarvestTableUtility(new RecipeIngredientQuery()))
                 {
-                    foreach (Inventory itemToRemove in inventoryItemsToRemove)
+                    inventoryItemsToRemove.ForEach(inventory =>
                     {
-                        //TODO handle bound to recipe
-                        harvest.Remove(itemToRemove);
-                    }
+                        if ((harvest.Get(-1) as List<RecipeIngredient>).Any(ri => ri.InventoryID == inventory.InventoryID) == false)
+                        {
+                            harvest.HarvestQuery = new InventoryQuery();
+                            harvest.Remove(inventory);
+                            harvest.HarvestQuery = new RecipeIngredientQuery();
+                        }    
+                        else
+                        {
+                            string recipeBoundItemErrorMessage = ", because it is required for at least one recipe. It must be removed from the recipe before it can be deleted from the Inventory.";
+                            MessageBox.Show("Unable to delete " + inventory.IngredientName + recipeBoundItemErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    });
                 }
 
-                HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+                RefreshCurrentTab();
             }
         }
         #endregion
@@ -273,7 +363,7 @@ namespace Client_Desktop
                             harvest.Remove(recipe);
                         }
                     recipesToRemove.Clear();
-                    HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+                    RefreshCurrentTab();
                 }
                 catch (Exception ex)
                 {
@@ -289,7 +379,7 @@ namespace Client_Desktop
             using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
             {
                 if (addRecipe.ShowDialog() == DialogResult.OK)
-                    HarvestFormUtility.RefreshCurrentTab(pantryTabControl);
+                    RefreshCurrentTab();
             }
                 
            

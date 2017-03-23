@@ -11,7 +11,7 @@ namespace Core
         {
             using (HarvestTableUtility harvest = new HarvestTableUtility(new IngredientCategoryQuery()))
             {
-                this.FoodCategory = (harvest.Get(this.InventoryID) as IngredientCategory).Category;
+                //this.FoodCategory = (harvest.Get(this.InventoryID) as IngredientCategory).Category;
 
                 harvest.HarvestQuery = new MetricQuery();
                 this.Measurement = (harvest.Get(this.InventoryID) as Metric).Measurement;
@@ -22,7 +22,7 @@ namespace Core
         {
             Inventory deepClone = (Inventory)this.MemberwiseClone();
             deepClone.Amount = this.Amount;
-            deepClone.FoodCategory = string.Copy(this.FoodCategory);
+            deepClone.Category = string.Copy(this.Category);
             deepClone.Measurement = string.Copy(this.Measurement);
 
             return deepClone; 

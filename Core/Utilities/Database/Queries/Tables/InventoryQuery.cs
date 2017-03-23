@@ -25,7 +25,9 @@ namespace Core.Utilities.Database.Queries.Tables
         public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
-            HarvestDatabase.Inventory.Remove(itemToRemove as Inventory);
+            Inventory inventory = itemToRemove as Inventory;
+            var item = HarvestDatabase.Inventory.Single(inv => inv.InventoryID == inventory.InventoryID);
+            HarvestDatabase.Inventory.Remove(item);
             HarvestDatabase.SaveChanges();
         }
 

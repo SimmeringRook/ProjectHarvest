@@ -24,10 +24,10 @@ namespace Core.Utilities.Database.Queries.Tables
         public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
         {
             HarvestDatabase.RecipeIngredient.Load();
-            var r = itemToRemove as RecipeIngredient;
-            var ingredientToDelete = HarvestDatabase.RecipeIngredient.Single(
-                ri => ri.RecipeID == r.RecipeID &&
-                ri.InventoryID == r.InventoryID
+            RecipeIngredient recipeIngredient = itemToRemove as RecipeIngredient;
+            RecipeIngredient ingredientToDelete = HarvestDatabase.RecipeIngredient.Single( ri => 
+                ri.RecipeID == recipeIngredient.RecipeID &&
+                ri.InventoryID == recipeIngredient.InventoryID
                 );
             HarvestDatabase.RecipeIngredient.Remove(ingredientToDelete);
             HarvestDatabase.SaveChanges();

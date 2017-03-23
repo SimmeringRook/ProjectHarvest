@@ -1,93 +1,11 @@
-﻿using Core;
-using Core.MealPlanning;
-using Core.Utilities.Database.Queries.BindingLists;
-using Core.Utilities.Database.Queries.Tables;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
 {
     public static class HarvestFormUtility
     {
-        /// <summary>
-        /// Loads the relevant table for the current TabPage, and rebinds the table to the datagridview
-        /// </summary>
-        public static void RefreshCurrentTab(TabControl pantryTabs)
-        {
-            DataGridView gridOnTab = GetDataGridForTabPage(pantryTabs.SelectedTab);
-            switch (pantryTabs.SelectedIndex)
-            {
-                case 0:
-                    foreach (Control control in pantryTabs.SelectedTab.Controls)
-                        if (control is TableLayoutPanel)
-                            foreach(Control cntrl in control.Controls)
-                                if (cntrl.Tag.Equals("Week"))
-                                    LoadWeek(cntrl as TableLayoutPanel);
-                    break;
-                case 1:
-                    using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new InventoryBindingListQuery()))
-                        gridOnTab.DataSource = (harvestBindingList.GetBindingList() as BindingList<Inventory>).ToList();
-                    break;
-                case 2:
-                    using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeBindingListQuery()))
-                        gridOnTab.DataSource = (harvestBindingList.GetBindingList() as BindingList<Recipe>).ToList();
-                    break;
-            }
-            pantryTabs.SelectedTab.Refresh();
-        }
-
-        private static DataGridView GetDataGridForTabPage(TabPage selectedTab)
-        {
-            foreach (Control control in selectedTab.Controls)
-                if (control is TableLayoutPanel)
-                    foreach (Control ctrl in control.Controls)
-                        if (ctrl is DataGridView)
-                            return ctrl as DataGridView;
-
-            return null;
-        }
-
-        private static void LoadWeek(TableLayoutPanel weekTableLayout)
-        {
-            ClearControls(weekTableLayout);
-
-            //TODO UpdateWeekDayHeader()
-            List<MealTime> mealTimes = new List<MealTime>();
-            using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
-                mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
-            PlannedWeek thisWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
-
-            foreach (Control flowLayout in weekTableLayout.Controls)
-            {
-                flowLayout.Controls.Add(CreatePlanMealButton());
-
-                int currentMealTime = weekTableLayout.GetRow(flowLayout);
-                int currentDay = weekTableLayout.GetColumn(flowLayout);
-                MealTime mealTime = mealTimes[currentMealTime];
-
-                if (thisWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
-                    foreach (Recipe plannedRecipe in thisWeek.DaysOfWeek[currentDay].MealsForDay[mealTimes[currentMealTime]])
-                        flowLayout.Controls.Add(new RecipeButton(plannedRecipe));
-            }
-        }
-
-        private static void ClearControls(TableLayoutPanel weekTableLayout)
-        {
-            foreach (Control flowLayout in weekTableLayout.Controls)
-            {
-                var buttons = flowLayout.Controls;
-                flowLayout.Controls.Clear();
-                foreach (Control button in buttons)
-                    button.Dispose();
-                buttons = null;
-            }
-                
-        }
-
-        private static Button CreatePlanMealButton()
+        public static Button CreatePlanMealButton()
         {
             Button template = new Button();
             template.Anchor = AnchorStyles.Top;
@@ -97,7 +15,7 @@ namespace Client_Desktop.Extensions
             return template;
         }
 
-        private static void PlanMealButton_Click(object sender, EventArgs e)
+        public static void PlanMealButton_Click(object sender, EventArgs e)
         {
             using (RecipePickerForm picker = new RecipePickerForm())
             {

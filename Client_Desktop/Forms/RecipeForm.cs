@@ -6,6 +6,7 @@ using Core;
 using System.ComponentModel;
 using Core.Utilities.General;
 using Core.Utilities.Database.Queries.BindingLists;
+using Core.Utilities.Database.Queries.Tables;
 
 namespace Client_Desktop
 {
@@ -17,7 +18,7 @@ namespace Client_Desktop
         public RecipeForm(Recipe recipe)
         {
             InitializeComponent();
-            this._recipeToModify = (Recipe) recipe.Clone();
+            this._recipeToModify = (recipe != null) ? (Recipe) recipe.Clone() : recipe;
             recipe = null;
             try
             {
@@ -62,14 +63,12 @@ namespace Client_Desktop
         private void addButton_Click(object sender, EventArgs e)
         {
             AddNewIngredientRow();
-
-            if (_numberOfRows >= 2)
-                subtractButton.Enabled = true;
+            subtractButton.Enabled = (_numberOfRows > 1);
         }
 
-        private void AddNewIngredientRow()
+        private void AddNewIngredientRow(IngredientInformation information = null)
         {
-            IngredientInformation rowToBeAdded = new IngredientInformation();
+            IngredientInformation rowToBeAdded = (information != null) ? information : new IngredientInformation();
             recipeTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             recipeTableLayout.Controls.Add(rowToBeAdded.Name, 0, _numberOfRows);
@@ -96,11 +95,12 @@ namespace Client_Desktop
                 rowToBeAdded.Type.DisplayMember = "Category";
                 rowToBeAdded.Type.ValueMember = "Category";
 
-
                 rowToBeAdded.Unit.DataBindings.Add(new Binding("SelectedValue", units, "Measurement", true));
                 rowToBeAdded.Unit.DataSource = units.ToList();
                 rowToBeAdded.Unit.DisplayMember = "Measurement";
                 rowToBeAdded.Unit.ValueMember = "Measurement";
+
+                rowToBeAdded.Selected.CheckStateChanged += Selected_CheckStateChanged;
             }
             catch (Exception ex)
             {
@@ -111,14 +111,18 @@ namespace Client_Desktop
             _numberOfRows++;
         }
 
+        private void Selected_CheckStateChanged(object sender, EventArgs e)
+        {
+            removeSelectedButton.Enabled = _Ingredients.Any(row => row.Selected.Checked);
+        }
+
         #endregion
 
         #region Remove Rows
         private void subtractButton_Click(object sender, EventArgs e)
         {
             RemoveRow();
-            if (_numberOfRows == 1)
-                subtractButton.Enabled = false;
+            subtractButton.Enabled = (_numberOfRows > 1);
         }
 
         private void RemoveRow()
@@ -143,6 +147,7 @@ namespace Client_Desktop
         private void addModifyRecipeButton_Click(object sender, EventArgs e)
         {
             // TODO add validation check
+
             try
             {
                 CreateRecipeUtility.SubmitRecipeAndIngredientsToDatabase(GetRecipeFromControls(), _Ingredients);
@@ -179,6 +184,78 @@ namespace Client_Desktop
             _Ingredients = null;
 
             base.Dispose(disposing);
+        }
+
+        private void removeSelectedButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<IngredientInformation> ingredientInfoToKeep = new List<IngredientInformation>();
+                List<IngredientInformation> ingredientInfoToDiscard = new List<IngredientInformation>();
+
+                //Find out what needs to be deleted
+                _Ingredients.ForEach(row => {
+                    if (!row.Selected.Checked) { ingredientInfoToKeep.Add(row); }
+                    else { ingredientInfoToDiscard.Add(row); }   
+                });
+
+                //Clear out the ingredient information list, which will be repopulated with
+                //information from the ingredientInfoToKeep list.
+                _Ingredients.Clear();
+
+                //if this is an existing Recipe
+                if (_recipeToModify != null)
+                {
+                    using (HarvestTableUtility harvest = new HarvestTableUtility(new RecipeIngredientQuery()))
+                    {
+                        List<int> recipeIngredientIDs = new List<int>();
+                        List<Inventory> recipeInventoryItems = _recipeToModify.GetInventoryItems();
+                        //Get the inventoryIDs for each recipe ingredient to be deleted
+                        foreach (Inventory recipeInventoryItem in recipeInventoryItems)
+                            ingredientInfoToDiscard.ForEach(ingredientInfo =>
+                            {
+                                if (ingredientInfo.Name.Text.Equals(recipeInventoryItem.IngredientName))
+                                    recipeIngredientIDs.Add(recipeInventoryItem.InventoryID);
+                            });
+
+                        //Remove the recipe ingredients from the database
+                        recipeIngredientIDs.ForEach(ingredientInventoryID =>
+                        {
+                            RecipeIngredient recipeIngredient = _recipeToModify.GetIngredients().Single(ingredient => ingredient.InventoryID == ingredientInventoryID);
+                            harvest.Remove(recipeIngredient);
+                        });
+
+                        //allow GC
+                        recipeInventoryItems.Clear();
+                        recipeIngredientIDs.Clear();
+                    }
+                }
+                
+                //Delete everything from the table
+                recipeTableLayout.RowCount = _numberOfRows = 0;
+                recipeTableLayout.Controls.Clear();
+                recipeTableLayout.RowStyles.Clear();
+
+                //Rebuild table layout
+                ingredientInfoToKeep.ForEach(row =>
+                {
+                    //Clear out obsolete references
+                    row.Type.DataBindings.Clear();
+                    row.Unit.DataBindings.Clear();
+                    row.Selected.CheckStateChanged -= Selected_CheckStateChanged;
+                    //Create the row
+                    AddNewIngredientRow(row);
+                });
+
+                //allow GC
+                ingredientInfoToDiscard.Clear();
+                ingredientInfoToKeep.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            removeSelectedButton.Enabled = false;
         }
     }
 }

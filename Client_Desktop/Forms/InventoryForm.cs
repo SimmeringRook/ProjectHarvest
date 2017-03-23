@@ -39,7 +39,7 @@ namespace Client_Desktop
                     itemToModify.PopulateGUIProperties();
                     itemNameTextbox.Text = itemToModify.IngredientName;
                     amountTextbox.Text = itemToModify.Amount.ToString();
-                    foodCategoryCombo.SelectedValue = itemToModify.FoodCategory;
+                    foodCategoryCombo.SelectedValue = itemToModify.Category;
                     measurementCombo.SelectedValue = itemToModify.Measurement;
                 }
             }

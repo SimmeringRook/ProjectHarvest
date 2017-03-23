@@ -51,7 +51,7 @@ namespace Core
                 {
                     foreach (var ingredient in ingredients)
                     {
-                        var item = harvest.Get(this.RecipeID) as Inventory;
+                        var item = harvest.Get(ingredient.InventoryID) as Inventory;
                         AssociatedInventoryItems.Add((Inventory)item.Clone());
                     }
                 }
