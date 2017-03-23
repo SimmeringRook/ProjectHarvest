@@ -283,6 +283,7 @@ namespace Client_Desktop
 
                 RefreshCurrentTab();
             }
+            inventoryItemsToRemove.Clear();
         }
         #endregion
 
