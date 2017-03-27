@@ -9,18 +9,23 @@ namespace Client_Desktop.Extensions
         public FlowLayoutPanel Container;
         public RecipeButton RecipeButton;
         private Button deleteButton;
+        private HarvestForm mainForm;
 
-        public PlannedRecipeControl(Recipe selectedRecipe)
+        public PlannedRecipeControl(HarvestForm mainForm, Recipe selectedRecipe)
         {
-            Container = new FlowLayoutPanel();
-            RecipeButton = new RecipeButton(selectedRecipe);
-            deleteButton = newDeleteButton();
+            this.mainForm = mainForm;
 
-            Container.Controls.Add(RecipeButton);
-            Container.Controls.Add(deleteButton);
+            Container = new FlowLayoutPanel();
             Container.Margin = new Padding(5, 2, 0, 2);
             Container.AutoSize = true;
             Container.BorderStyle = BorderStyle.FixedSingle;
+
+            RecipeButton = new RecipeButton(selectedRecipe);
+            Container.Controls.Add(RecipeButton);
+
+            deleteButton = newDeleteButton();
+            Container.Controls.Add(deleteButton);
+
         }
 
         #region Delete Button
@@ -36,7 +41,9 @@ namespace Client_Desktop.Extensions
         {
             Control parentOfParent = Container.Parent;
 
-            //RecipeButton.Click = null;
+            //Remove recipe from plan
+            mainForm.RemoveRecipeFromThisWeek(this);
+
             RecipeButton = null;
 
             deleteButton = null;

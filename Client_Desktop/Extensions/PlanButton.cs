@@ -25,7 +25,7 @@ namespace Client_Desktop.Extensions
             {
                 if (picker.ShowDialog() == DialogResult.OK)
                 {
-                    var recipePrefab = new PlannedRecipeControl(picker.SelectedRecipe);
+                    var recipePrefab = new PlannedRecipeControl(mainForm, picker.SelectedRecipe);
                     ((Button)sender).Parent.Controls.Add(recipePrefab.Container);
 
                     mainForm.AddRecipeToThisWeek(recipePrefab);

@@ -139,12 +139,27 @@ namespace Client_Desktop
             int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Container.Parent);
             int mealTime = weekTableLayout.GetRow(recipePrefab.Container.Parent);
 
-            List<MealTime> mealTimes = new List<MealTime>();
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
-                mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
+            {
+                List<MealTime> mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
 
-            if (currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Contains(recipePrefab.RecipeButton.Recipe) == false)
-                currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Add(recipePrefab.RecipeButton.Recipe);
+                if (currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Contains(recipePrefab.RecipeButton.Recipe) == false)
+                    currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Add(recipePrefab.RecipeButton.Recipe);
+            }
+        }
+
+        public void RemoveRecipeFromThisWeek(PlannedRecipeControl recipePrefab)
+        {
+            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Container.Parent);
+            int mealTime = weekTableLayout.GetRow(recipePrefab.Container.Parent);
+
+            using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
+            {
+                List<MealTime> mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
+                currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Remove(recipePrefab.RecipeButton.Recipe);
+            }
+            
+            recipePrefab = null;
         }
 
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)

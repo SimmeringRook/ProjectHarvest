@@ -72,7 +72,6 @@
     <Compile Include="Forms\HarvestForm.Designer.cs">
       <DependentUpon>HarvestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\HarvestFormUtility.cs" />
     <Compile Include="Extensions\RecipeButton.cs">
       <SubType>Component</SubType>
     </Compile>
