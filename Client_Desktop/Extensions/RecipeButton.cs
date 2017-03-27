@@ -14,6 +14,7 @@ namespace Client_Desktop.Extensions
             this.Anchor = AnchorStyles.None;
             this.Text = recipe.RecipeName;
             this.Tag = "Recipe";
+            this.AutoSize = true;
             this.Click += new System.EventHandler(ShowRecipe_Click);
         }
 
@@ -24,17 +25,9 @@ namespace Client_Desktop.Extensions
             {
                 if (recipe.ShowDialog() == DialogResult.OK)
                 {
-                    //var rbut = sender as RecipeButton;
-                    //var flow = rbut.Parent;
-                    //var table = flow.Parent;
-                    //var tabTable = table.Parent;
-                    //var tabPage = tabTable.Parent;
-                    //var tabControl = tabPage.Parent;
-                    //HarvestForm harvest = tabControl.Parent as HarvestForm;
-                    //harvest.RefreshCurrentTab();
-                    //MessageBox.Show(tabControl.Parent.Name);
-                }
                     return;
+                }
+                   
             }
         }
 

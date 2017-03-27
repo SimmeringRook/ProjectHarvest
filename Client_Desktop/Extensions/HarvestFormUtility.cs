@@ -5,28 +5,29 @@ namespace Client_Desktop.Extensions
 {
     public static class HarvestFormUtility
     {
-        public static Button CreatePlanMealButton()
-        {
-            Button template = new Button();
-            template.Anchor = AnchorStyles.Top;
-            template.Text = "- Plan -";
-            template.Tag = "Plan";
-            template.Click += new System.EventHandler(PlanMealButton_Click);
-            return template;
-        }
+        //public static Button CreatePlanMealButton()
+        //{
+        //    Button template = new Button();
+        //    template.Anchor = AnchorStyles.Top;
+        //    template.Text = "- Plan -";
+        //    template.Tag = "Plan";
+        //    template.Click += new System.EventHandler(PlanMealButton_Click);
+        //    return template;
+        //}
 
-        public static void PlanMealButton_Click(object sender, EventArgs e)
-        {
-            using (RecipePickerForm picker = new RecipePickerForm())
-            {
-                if (picker.ShowDialog() == DialogResult.OK)
-                {
-                    var recipeButton = new RecipeButton(picker.SelectedRecipe);
-                    ((Button)sender).Parent.Controls.Add(recipeButton);
-                    ((HarvestForm)((Button)sender).Parent.Parent.Parent.Parent.Parent.Parent).AddRecipeToThisWeek(recipeButton);
-                }
+        //public static void PlanMealButton_Click(object sender, EventArgs e)
+        //{
+        //    using (RecipePickerForm picker = new RecipePickerForm())
+        //    {
+        //        if (picker.ShowDialog() == DialogResult.OK)
+        //        {
+        //            var recipePrefab = new PlannedRecipeControl(picker.SelectedRecipe);
+        //            ((Button) sender).Parent.Controls.Add(recipePrefab.Container);
+
+        //            ((Button)sender).main.AddRecipeToThisWeek(recipePrefab);
+        //        }
                     
-            }
-        }
+        //    }
+        //}
     }
 }

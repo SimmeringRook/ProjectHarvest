@@ -19,7 +19,15 @@ namespace Client_Desktop
         {
             InitializeComponent();
             //Persistent week happens here
+
+            //if LastLaunched.HasEntries == false
             currentWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
+            //insert (today) into LastLaunched
+
+            //else
+            //Day firstLaunched = LastLaunched.Get()
+            //currentweek = new PlannedWeek(firstLaunched, firstLaunched.AddDays(6));
+
             try
             {
                 RefreshCurrentTab();
@@ -97,7 +105,7 @@ namespace Client_Desktop
 
             foreach (Control flowLayout in weekTableLayout.Controls)
             {
-                flowLayout.Controls.Add(HarvestFormUtility.CreatePlanMealButton());
+                flowLayout.Controls.Add(new PlanButton(this));
 
                 int currentMealTime = weekTableLayout.GetRow(flowLayout);
                 int currentDay = weekTableLayout.GetColumn(flowLayout);
@@ -126,17 +134,17 @@ namespace Client_Desktop
 
         #region Meal Tab
 
-        public void AddRecipeToThisWeek(RecipeButton recipeButton)
+        public void AddRecipeToThisWeek(PlannedRecipeControl recipePrefab)
         {
-            int dayOfWeek = weekTableLayout.GetColumn(recipeButton.Parent);
-            int mealTime = weekTableLayout.GetRow(recipeButton.Parent);
+            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Container.Parent);
+            int mealTime = weekTableLayout.GetRow(recipePrefab.Container.Parent);
 
             List<MealTime> mealTimes = new List<MealTime>();
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
                 mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
 
-            if (currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Contains(recipeButton.Recipe) == false)
-                currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Add(recipeButton.Recipe);
+            if (currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Contains(recipePrefab.RecipeButton.Recipe) == false)
+                currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Add(recipePrefab.RecipeButton.Recipe);
         }
 
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)

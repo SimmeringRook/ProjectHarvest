@@ -56,6 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\PlanButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Extensions\PlannedRecipeControl.cs" />
     <Compile Include="Forms\GroceryListForm.cs">
       <SubType>Form</SubType>
     </Compile>
