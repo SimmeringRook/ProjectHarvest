@@ -20,7 +20,12 @@ namespace Client_Desktop.Extensions
             using (RecipePickerForm picker = new RecipePickerForm())
             {
                 if (picker.ShowDialog() == DialogResult.OK)
-                    ((Button)sender).Parent.Controls.Add(new RecipeButton(picker.SelectedRecipe));
+                {
+                    var recipeButton = new RecipeButton(picker.SelectedRecipe);
+                    ((Button)sender).Parent.Controls.Add(recipeButton);
+                    ((HarvestForm)((Button)sender).Parent.Parent.Parent.Parent.Parent.Parent).AddRecipeToThisWeek(recipeButton);
+                }
+                    
             }
         }
     }

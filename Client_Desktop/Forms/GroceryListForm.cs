@@ -73,6 +73,7 @@ namespace Client_Desktop
             {
                 MessageBox.Show(ex.Message);
             }
+            this.DialogResult = DialogResult.OK;
         }
     } 
 }

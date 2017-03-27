@@ -58,5 +58,10 @@ namespace Core
             }
             return AssociatedInventoryItems;
         }
+
+        public override int GetHashCode()
+        {
+            return Utilities.General.HashGenerator.Hash(this.RecipeID, this.RecipeName, this.Servings);
+        }
     }
 }
