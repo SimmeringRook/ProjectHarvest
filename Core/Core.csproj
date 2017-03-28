@@ -63,6 +63,7 @@
     <Compile Include="Utilities\Database\Queries\Tables\IHarvestQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\IngredientCategoryQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\InventoryQuery.cs" />
+    <Compile Include="Utilities\Database\Queries\Tables\LastLaunchedQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\MealTimeQuery.cs" />
     <Compile Include="Utilities\General\CreateRecipeUtility.cs" />
     <Compile Include="Utilities\General\HashGenerator.cs" />

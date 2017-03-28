@@ -17,19 +17,28 @@ namespace Client_Desktop
         private PlannedWeek currentWeek;
         public HarvestForm()
         {
-            InitializeComponent();
-            //Persistent week happens here
-
-            //if LastLaunched.HasEntries == false
-            currentWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
-            //insert (today) into LastLaunched
-
-            //else
-            //Day firstLaunched = LastLaunched.Get()
-            //currentweek = new PlannedWeek(firstLaunched, firstLaunched.AddDays(6));
+            InitializeComponent();           
 
             try
             {
+                //Persistent week happens here
+                using (HarvestTableUtility harvestTables = new HarvestTableUtility(new LastLaunchedQuery()))
+                {
+                    if ((harvestTables.Get(null) as List<LastLaunched>).Count < 1)
+                    {
+                        currentWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
+                        LastLaunched today = new LastLaunched();
+                        today.Date = DateTime.Today.Date;
+                        harvestTables.Insert(today);
+                    }
+                    else
+                    {
+                        DateTime firstLaunched = new DateTime();
+                        firstLaunched = (harvestTables.Get(-1) as List<LastLaunched>).First().Date;
+                        currentWeek = new PlannedWeek(firstLaunched, firstLaunched.AddDays(6));
+                    }
+                }
+
                 RefreshCurrentTab();
             }
             catch (Exception ex)
@@ -165,8 +174,8 @@ namespace Client_Desktop
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //TODO: fix this with information from datetime picker controls on Meal Planning Tab
-            DateTime start = DateTime.Today;
-            PlannedWeek plannedWeek = new PlannedWeek(start, start.AddDays(6));
+            //DateTime start = DateTime.Today;
+            //PlannedWeek plannedWeek = new PlannedWeek(start, start.AddDays(6));
 
             List<MealTime> mealTimes = new List<MealTime>();
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
@@ -179,8 +188,8 @@ namespace Client_Desktop
                         RecipeButton button = control as RecipeButton;
                         int dayIndex = weekTableLayout.GetColumn(flowControl);
                         MealTime mealTime = mealTimes[weekTableLayout.GetRow(flowControl)];
-                        if (plannedWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Any(r => r.RecipeID == button.Recipe.RecipeID) == false)
-                            plannedWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Add(button.Recipe);
+                        if (currentWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Any(r => r.RecipeID == button.Recipe.RecipeID) == false)
+                            currentWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Add(button.Recipe);
                     }
 
             try
@@ -190,11 +199,11 @@ namespace Client_Desktop
                     //Restrict list to only planned meals that fall within plannedMeals_Week's dates
                     List<PlannedMeals> plannedMeals_DB = (harvest.Get(-1) as List<PlannedMeals>).Where(
                         p =>
-                        p.DatePlanned >= plannedWeek.StartOfWeek.Date &&
-                        p.DatePlanned <= plannedWeek.EndOfWeek.Date
+                        p.DatePlanned >= currentWeek.StartOfWeek.Date &&
+                        p.DatePlanned <= currentWeek.EndOfWeek.Date
                         ).ToList();
 
-                    List<PlannedMeals> plannedMeals_Week = plannedWeek.GetPlannedMeals();
+                    List<PlannedMeals> plannedMeals_Week = currentWeek.GetPlannedMeals();
                     //If there are existing plans
                     List<PlannedMeals> newPlannedMeals = (plannedMeals_DB.Count > 0) 
                         ? new List<PlannedMeals>() //If there are records in the database for this week
@@ -218,11 +227,10 @@ namespace Client_Desktop
                 MessageBox.Show(ex.Message);
             }
 
-            using (GroceryListForm groceryList = new GroceryListForm(plannedWeek))
+            using (GroceryListForm groceryList = new GroceryListForm(currentWeek))
             {
                 if (groceryList.ShowDialog() == DialogResult.OK)
                 {
-                    plannedWeek = null;
                     groceryList.Dispose();
                 }
                     

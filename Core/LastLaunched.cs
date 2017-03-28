@@ -11,9 +11,11 @@ namespace Core
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Data.Entity;
+
     public partial class LastLaunched
     {
-        public System.DateTime Date { get; set; }
+        public System.DateTime Date { get; set; }        
+              
     }
 }
