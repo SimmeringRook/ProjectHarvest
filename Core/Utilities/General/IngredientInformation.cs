@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System.Linq;
 using Core.Utilities.Database.Queries.Tables;
 
 namespace Core.Utilities.General
@@ -71,7 +72,12 @@ namespace Core.Utilities.General
         public void LoadExistingData(RecipeIngredient ingredient)
         {
             Quantity.Text = ingredient.Amount.ToString();
-            Unit.SelectedValue = ingredient.Measurement;
+
+            int index = -1;
+            foreach (Metric unit in Unit.Items)
+                if (unit.Measurement.Equals(ingredient.Measurement))
+                   index = Unit.Items.IndexOf(unit);
+            Unit.SelectedItem = Unit.Items[index];     
 
             using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
             {

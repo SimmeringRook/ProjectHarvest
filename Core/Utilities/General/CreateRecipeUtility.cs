@@ -81,6 +81,7 @@ namespace Core.Utilities.General
                 {
                     Inventory emptyIngredient = ingredientToCreate;
                     emptyIngredient.Amount = 0.0d;
+                    emptyIngredient.Measurement = ingredientToCreate.Measurement;
                     harvest.Insert(emptyIngredient);
                 }
             }

@@ -55,6 +55,7 @@ namespace Client_Desktop
                 AddNewIngredientRow();
                 _Ingredients[i].LoadExistingData(ingredients[i]);
             }
+            RecipeNameTextBox.Focus();
         }
 
         #region Row Management
@@ -90,12 +91,12 @@ namespace Client_Desktop
                     units = harvestBindingList.GetBindingList() as BindingList<Metric>;
                 }
 
-                rowToBeAdded.Type.DataBindings.Add(new Binding("SelectedValue", category, "Category", true));
+                rowToBeAdded.Type.DataBindings.Add(new Binding("SelectedItem", category, "Category", true, DataSourceUpdateMode.OnPropertyChanged));
                 rowToBeAdded.Type.DataSource = category.ToList();
                 rowToBeAdded.Type.DisplayMember = "Category";
                 rowToBeAdded.Type.ValueMember = "Category";
 
-                rowToBeAdded.Unit.DataBindings.Add(new Binding("SelectedValue", units, "Measurement", true));
+                rowToBeAdded.Unit.DataBindings.Add(new Binding("SelectedItem", units, "Measurement", true, DataSourceUpdateMode.OnPropertyChanged));
                 rowToBeAdded.Unit.DataSource = units.ToList();
                 rowToBeAdded.Unit.DisplayMember = "Measurement";
                 rowToBeAdded.Unit.ValueMember = "Measurement";

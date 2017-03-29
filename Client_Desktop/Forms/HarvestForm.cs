@@ -122,7 +122,8 @@ namespace Client_Desktop
 
                 if (currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
                     foreach (Recipe plannedRecipe in currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTimes[currentMealTime]])
-                        flowLayout.Controls.Add(new RecipeButton(plannedRecipe));
+                        flowLayout.Controls.Add(new PlannedRecipeControl(this, plannedRecipe));
+                ;
             }
         }
 
@@ -145,8 +146,8 @@ namespace Client_Desktop
 
         public void AddRecipeToThisWeek(PlannedRecipeControl recipePrefab)
         {
-            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Container.Parent);
-            int mealTime = weekTableLayout.GetRow(recipePrefab.Container.Parent);
+            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Parent);
+            int mealTime = weekTableLayout.GetRow(recipePrefab.Parent);
 
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
             {
@@ -159,8 +160,8 @@ namespace Client_Desktop
 
         public void RemoveRecipeFromThisWeek(PlannedRecipeControl recipePrefab)
         {
-            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Container.Parent);
-            int mealTime = weekTableLayout.GetRow(recipePrefab.Container.Parent);
+            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Parent);
+            int mealTime = weekTableLayout.GetRow(recipePrefab.Parent);
 
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
             {
@@ -183,9 +184,9 @@ namespace Client_Desktop
 
             foreach (Control flowControl in weekTableLayout.Controls)
                 foreach (Control control in flowControl.Controls)
-                    if (control is RecipeButton)
+                    if (control is PlannedRecipeControl)
                     {
-                        RecipeButton button = control as RecipeButton;
+                        RecipeButton button = (control as PlannedRecipeControl).RecipeButton;
                         int dayIndex = weekTableLayout.GetColumn(flowControl);
                         MealTime mealTime = mealTimes[weekTableLayout.GetRow(flowControl)];
                         if (currentWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Any(r => r.RecipeID == button.Recipe.RecipeID) == false)

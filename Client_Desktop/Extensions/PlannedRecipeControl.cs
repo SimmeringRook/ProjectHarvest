@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
 {
-    public class PlannedRecipeControl
+    public class PlannedRecipeControl : FlowLayoutPanel
     {
-        public FlowLayoutPanel Container;
+        //public FlowLayoutPanel Container;
         public RecipeButton RecipeButton;
         private Button deleteButton;
         private HarvestForm mainForm;
@@ -15,16 +15,16 @@ namespace Client_Desktop.Extensions
         {
             this.mainForm = mainForm;
 
-            Container = new FlowLayoutPanel();
-            Container.Margin = new Padding(5, 2, 0, 2);
-            Container.AutoSize = true;
-            Container.BorderStyle = BorderStyle.FixedSingle;
+            //Container = new FlowLayoutPanel();
+            this.Margin = new Padding(5, 2, 0, 2);
+            this.AutoSize = true;
+            this.BorderStyle = BorderStyle.FixedSingle;
 
             RecipeButton = new RecipeButton(selectedRecipe);
-            Container.Controls.Add(RecipeButton);
+            this.Controls.Add(RecipeButton);
 
             deleteButton = newDeleteButton();
-            Container.Controls.Add(deleteButton);
+            this.Controls.Add(deleteButton);
 
         }
 
@@ -39,7 +39,7 @@ namespace Client_Desktop.Extensions
         }
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            Control parentOfParent = Container.Parent;
+            Control parentOfParent = this.Parent;
 
             //Remove recipe from plan
             mainForm.RemoveRecipeFromThisWeek(this);
@@ -47,8 +47,8 @@ namespace Client_Desktop.Extensions
             RecipeButton = null;
 
             deleteButton = null;
-            Container.Controls.Clear();
-            parentOfParent.Controls.Remove(Container);
+            this.Controls.Clear();
+            parentOfParent.Controls.Remove(this);
         }
         #endregion
 
