@@ -4,16 +4,18 @@ namespace Core.Utilities.Database.Queries.BindingLists
 {
     public class HarvestBindingListUtility : IDisposable
     {
+        private HarvestDatabaseEntities _HarvestDatabase;
         public IHarvestBindingList HarvestBindingList { get; set; }
         
         public HarvestBindingListUtility(IHarvestBindingList harvestBindingList)
         {
+            _HarvestDatabase = new HarvestDatabaseEntities();
             HarvestBindingList = harvestBindingList;
         }
 
         public object GetBindingList()
         {
-            return HarvestBindingList.GetBindingList();
+            return HarvestBindingList.GetBindingList(_HarvestDatabase);
         }
 
         #region IDisposable Support

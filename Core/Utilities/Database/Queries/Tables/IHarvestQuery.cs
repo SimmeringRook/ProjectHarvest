@@ -2,12 +2,12 @@
 {
     public interface IHarvestQuery
     {
-        void Insert(object itemToAdd, HarvestEntities HarvestDatabase);
+        void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase);
 
-        void Update(object itemToChange, HarvestEntities HarvestDatabas);
+        void Update(object itemToChange, HarvestDatabaseEntities HarvestDatabas);
 
-        void Remove(object itemToRemove, HarvestEntities HarvestDatabas);
+        void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabas);
 
-        object Get(object itemID, HarvestEntities HarvestDatabas);
+        object Get(object itemID, HarvestDatabaseEntities HarvestDatabas);
     }
 }

@@ -7,7 +7,7 @@ namespace Core.Utilities.Database.Queries.Tables
     public class InventoryQuery : IHarvestQuery
     {
 
-        public object Get(object itemID, HarvestEntities HarvestDatabase)
+        public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
             if ((int)itemID == -1)
@@ -15,14 +15,14 @@ namespace Core.Utilities.Database.Queries.Tables
             return HarvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID.Equals((int) itemID));
         }
 
-        public void Insert(object itemToAdd, HarvestEntities HarvestDatabase)
+        public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
             HarvestDatabase.Inventory.Add(itemToAdd as Inventory);
             HarvestDatabase.SaveChanges();
         }
 
-        public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
+        public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
             Inventory inventory = itemToRemove as Inventory;
@@ -31,7 +31,7 @@ namespace Core.Utilities.Database.Queries.Tables
             HarvestDatabase.SaveChanges();
         }
 
-        public void Update(object itemToChange, HarvestEntities HarvestDatabase)
+        public void Update(object itemToChange, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
             HarvestDatabase.Inventory.AddOrUpdate(itemToChange as Inventory);

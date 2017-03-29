@@ -7,26 +7,24 @@ namespace Core.Utilities.Database.Queries.Tables
     public class RecipeCategoryQuery : IHarvestQuery
     {
 
-        public object Get(object itemID, HarvestEntities HarvestDatabase)
+        public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
             Recipe item = HarvestDatabase.Recipe.SingleOrDefault(recipe => recipe.RecipeID == (int)itemID);
-
-            HarvestDatabase.RecipeClass.Load();
             return HarvestDatabase.RecipeClass.SingleOrDefault(recipeCategory => recipeCategory.RCategory.Equals(item.RCategory));
         }
 
-        public void Insert(object itemToAdd, HarvestEntities HarvestDatabase)
+        public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
+        public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(object itemToChange, HarvestEntities HarvestDatabase)
+        public void Update(object itemToChange, HarvestDatabaseEntities HarvestDatabase)
         {
             throw new NotImplementedException();
         }

@@ -17,11 +17,10 @@ namespace Client_Desktop
         private PlannedWeek currentWeek;
         public HarvestForm()
         {
-            InitializeComponent();           
+            InitializeComponent();
 
             try
             {
-                //Persistent week happens here
                 using (HarvestTableUtility harvestTables = new HarvestTableUtility(new LastLaunchedQuery()))
                 {
                     if ((harvestTables.Get(null) as List<LastLaunched>).Count < 1)
@@ -46,10 +45,17 @@ namespace Client_Desktop
                 MessageBox.Show(ex.Message);
             }
         }
+
         #region Main Form Functionality
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Dispose();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (TechHelp contactForm = new TechHelp())
+                contactForm.ShowDialog();
         }
 
         private void pantryTabControl_Selected(object sender, TabControlEventArgs e)
@@ -451,11 +457,5 @@ namespace Client_Desktop
 
 
         #endregion
-
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TechHelp help = new TechHelp();
-            help.Show(this);
-        }
     }
 }

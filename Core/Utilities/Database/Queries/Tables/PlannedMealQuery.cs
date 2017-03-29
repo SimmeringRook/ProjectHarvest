@@ -7,7 +7,7 @@ namespace Core.Utilities.Database.Queries.Tables
 {
     public class PlannedMealQuery : IHarvestQuery
     {
-        public object Get(object itemID, HarvestEntities HarvestDatabase)
+        public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
             if (itemID is int)
@@ -16,14 +16,14 @@ namespace Core.Utilities.Database.Queries.Tables
             return HarvestDatabase.PlannedMeals.Where(plannedMeal => DbFunctions.TruncateTime(plannedMeal.DatePlanned) == DbFunctions.TruncateTime(day)).ToList();
         }
 
-        public void Insert(object itemToAdd, HarvestEntities HarvestDatabase)
+        public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
             HarvestDatabase.PlannedMeals.Add(itemToAdd as PlannedMeals);
             HarvestDatabase.SaveChanges();
         }
 
-        public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
+        public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
             PlannedMeals item = itemToRemove as PlannedMeals;
@@ -37,7 +37,7 @@ namespace Core.Utilities.Database.Queries.Tables
             HarvestDatabase.SaveChanges();
         }
 
-        public void Update(object itemToChange, HarvestEntities HarvestDatabase)
+        public void Update(object itemToChange, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
             HarvestDatabase.PlannedMeals.AddOrUpdate(itemToChange as PlannedMeals);

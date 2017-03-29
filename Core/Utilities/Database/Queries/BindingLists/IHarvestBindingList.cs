@@ -2,6 +2,6 @@
 {
     public interface IHarvestBindingList
     {
-        object GetBindingList();
+        object GetBindingList(HarvestDatabaseEntities _HarvestDatabse);
     }
 }

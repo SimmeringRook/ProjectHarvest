@@ -4,13 +4,10 @@ namespace Core.Utilities.Database.Queries.BindingLists
 {
     public class InventoryBindingListQuery : IHarvestBindingList
     {
-        public object GetBindingList()
+        public object GetBindingList(HarvestDatabaseEntities _HarvestDatabase)
         {
-            using (HarvestEntities harvestDatabase = new HarvestEntities())
-            {
-                harvestDatabase.Inventory.Load();
-                return harvestDatabase.Inventory.Local.ToBindingList();
-            }
+            _HarvestDatabase.Inventory.Load();
+            return _HarvestDatabase.Inventory.Local.ToBindingList();
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Core.Utilities.General
 
         private static Recipe GetRecentlyCreatedRecipe()
         {
-            using (HarvestEntities harvestDatabase = new HarvestEntities())
+            using (HarvestDatabaseEntities harvestDatabase = new HarvestDatabaseEntities())
                 return harvestDatabase.Recipe.OrderByDescending(id => id.RecipeID).First();
         }
         #endregion
@@ -50,7 +50,7 @@ namespace Core.Utilities.General
         #region Inventory
         private static void BindAssociatedItemsToInventoryIDs(Recipe recipe, List<IngredientInformation> ingredients)
         {
-            using (HarvestEntities harvestDatabase = new HarvestEntities())
+            using (HarvestDatabaseEntities harvestDatabase = new HarvestDatabaseEntities())
             {
                 foreach (IngredientInformation ingredientInfo in ingredients)
                 {
@@ -82,6 +82,7 @@ namespace Core.Utilities.General
                     Inventory emptyIngredient = ingredientToCreate;
                     emptyIngredient.Amount = 0.0d;
                     emptyIngredient.Measurement = ingredientToCreate.Measurement;
+                    emptyIngredient.Category = "Other";
                     harvest.Insert(emptyIngredient);
                 }
             }
@@ -89,7 +90,7 @@ namespace Core.Utilities.General
 
         private static void BindNewItemsToInventoryIDs(Recipe recipe)
         {
-            using (HarvestEntities harvestDatabase = new HarvestEntities())
+            using (HarvestDatabaseEntities harvestDatabase = new HarvestDatabaseEntities())
             {
                 //Ensure each ingredient has an ID now
                 foreach (Inventory ingredient in recipe.AssociatedInventoryItems)

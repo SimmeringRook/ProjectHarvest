@@ -4,13 +4,10 @@ namespace Core.Utilities.Database.Queries.BindingLists
 {
     public class MetricBindingListQuery : IHarvestBindingList
     {
-        public object GetBindingList()
+        public object GetBindingList(HarvestDatabaseEntities _HarvestDatabase)
         {
-            using (HarvestEntities harvestDatabase = new HarvestEntities())
-            {
-                harvestDatabase.Metric.Load();
-                return harvestDatabase.Metric.Local.ToBindingList();
-            }
+            _HarvestDatabase.Metric.Load();
+            return _HarvestDatabase.Metric.Local.ToBindingList();
         }
     }
 }

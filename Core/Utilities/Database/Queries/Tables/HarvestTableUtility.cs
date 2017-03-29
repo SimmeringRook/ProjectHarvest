@@ -4,12 +4,12 @@ namespace Core.Utilities.Database.Queries.Tables
 {
     public class HarvestTableUtility : IDisposable
     {
-        private HarvestEntities _HarvestDatabase;
+        private HarvestDatabaseEntities _HarvestDatabase;
         public IHarvestQuery HarvestQuery { get; set; }
 
         public HarvestTableUtility(IHarvestQuery harvestQuery)
         {
-            _HarvestDatabase = new HarvestEntities();
+            _HarvestDatabase = new HarvestDatabaseEntities();
             HarvestQuery = harvestQuery;
         }
 

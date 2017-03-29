@@ -13,10 +13,10 @@ namespace Core
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class HarvestEntities : DbContext
+    public partial class HarvestDatabaseEntities : DbContext
     {
-        public HarvestEntities()
-            : base("name=HarvestEntities")
+        public HarvestDatabaseEntities()
+            : base("name=HarvestDatabaseEntities")
         {
         }
     
@@ -33,7 +33,7 @@ namespace Core
         public virtual DbSet<Metric> Metric { get; set; }
         public virtual DbSet<PlannedMeals> PlannedMeals { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
-        public virtual DbSet<RecipeIngredient> RecipeIngredient { get; set; }
         public virtual DbSet<RecipeClass> RecipeClass { get; set; }
+        public virtual DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     }
 }

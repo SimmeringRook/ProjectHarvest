@@ -6,7 +6,7 @@ namespace Core.Utilities.Database.Queries.Tables
 {
     public class RecipeQuery : IHarvestQuery
     {
-        public object Get(object itemID, HarvestEntities HarvestDatabase)
+        public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
             if ((int)itemID == -1)
@@ -14,14 +14,14 @@ namespace Core.Utilities.Database.Queries.Tables
             return HarvestDatabase.Recipe.SingleOrDefault(inventory => inventory.RecipeID.Equals((int)itemID));
         }
 
-        public void Insert(object itemToAdd, HarvestEntities HarvestDatabase)
+        public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
             HarvestDatabase.Recipe.Add(itemToAdd as Recipe);
             HarvestDatabase.SaveChanges();
         }
 
-        public void Remove(object itemToRemove, HarvestEntities HarvestDatabase)
+        public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
             var recipe = (itemToRemove as Recipe);
@@ -30,7 +30,7 @@ namespace Core.Utilities.Database.Queries.Tables
             HarvestDatabase.SaveChanges();
         }
 
-        public void Update(object itemToChange, HarvestEntities HarvestDatabase)
+        public void Update(object itemToChange, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
             HarvestDatabase.Recipe.AddOrUpdate(itemToChange as Recipe);

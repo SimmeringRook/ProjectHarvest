@@ -4,13 +4,10 @@ namespace Core.Utilities.Database.Queries.BindingLists
 {
     public class RecipeCategoryBindingList : IHarvestBindingList
     {
-        public object GetBindingList()
+        public object GetBindingList(HarvestDatabaseEntities _HarvestDatabase)
         {
-            using (HarvestEntities harvestDatabase = new HarvestEntities())
-            {
-                harvestDatabase.RecipeClass.Load();
-                return harvestDatabase.RecipeClass.Local.ToBindingList();
-            }
+            _HarvestDatabase.RecipeClass.Load();
+            return _HarvestDatabase.RecipeClass.Local.ToBindingList();
         }
     }
 }

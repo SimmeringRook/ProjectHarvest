@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="HarvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="HarvestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="IngredientCategory">
           <Key>
             <PropertyRef Name="Category" />
@@ -257,7 +257,8 @@
             <End Role="Recipe" EntitySet="Recipe" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HarvestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -306,7 +307,7 @@
           <Property Name="MealName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealTime" ToRole="MealHistory" />
           <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_MealTime" FromRole="MealTime" ToRole="PlannedMeals" />
-          </EntityType>
+        </EntityType>
         <EntityType Name="Metric">
           <Key>
             <PropertyRef Name="Measurement" />
@@ -339,7 +340,14 @@
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_Recipe" FromRole="Recipe" ToRole="MealHistory" />
           <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_Recipe" FromRole="Recipe" ToRole="PlannedMeals" />
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe" ToRole="RecipeIngredient" />
-          <NavigationProperty Name="RecipeClass" Relationship="HarvestModel.FK_Recipe_RecipeClass" FromRole="Recipe" ToRole="RecipeClass" />
+          <NavigationProperty Name="RecipeClass" Relationship="Self.FK_Recipe_RecipeClass" FromRole="Recipe" ToRole="RecipeClass" />
+        </EntityType>
+        <EntityType Name="RecipeClass">
+          <Key>
+            <PropertyRef Name="RCategory" />
+          </Key>
+          <Property Name="RCategory" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe_RecipeClass" FromRole="RecipeClass" ToRole="Recipe" />
         </EntityType>
         <EntityType Name="RecipeIngredient">
           <Key>
@@ -462,7 +470,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="HarvestEntities" annotation:LazyLoadingEnabled="true">
+        <Association Name="FK_Recipe_RecipeClass">
+          <End Role="RecipeClass" Type="Self.RecipeClass" Multiplicity="1" />
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RecipeClass">
+              <PropertyRef Name="RCategory" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="RCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HarvestDatabaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" />
           <EntitySet Name="LastLaunched" EntityType="Self.LastLaunched" />
@@ -471,6 +491,7 @@
           <EntitySet Name="Metric" EntityType="Self.Metric" />
           <EntitySet Name="PlannedMeals" EntityType="Self.PlannedMeals" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" />
+          <EntitySet Name="RecipeClass" EntityType="Self.RecipeClass" />
           <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
             <End Role="IngredientCategory" EntitySet="IngredientCategory" />
@@ -508,37 +529,17 @@
             <End Role="Recipe" EntitySet="Recipe" />
             <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
           </AssociationSet>
-          <EntitySet Name="RecipeClass" EntityType="HarvestModel.RecipeClass" />
-          <AssociationSet Name="FK_Recipe_RecipeClass" Association="HarvestModel.FK_Recipe_RecipeClass">
+          <AssociationSet Name="FK_Recipe_RecipeClass" Association="Self.FK_Recipe_RecipeClass">
             <End Role="RecipeClass" EntitySet="RecipeClass" />
             <End Role="Recipe" EntitySet="Recipe" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="RecipeClass">
-          <Key>
-            <PropertyRef Name="RCategory" />
-          </Key>
-          <Property Name="RCategory" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Recipe" Relationship="HarvestModel.FK_Recipe_RecipeClass" FromRole="RecipeClass" ToRole="Recipe" />
-          </EntityType>
-        <Association Name="FK_Recipe_RecipeClass">
-          <End Type="HarvestModel.RecipeClass" Role="RecipeClass" Multiplicity="1" />
-          <End Type="HarvestModel.Recipe" Role="Recipe" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RecipeClass">
-              <PropertyRef Name="RCategory" />
-            </Principal>
-            <Dependent Role="Recipe">
-              <PropertyRef Name="RCategory" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="HarvestModelStoreContainer" CdmEntityContainer="HarvestEntities">
+        <EntityContainerMapping StorageEntityContainer="HarvestModelStoreContainer" CdmEntityContainer="HarvestDatabaseEntities">
           <EntitySetMapping Name="IngredientCategory">
             <EntityTypeMapping TypeName="HarvestModel.IngredientCategory">
               <MappingFragment StoreEntitySet="IngredientCategory">
@@ -607,6 +608,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RecipeClass">
+            <EntityTypeMapping TypeName="HarvestModel.RecipeClass">
+              <MappingFragment StoreEntitySet="RecipeClass">
+                <ScalarProperty Name="RCategory" ColumnName="RCategory" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RecipeIngredient">
             <EntityTypeMapping TypeName="HarvestModel.RecipeIngredient">
               <MappingFragment StoreEntitySet="RecipeIngredient">
@@ -614,13 +622,6 @@
                 <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Measurement" ColumnName="Measurement" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RecipeClass">
-            <EntityTypeMapping TypeName="HarvestModel.RecipeClass">
-              <MappingFragment StoreEntitySet="RecipeClass">
-                <ScalarProperty Name="RCategory" ColumnName="RCategory" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
