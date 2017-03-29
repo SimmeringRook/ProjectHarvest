@@ -16,6 +16,7 @@ namespace Client_Desktop
         private List<string> _ingredients;
         private List<IngredientInformation> _ingreInfo = new List<IngredientInformation>();
         private int _numberOfRows;
+        private string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Harvest Grocery Lists");
 
         public GroceryListForm(PlannedWeek mealsForTheWeek)
         {
@@ -26,38 +27,55 @@ namespace Client_Desktop
             _numberOfRows = groceryTableLayout.RowCount - 1;
             foreach (RecipeIngredient ri in _plannedWeek.GetAllIngredientsForWeek())
                 buildRow(ri);
+
+            try
+            {
+                if (_ingredients.Count > 0)
+                    createFile(directoryPath);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void buildRow(RecipeIngredient ri)
         {
-
-            IngredientInformation rowToBeAdded = new IngredientInformation();
-            groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-            groceryTableLayout.Controls.Add(rowToBeAdded.NameLabel, 0, _numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, _numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Unit, 2, _numberOfRows);
-            groceryTableLayout.Controls.Add(rowToBeAdded.Selected, 3, _numberOfRows);
-
             using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
             {
                 Inventory itemInDB = harvest.Get(ri.InventoryID) as Inventory;
+                if (ri.Amount - itemInDB.Amount <= 0)
+                    return;
+
+                IngredientInformation rowToBeAdded = new IngredientInformation();
+                groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+                groceryTableLayout.Controls.Add(rowToBeAdded.NameLabel, 0, _numberOfRows);
+                groceryTableLayout.Controls.Add(rowToBeAdded.Quantity, 1, _numberOfRows);
+                groceryTableLayout.Controls.Add(rowToBeAdded.Unit, 2, _numberOfRows);
+                groceryTableLayout.Controls.Add(rowToBeAdded.Selected, 3, _numberOfRows);
+
                 rowToBeAdded.NameLabel.Text = itemInDB.IngredientName;
                 rowToBeAdded.Quantity.Text = (ri.Amount - itemInDB.Amount).ToString();
                 rowToBeAdded.Unit.Text = ri.Measurement.ToString();
-            }
 
-            _ingredients.Add(rowToBeAdded.NameLabel.Text.PadRight(25) + rowToBeAdded.Quantity.Text.PadRight(5) + rowToBeAdded.Unit.Text.PadRight(25));
-            _ingreInfo.Add(rowToBeAdded);
-            _numberOfRows++;
+                _ingredients.Add(rowToBeAdded.NameLabel.Text.PadRight(25) + rowToBeAdded.Quantity.Text.PadRight(5) + rowToBeAdded.Unit.Text.PadRight(25));
+                _ingreInfo.Add(rowToBeAdded);
+                _numberOfRows++;
+            }
         }
 
         private void createFile(string directory)
         {
-            string filename = "test.txt";
+            string filename = _plannedWeek.StartOfWeek.Date.ToString("MM_dd_yyyy") + ".txt";
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
 
             // Create a file to write to.
-            using (StreamWriter writer = new StreamWriter(string.Concat(directory, filename), false))
+            using (StreamWriter writer = new StreamWriter(Path.Combine(directory, filename), false))
                 foreach (string line in _ingredients)
                     writer.WriteLine(line);
         }
@@ -66,8 +84,6 @@ namespace Client_Desktop
         {
             try
             {
-                string directoryPath = @"C:\Users\Odin\Desktop\Grocery Lists\";
-                createFile(directoryPath);
                 Process.Start(directoryPath);
             }
             catch (Exception ex)
@@ -99,7 +115,7 @@ namespace Client_Desktop
                     if (row.Selected.Checked)
                         Checked.Add(row);
                 }
-            );
+                );
 
                 foreach (Inventory item in pantry)
                 {
@@ -110,8 +126,6 @@ namespace Client_Desktop
                             item.Amount += double.Parse(ingredient.Quantity.Text);
                             harvest.Update(item);
                         }
-
-
                     }
                 }
             } 
