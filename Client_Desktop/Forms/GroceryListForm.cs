@@ -43,7 +43,6 @@ namespace Client_Desktop
             {
                 Inventory itemInDB = harvest.Get(ri.InventoryID) as Inventory;
                 rowToBeAdded.NameLabel.Text = itemInDB.IngredientName;
-                rowToBeAdded.NameLabel.Text = itemInDB.IngredientName;
                 rowToBeAdded.Quantity.Text = (ri.Amount - itemInDB.Amount).ToString();
                 rowToBeAdded.Unit.Text = ri.Measurement.ToString();
             }
@@ -95,22 +94,27 @@ namespace Client_Desktop
                         }
                        )
                       );
-            }
-            
-            _ingreInfo.ForEach(row => {
-                if (row.Selected.Checked)
-                    Checked.Add(row);
+
+                _ingreInfo.ForEach(row => {
+                    if (row.Selected.Checked)
+                        Checked.Add(row);
                 }
             );
 
-            foreach(Inventory item in pantry)
-            {
-                foreach(var ingrdient in Checked)
+                foreach (Inventory item in pantry)
                 {
-                    if (item.IngredientName.Equals(ingrdient.NameLabel.Text))
-                        item.Amount += double.Parse(ingrdient.Quantity.Text);
+                    foreach (var ingredient in Checked)
+                    {
+                        if (item.IngredientName.Equals(ingredient.NameLabel.Text))
+                        {
+                            item.Amount += double.Parse(ingredient.Quantity.Text);
+                            harvest.Update(item);
+                        }
+
+
+                    }
                 }
-            }
+            } 
 
             this.DialogResult = DialogResult.OK;
         }
