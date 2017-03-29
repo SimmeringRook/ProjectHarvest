@@ -75,6 +75,12 @@
     <Compile Include="Extensions\RecipeButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\TechHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TechHelp.Designer.cs">
+      <DependentUpon>TechHelp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InventoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HarvestForm.resx">
       <DependentUpon>HarvestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TechHelp.resx">
+      <DependentUpon>TechHelp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InventoryForm.resx">
       <DependentUpon>InventoryForm.cs</DependentUpon>

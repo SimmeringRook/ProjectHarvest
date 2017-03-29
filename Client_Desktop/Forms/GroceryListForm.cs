@@ -14,6 +14,7 @@ namespace Client_Desktop
     {
         private PlannedWeek _plannedWeek;
         private List<string> _ingredients;
+        private List<IngredientInformation> _ingreInfo = new List<IngredientInformation>();
         private int _numberOfRows;
 
         public GroceryListForm(PlannedWeek mealsForTheWeek)
@@ -48,6 +49,7 @@ namespace Client_Desktop
             }
 
             _ingredients.Add(rowToBeAdded.NameLabel.Text.PadRight(25) + rowToBeAdded.Quantity.Text.PadRight(5) + rowToBeAdded.Unit.Text.PadRight(25));
+            _ingreInfo.Add(rowToBeAdded);
             _numberOfRows++;
         }
 
@@ -73,6 +75,43 @@ namespace Client_Desktop
             {
                 MessageBox.Show(ex.Message);
             }
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void submitButton_Click(object sender, EventArgs e)
+        {
+            List<Inventory> pantry = new List<Inventory>();
+            List<IngredientInformation> Checked = new List<IngredientInformation>();
+
+            using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
+            {
+                var allItems = harvest.Get(-1) as List<Inventory>;
+
+                _plannedWeek.GetAllIngredientsForWeek().ForEach(ri =>
+                    allItems.ForEach(invItem =>
+                        {
+                            if (invItem.InventoryID == ri.InventoryID)
+                                pantry.Add(invItem);
+                        }
+                       )
+                      );
+            }
+            
+            _ingreInfo.ForEach(row => {
+                if (row.Selected.Checked)
+                    Checked.Add(row);
+                }
+            );
+
+            foreach(Inventory item in pantry)
+            {
+                foreach(var ingrdient in Checked)
+                {
+                    if (item.IngredientName.Equals(ingrdient.NameLabel.Text))
+                        item.Amount += double.Parse(ingrdient.Quantity.Text);
+                }
+            }
+
             this.DialogResult = DialogResult.OK;
         }
     } 

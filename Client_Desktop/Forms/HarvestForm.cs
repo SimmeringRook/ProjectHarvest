@@ -451,5 +451,10 @@ namespace Client_Desktop
 
         #endregion
 
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TechHelp help = new TechHelp();
+            help.Show(this);
+        }
     }
 }

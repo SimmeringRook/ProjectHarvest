@@ -35,7 +35,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.submitButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -68,12 +68,12 @@
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 59F));
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 61F));
             this.groceryTableLayout.Location = new System.Drawing.Point(3, 3);
             this.groceryTableLayout.Name = "groceryTableLayout";
             this.groceryTableLayout.RowCount = 1;
             this.groceryTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.groceryTableLayout.Size = new System.Drawing.Size(447, 34);
+            this.groceryTableLayout.Size = new System.Drawing.Size(449, 34);
             this.groceryTableLayout.TabIndex = 0;
             // 
             // label2
@@ -116,14 +116,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.printableButton_Click);
             // 
-            // button2
+            // submitButton
             // 
-            this.button2.Location = new System.Drawing.Point(341, 318);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Submit";
-            this.button2.UseVisualStyleBackColor = true;
+            this.submitButton.Location = new System.Drawing.Point(341, 318);
+            this.submitButton.Name = "submitButton";
+            this.submitButton.Size = new System.Drawing.Size(96, 23);
+            this.submitButton.TabIndex = 6;
+            this.submitButton.Text = "Submit";
+            this.submitButton.UseVisualStyleBackColor = true;
+            this.submitButton.Click += new System.EventHandler(this.submitButton_Click);
             // 
             // button3
             // 
@@ -136,13 +137,13 @@
             // 
             // GroceryListForm
             // 
-            this.AcceptButton = this.button2;
+            this.AcceptButton = this.submitButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(471, 355);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.submitButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -165,7 +166,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.TableLayoutPanel groceryTableLayout;
         private System.Windows.Forms.Button button3;
     }
