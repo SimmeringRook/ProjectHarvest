@@ -123,7 +123,7 @@ namespace Client_Desktop
                 if (currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
                     foreach (Recipe plannedRecipe in currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTimes[currentMealTime]])
                         flowLayout.Controls.Add(new PlannedRecipeControl(this, plannedRecipe));
-                ;
+                
             }
         }
 
@@ -204,7 +204,7 @@ namespace Client_Desktop
                         p.DatePlanned <= currentWeek.EndOfWeek.Date
                         ).ToList();
 
-                    List<PlannedMeals> plannedMeals_Week = currentWeek.GetPlannedMeals();
+                    List<PlannedMeals> plannedMeals_Week = currentWeek.GetPlannedMeals(); 
                     //If there are existing plans
                     List<PlannedMeals> newPlannedMeals = (plannedMeals_DB.Count > 0) 
                         ? new List<PlannedMeals>() //If there are records in the database for this week

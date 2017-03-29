@@ -65,7 +65,7 @@ namespace Core.MealPlanning
                             allIngredients[allIngredients.IndexOf(ri)].Amount += ConvertedAmount(ingredient, ri);
                         }
                         else
-                            allIngredients.Add(ingredient);
+                            allIngredients.Add(ingredient.Clone() as RecipeIngredient);
             return allIngredients;
         }
 

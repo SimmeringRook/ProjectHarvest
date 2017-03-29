@@ -33,7 +33,7 @@ namespace Core.MealPlanning
                         allIngredients[allIngredients.IndexOf(ri)].Amount += ConvertedAmount(ingredientsFrequencyForDay, ri);
                     }
                     else
-                        allIngredients.Add(ingredientsFrequencyForDay);
+                        allIngredients.Add(ingredientsFrequencyForDay.Clone() as RecipeIngredient);
             }
 
             return allIngredients;
@@ -49,6 +49,10 @@ namespace Core.MealPlanning
             }
         }
 
+        /// <summary>
+        /// Converts the MealsForDay Dictionary into a List of PlannedMeals (DB Obj) for the week
+        /// </summary>
+        /// <returns></returns>
         public List<PlannedMeals> GetPlannedMeals()
         {
             List<PlannedMeals> plannedMeals = new List<PlannedMeals>();
