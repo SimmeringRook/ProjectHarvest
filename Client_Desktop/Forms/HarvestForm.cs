@@ -12,13 +12,16 @@ using System.Windows.Forms;
 
 namespace Client_Desktop
 {
+    //Test
     public partial class HarvestForm : Form
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
-        private PlannedWeek currentWeek;
+        public static PlannedWeek currentWeek;
         public HarvestForm()
-        {
+        {     
+
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
 
             try
             {
@@ -38,7 +41,7 @@ namespace Client_Desktop
                         currentWeek = new PlannedWeek(firstLaunched, firstLaunched.AddDays(6));
                     }
                 }
-
+                                
                 RefreshCurrentTab();
             }
             catch (Exception ex)
@@ -58,7 +61,6 @@ namespace Client_Desktop
                         writer.WriteLine(lines);
                     }
                 }
-                
             }
         }
 
@@ -132,20 +134,25 @@ namespace Client_Desktop
             List<MealTime> mealTimes = new List<MealTime>();
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
                 mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
-            
+
 
             foreach (Control flowLayout in weekTableLayout.Controls)
             {
-                flowLayout.Controls.Add(new PlanButton(this));
-
                 int currentMealTime = weekTableLayout.GetRow(flowLayout);
                 int currentDay = weekTableLayout.GetColumn(flowLayout);
                 MealTime mealTime = mealTimes[currentMealTime];
 
+                flowLayout.Controls.Add(new PlanButton(this, currentWeek.DaysOfWeek[currentDay].Day, mealTime));
+
                 if (currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
                     foreach (Recipe plannedRecipe in currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTimes[currentMealTime]])
-                        flowLayout.Controls.Add(new PlannedRecipeControl(this, plannedRecipe));
-                
+                    {
+                        var stuff = new PlannedRecipeControl(this, plannedRecipe, currentWeek.DaysOfWeek[currentDay].Day, mealTime);
+                        if (plannedRecipe.HasBeenEaten)
+                            stuff.SetControlsForHasBeenEaten();
+                        flowLayout.Controls.Add(stuff);
+                    }
+
             }
         }
 
@@ -177,6 +184,14 @@ namespace Client_Desktop
 
                 if (currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Contains(recipePrefab.RecipeButton.Recipe) == false)
                     currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTimes[mealTime]].Add(recipePrefab.RecipeButton.Recipe);
+
+                harvest.HarvestQuery = new PlannedMealQuery();
+                PlannedMeals meal = new PlannedMeals();
+                meal.RecipeID = recipePrefab.RecipeButton.Recipe.RecipeID;
+                meal.DatePlanned = currentWeek.DaysOfWeek[dayOfWeek].Day.Date;
+                meal.MealTime = mealTimes[mealTime];
+
+                harvest.Update(meal);
             }
         }
 
@@ -473,5 +488,6 @@ namespace Client_Desktop
 
 
         #endregion
+        
     }
 }
