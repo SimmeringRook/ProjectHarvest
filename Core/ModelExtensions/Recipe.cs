@@ -6,6 +6,7 @@ namespace Core
 {
     public partial class Recipe : ICloneable
     {
+        public bool HasBeenEaten { get; set; }
         public List<Inventory> AssociatedInventoryItems = new List<Inventory>();
         private List<RecipeIngredient> _AssociatedIngredients = new List<RecipeIngredient>();
         public string RecipeCategory { get; set; }
@@ -13,7 +14,7 @@ namespace Core
         public Recipe(int id)
         {
             this.RecipeID = id;
-            
+            this.HasBeenEaten = false;
         }
 
         public object Clone()
@@ -24,7 +25,7 @@ namespace Core
             copy.RecipeName = string.Copy(this.RecipeName);
             copy.Servings = this.Servings;
             copy.RCategory = string.Copy(this.RCategory);
-
+            copy.HasBeenEaten = this.HasBeenEaten;
             return copy;
         }
 

@@ -42,6 +42,7 @@ namespace Core.MealPlanning
             {
                 MealTime mealtime = mealTimes.Where(m => m.MealName.Equals(planned.MealName)).First();
                 Recipe r = recipes.Where(rcp => rcp.RecipeID == planned.RecipeID).First();
+                r.HasBeenEaten = planned.MealEaten;
                 if (MealsForDay[mealtime].Any(existingRecipe => r.RecipeID == existingRecipe.RecipeID) == false)
                     MealsForDay[mealtime].Add(r.Clone() as Recipe);
             }

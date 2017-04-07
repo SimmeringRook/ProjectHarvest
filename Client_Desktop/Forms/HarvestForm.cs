@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Client_Desktop
 {
-    //Test
+    
     public partial class HarvestForm : Form
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
@@ -23,8 +23,8 @@ namespace Client_Desktop
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
 
-            try
-            {
+            //try
+            //{
                 using (HarvestTableUtility harvestTables = new HarvestTableUtility(new LastLaunchedQuery()))
                 {
                     if ((harvestTables.Get(null) as List<LastLaunched>).Count < 1)
@@ -43,25 +43,11 @@ namespace Client_Desktop
                 }
                                 
                 RefreshCurrentTab();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                if (ex.InnerException != null)
-                {
-                    using (StreamWriter writer = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "errorLog.txt")))
-                    {
-                        string lines = ex.Message;
-                        if (ex.InnerException != null)
-                        {
-                            lines += "\n" + ex.InnerException.Message;
-                            if (ex.InnerException.InnerException != null)
-                                lines += "\n" + ex.InnerException.InnerException.Message;
-                        }
-                        writer.WriteLine(lines);
-                    }
-                }
-            }
+            //}
+            //catch (Exception ex)
+            //{
+                
+            //}
         }
 
         #region Main Form Functionality
@@ -135,6 +121,7 @@ namespace Client_Desktop
             using (HarvestTableUtility harvest = new HarvestTableUtility(new MealTimeQuery()))
                 mealTimes = (harvest.Get(-1) as List<MealTime>).ToList();
 
+            currentWeek = new PlannedWeek(currentWeek.StartOfWeek, currentWeek.EndOfWeek);
 
             foreach (Control flowLayout in weekTableLayout.Controls)
             {
