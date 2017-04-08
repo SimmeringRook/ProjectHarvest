@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Core.Adapters.Database;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Core.Utilities.Database.Queries.Tables
 {
-    public class PlannedMealQuery : IHarvestQuery
+    internal class PlannedMealQuery : IHarvestQuery
     {
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {

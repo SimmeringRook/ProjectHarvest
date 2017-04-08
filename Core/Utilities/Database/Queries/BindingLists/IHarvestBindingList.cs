@@ -1,7 +1,7 @@
 ﻿namespace Core.Utilities.Database.Queries.BindingLists
 {
-    public interface IHarvestBindingList
+    internal interface IHarvestBindingList
     {
-        object GetBindingList(HarvestDatabaseEntities _HarvestDatabse);
+        object GetBindingList(Adapters.Database.HarvestDatabaseEntities _HarvestDatabse);
     }
 }

@@ -2,33 +2,33 @@
 
 namespace Core.Utilities.Database.Queries.Tables
 {
-    public class HarvestTableUtility : IDisposable
+    internal class HarvestTableUtility : IDisposable
     {
-        private HarvestDatabaseEntities _HarvestDatabase;
-        public IHarvestQuery HarvestQuery { get; set; }
+        private Adapters.Database.HarvestDatabaseEntities _HarvestDatabase;
+        internal IHarvestQuery HarvestQuery { get; set; }
 
-        public HarvestTableUtility(IHarvestQuery harvestQuery)
+        internal HarvestTableUtility(IHarvestQuery harvestQuery)
         {
-            _HarvestDatabase = new HarvestDatabaseEntities();
+            _HarvestDatabase = new Adapters.Database.HarvestDatabaseEntities();
             HarvestQuery = harvestQuery;
         }
 
-        public void Insert(object itemToAdd)
+        internal void Insert(object itemToAdd)
         {
             HarvestQuery.Insert(itemToAdd, _HarvestDatabase);
         }
 
-        public void Update(object itemToChange)
+        internal void Update(object itemToChange)
         {
             HarvestQuery.Update(itemToChange, _HarvestDatabase);
         }
 
-        public void Remove(object itemToRemove)
+        internal void Remove(object itemToRemove)
         {
             HarvestQuery.Remove(itemToRemove, _HarvestDatabase);
         }
 
-        public object Get(object itemID)
+        internal object Get(object itemID)
         {
             return HarvestQuery.Get(itemID, _HarvestDatabase);
         }

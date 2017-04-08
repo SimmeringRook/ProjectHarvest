@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using Core.Adapters.Objects;
 using System;
 using System.Windows.Forms;
 
@@ -10,10 +10,14 @@ namespace Client_Desktop.Extensions
         public RecipeButton RecipeButton;
         private Button deleteButton;
         private HarvestForm mainForm;
+        private DateTime dayPlanned;
+        private string mealTime;
 
-        public PlannedRecipeControl(HarvestForm mainForm, Recipe selectedRecipe)
+        public PlannedRecipeControl(HarvestForm mainForm, Recipe selectedRecipe, DateTime dayPlanned, string mealTime)
         {
             this.mainForm = mainForm;
+            this.dayPlanned = dayPlanned;
+            this.mealTime = mealTime;
 
             //Container = new FlowLayoutPanel();
             this.Margin = new Padding(5, 2, 0, 2);

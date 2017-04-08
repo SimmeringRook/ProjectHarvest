@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Core
+namespace Core.Adapters.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Recipe
+    internal partial class Recipe
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Recipe()
@@ -28,11 +28,11 @@ namespace Core
         public string RCategory { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MealHistory> MealHistory { get; set; }
+        internal virtual ICollection<MealHistory> MealHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlannedMeals> PlannedMeals { get; set; }
+        internal virtual ICollection<PlannedMeals> PlannedMeals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
-        public virtual RecipeClass RecipeClass { get; set; }
+        internal virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
+        internal virtual RecipeClass RecipeClass { get; set; }
     }
 }

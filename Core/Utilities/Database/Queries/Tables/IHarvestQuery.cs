@@ -1,6 +1,8 @@
-﻿namespace Core.Utilities.Database.Queries.Tables
+﻿using Core.Adapters.Database;
+
+namespace Core.Utilities.Database.Queries.Tables
 {
-    public interface IHarvestQuery
+    internal interface IHarvestQuery
     {
         void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase);
 

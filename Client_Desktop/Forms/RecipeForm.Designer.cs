@@ -22,7 +22,6 @@
             this.RecipeNameTextBox = new System.Windows.Forms.TextBox();
             this.RecipeTypeLabel = new System.Windows.Forms.Label();
             this.categoryCombo = new System.Windows.Forms.ComboBox();
-            this.recipeClassBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.servingsTextbox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -36,8 +35,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.addModifyRecipeButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.recipeClassBindingSource)).BeginInit();
+            this.recipeErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recipeErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // recipeNameLabel
@@ -70,8 +70,6 @@
             // 
             // categoryCombo
             // 
-            this.categoryCombo.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.recipeClassBindingSource, "RCategory", true));
-            this.categoryCombo.DataSource = this.recipeClassBindingSource;
             this.categoryCombo.DisplayMember = "RCategory";
             this.categoryCombo.FormattingEnabled = true;
             this.categoryCombo.Location = new System.Drawing.Point(458, 158);
@@ -80,10 +78,6 @@
             this.categoryCombo.Size = new System.Drawing.Size(238, 33);
             this.categoryCombo.TabIndex = 4;
             this.categoryCombo.ValueMember = "RCategory";
-            // 
-            // recipeClassBindingSource
-            // 
-            this.recipeClassBindingSource.DataSource = typeof(Core.RecipeClass);
             // 
             // label1
             // 
@@ -192,7 +186,7 @@
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.26366F));
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 192F));
-            this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 68F));
             this.recipeTableLayout.Location = new System.Drawing.Point(0, 6);
             this.recipeTableLayout.Margin = new System.Windows.Forms.Padding(6);
             this.recipeTableLayout.Name = "recipeTableLayout";
@@ -233,6 +227,10 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Category";
             // 
+            // recipeErrorProvider
+            // 
+            this.recipeErrorProvider.ContainerControl = this;
+            // 
             // RecipeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -257,9 +255,9 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "RecipeForm";
             this.Text = "Recipe";
-            ((System.ComponentModel.ISupportInitialize)(this.recipeClassBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recipeErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -282,7 +280,7 @@
         private System.Windows.Forms.TableLayoutPanel recipeTableLayout;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button addModifyRecipeButton;
-        private System.Windows.Forms.BindingSource recipeClassBindingSource;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ErrorProvider recipeErrorProvider;
     }
 }

@@ -7,25 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Core
+namespace Core.Adapters.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class MealTime
+    internal partial class Metric
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MealTime()
+        public Metric()
         {
-            this.MealHistory = new HashSet<MealHistory>();
-            this.PlannedMeals = new HashSet<PlannedMeals>();
+            this.Inventory = new HashSet<Inventory>();
+            this.RecipeIngredient = new HashSet<RecipeIngredient>();
         }
     
-        public string MealName { get; set; }
+        public string Measurement { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MealHistory> MealHistory { get; set; }
+        internal virtual ICollection<Inventory> Inventory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlannedMeals> PlannedMeals { get; set; }
+        internal virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
     }
 }

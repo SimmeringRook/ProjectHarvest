@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.MealPlanning
+namespace Core.Adapters.Objects
 {
     public class PlannedWeek
     {
@@ -27,13 +27,13 @@ namespace Core.MealPlanning
             foreach (PlannedDay day in DaysOfWeek)
             {
                 foreach (RecipeIngredient ingredientsFrequencyForDay in day.GetIngredientsForToday())
-                    if (allIngredients.Any(ingredient => ingredient.InventoryID == ingredientsFrequencyForDay.InventoryID))
+                    if (allIngredients.Any(ingredient => ingredient.Inventory.ID == ingredientsFrequencyForDay.Inventory.ID))
                     {
-                        RecipeIngredient ri = allIngredients.Single(i => i.InventoryID == ingredientsFrequencyForDay.InventoryID);
+                        RecipeIngredient ri = allIngredients.Single(i => i.Inventory.ID == ingredientsFrequencyForDay.Inventory.ID);
                         allIngredients[allIngredients.IndexOf(ri)].Amount += ConvertedAmount(ingredientsFrequencyForDay, ri);
                     }
                     else
-                        allIngredients.Add(ingredientsFrequencyForDay.Clone() as RecipeIngredient);
+                        allIngredients.Add(ingredientsFrequencyForDay);
             }
 
             return allIngredients;
@@ -43,34 +43,12 @@ namespace Core.MealPlanning
         {
             using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
             {
-                if (conversion.IsCorrectMeasurementType(ingredientToConvert.GetMeasurementUnit()) == false)
+                if (conversion.IsCorrectMeasurementType(ingredientToConvert.Measurement) == false)
                     conversion.ConversionType = new WeightUnitConversion();
-                return conversion.Convert(ingredientToConvert, unitToConvertTo.GetMeasurementUnit()).Amount;
+                return conversion.Convert(new ConvertedIngredient(ingredientToConvert), unitToConvertTo.Measurement).Amount;
             }
         }
 
-        /// <summary>
-        /// Converts the MealsForDay Dictionary into a List of PlannedMeals (DB Obj) for the week
-        /// </summary>
-        /// <returns></returns>
-        public List<PlannedMeals> GetPlannedMeals()
-        {
-            List<PlannedMeals> plannedMeals = new List<PlannedMeals>();
-            foreach (PlannedDay day in DaysOfWeek)
-            {
-                foreach (var mealPlan in day.MealsForDay)
-                {
-                    var plannedMeal = new PlannedMeals();
-                    plannedMeal.DatePlanned = day.Day;
-                    plannedMeal.MealName = mealPlan.Key.MealName;
-                    foreach (var meal in mealPlan.Value)
-                    {
-                        plannedMeal.RecipeID = meal.RecipeID;
-                        plannedMeals.Add(plannedMeal);
-                    }
-                }
-            }
-            return plannedMeals;
-        }
+
     }
 }

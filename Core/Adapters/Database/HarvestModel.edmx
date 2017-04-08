@@ -262,14 +262,14 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HarvestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="IngredientCategory">
+        <EntityType Name="IngredientCategory" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="Category" />
           </Key>
           <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_FoodType" FromRole="IngredientCategory" ToRole="Inventory" />
         </EntityType>
-        <EntityType Name="Inventory">
+        <EntityType Name="Inventory" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="InventoryID" />
           </Key>
@@ -282,13 +282,13 @@
           <NavigationProperty Name="Metric" Relationship="Self.FK_Inventory_Metric" FromRole="Inventory" ToRole="Metric" />
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Inventory" FromRole="Inventory" ToRole="RecipeIngredient" />
         </EntityType>
-        <EntityType Name="LastLaunched">
+        <EntityType Name="LastLaunched" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="Date" />
           </Key>
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
-        <EntityType Name="MealHistory">
+        <EntityType Name="MealHistory" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="MealName" />
             <PropertyRef Name="RecipeID" />
@@ -300,7 +300,7 @@
           <NavigationProperty Name="MealTime" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealHistory" ToRole="MealTime" />
           <NavigationProperty Name="Recipe" Relationship="Self.FK_MealHistory_Recipe" FromRole="MealHistory" ToRole="Recipe" />
         </EntityType>
-        <EntityType Name="MealTime">
+        <EntityType Name="MealTime" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="MealName" />
           </Key>
@@ -308,7 +308,7 @@
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_MealTime" FromRole="MealTime" ToRole="MealHistory" />
           <NavigationProperty Name="PlannedMeals" Relationship="Self.FK_MealTime" FromRole="MealTime" ToRole="PlannedMeals" />
         </EntityType>
-        <EntityType Name="Metric">
+        <EntityType Name="Metric" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="Measurement" />
           </Key>
@@ -316,7 +316,7 @@
           <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_Metric" FromRole="Metric" ToRole="Inventory" />
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Metric" FromRole="Metric" ToRole="RecipeIngredient" />
         </EntityType>
-        <EntityType Name="PlannedMeals">
+        <EntityType Name="PlannedMeals" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="DatePlanned" />
             <PropertyRef Name="MealName" />
@@ -329,7 +329,7 @@
           <NavigationProperty Name="MealTime" Relationship="Self.FK_MealTime" FromRole="PlannedMeals" ToRole="MealTime" />
           <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe" FromRole="PlannedMeals" ToRole="Recipe" />
         </EntityType>
-        <EntityType Name="Recipe">
+        <EntityType Name="Recipe" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="RecipeID" />
           </Key>
@@ -342,14 +342,14 @@
           <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_Recipe_Inventory_Recipe" FromRole="Recipe" ToRole="RecipeIngredient" />
           <NavigationProperty Name="RecipeClass" Relationship="Self.FK_Recipe_RecipeClass" FromRole="Recipe" ToRole="RecipeClass" />
         </EntityType>
-        <EntityType Name="RecipeClass">
+        <EntityType Name="RecipeClass" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="RCategory" />
           </Key>
           <Property Name="RCategory" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe_RecipeClass" FromRole="RecipeClass" ToRole="Recipe" />
         </EntityType>
-        <EntityType Name="RecipeIngredient">
+        <EntityType Name="RecipeIngredient" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
             <PropertyRef Name="RecipeID" />
             <PropertyRef Name="InventoryID" />
@@ -482,17 +482,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="HarvestDatabaseEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" />
-          <EntitySet Name="Inventory" EntityType="Self.Inventory" />
-          <EntitySet Name="LastLaunched" EntityType="Self.LastLaunched" />
-          <EntitySet Name="MealHistory" EntityType="Self.MealHistory" />
-          <EntitySet Name="MealTime" EntityType="Self.MealTime" />
-          <EntitySet Name="Metric" EntityType="Self.Metric" />
-          <EntitySet Name="PlannedMeals" EntityType="Self.PlannedMeals" />
-          <EntitySet Name="Recipe" EntityType="Self.Recipe" />
-          <EntitySet Name="RecipeClass" EntityType="Self.RecipeClass" />
-          <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" />
+        <EntityContainer Name="HarvestDatabaseEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="LastLaunched" EntityType="Self.LastLaunched" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="MealHistory" EntityType="Self.MealHistory" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="MealTime" EntityType="Self.MealTime" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Metric" EntityType="Self.Metric" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="PlannedMeals" EntityType="Self.PlannedMeals" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Recipe" EntityType="Self.Recipe" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="RecipeClass" EntityType="Self.RecipeClass" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <AssociationSet Name="FK_Inventory_FoodType" Association="Self.FK_Inventory_FoodType">
             <End Role="IngredientCategory" EntitySet="IngredientCategory" />
             <End Role="Inventory" EntitySet="Inventory" />

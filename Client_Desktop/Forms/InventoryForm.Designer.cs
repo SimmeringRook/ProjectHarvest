@@ -155,10 +155,6 @@
             this.foodCategoryCombo.TabIndex = 5;
             this.foodCategoryCombo.ValueMember = "Category";
             // 
-            // ingredientCategoryBindingSource
-            // 
-            this.ingredientCategoryBindingSource.DataSource = typeof(Core.IngredientCategory);
-            // 
             // measurementCombo
             // 
             this.measurementCombo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -171,10 +167,6 @@
             this.measurementCombo.Size = new System.Drawing.Size(191, 33);
             this.measurementCombo.TabIndex = 9;
             this.measurementCombo.ValueMember = "Measurement";
-            // 
-            // metricBindingSource1
-            // 
-            this.metricBindingSource1.DataSource = typeof(Core.Metric);
             // 
             // tableLayoutPanel3
             // 

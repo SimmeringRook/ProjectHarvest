@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
@@ -25,10 +21,10 @@ namespace Client_Desktop.Extensions
             {
                 if (picker.ShowDialog() == DialogResult.OK)
                 {
-                    var recipePrefab = new PlannedRecipeControl(mainForm, picker.SelectedRecipe);
-                    ((Button)sender).Parent.Controls.Add(recipePrefab);
+                    //var recipePrefab = new PlannedRecipeControl(mainForm, picker.SelectedRecipe, );
+                    //((Button)sender).Parent.Controls.Add(recipePrefab);
 
-                    mainForm.AddRecipeToThisWeek(recipePrefab);
+                    //mainForm.AddRecipeToThisWeek(recipePrefab);
                 }
 
             }

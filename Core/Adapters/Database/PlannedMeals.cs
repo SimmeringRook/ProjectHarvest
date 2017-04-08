@@ -7,13 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Core
+namespace Core.Adapters.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class LastLaunched
+    internal partial class PlannedMeals
     {
-        public System.DateTime Date { get; set; }
+        public System.DateTime DatePlanned { get; set; }
+        public string MealName { get; set; }
+        public int RecipeID { get; set; }
+        public bool MealEaten { get; set; }
+    
+        internal virtual MealTime MealTime { get; set; }
+        internal virtual Recipe Recipe { get; set; }
     }
 }

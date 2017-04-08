@@ -1,7 +1,5 @@
-﻿using Core;
-using Core.Utilities.Database.Queries.BindingLists;
+﻿using Core.Adapters.Objects;
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Client_Desktop
@@ -13,8 +11,7 @@ namespace Client_Desktop
         {
             InitializeComponent();
 
-            using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new RecipeBindingListQuery()))
-                RecipeGridView.DataSource = harvestBindingList.GetBindingList() as BindingList<Recipe>;
+            RecipeGridView.DataSource = Core.Adapters.HarvestAdapter.Recipes;
         }
 
         private void selectButton_Click(object sender, EventArgs e)
@@ -32,7 +29,7 @@ namespace Client_Desktop
         #endregion
 
         private int selectedIndex = -1;
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        private void RecipeGridView_SelectionChanged(object sender, EventArgs e)
         {
             selectedIndex = RecipeGridView.CurrentCell.RowIndex;
         }

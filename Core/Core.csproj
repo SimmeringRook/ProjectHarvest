@@ -71,51 +71,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarvestModel.Context.cs">
+    <Compile Include="Adapters\Factories\InventoryFactory.cs" />
+    <Compile Include="Adapters\Factories\PlannedMealFactory.cs" />
+    <Compile Include="Adapters\Factories\RecipeFactory.cs" />
+    <Compile Include="Adapters\Database\HarvestModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HarvestModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="HarvestModel.cs">
+    <Compile Include="Adapters\Database\HarvestModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="HarvestModel.Designer.cs">
+    <Compile Include="Adapters\Database\HarvestModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HarvestModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="IngredientCategory.cs">
+    <Compile Include="Adapters\Database\IngredientCategory.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Inventory.cs">
+    <Compile Include="Adapters\Database\Inventory.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="LastLaunched.cs">
+    <Compile Include="Adapters\Database\LastLaunched.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MealHistory.cs">
+    <Compile Include="Adapters\Database\MealHistory.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MealTime.cs">
+    <Compile Include="Adapters\Database\MealTime.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Metric.cs">
+    <Compile Include="Adapters\Database\Metric.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="PlannedMeals.cs">
+    <Compile Include="Adapters\Database\PlannedMeals.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Recipe.cs">
+    <Compile Include="Adapters\Database\Recipe.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RecipeClass.cs">
+    <Compile Include="Adapters\Database\RecipeClass.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RecipeIngredient.cs">
+    <Compile Include="Adapters\Database\RecipeIngredient.cs">
       <DependentUpon>HarvestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Adapters\Factories\RecipeIngredientFactory.cs" />
+    <Compile Include="Adapters\HarvestAdapter.cs" />
+    <Compile Include="Adapters\Objects\Meal Planning\PlannedMeal.cs" />
+    <Compile Include="Adapters\Objects\Recipe Management\Inventory.cs" />
+    <Compile Include="Adapters\Objects\Recipe Management\Recipe.cs" />
+    <Compile Include="Adapters\Objects\Recipe Management\RecipeIngredient.cs" />
+    <Compile Include="SmartList.cs" />
     <Compile Include="Utilities\Database\Queries\BindingLists\IHarvestBindingList.cs" />
     <Compile Include="Utilities\Database\Queries\BindingLists\IngredientCategoryBindingListQuery.cs" />
     <Compile Include="Utilities\Database\Queries\BindingLists\InventoryBindingListQuery.cs" />
@@ -129,7 +139,6 @@
     <Compile Include="Utilities\Database\Queries\Tables\InventoryQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\LastLaunchedQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\MealTimeQuery.cs" />
-    <Compile Include="Utilities\General\CreateRecipeUtility.cs" />
     <Compile Include="Utilities\General\HashGenerator.cs" />
     <Compile Include="Utilities\General\IngredientInformation.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\MetricQuery.cs" />
@@ -137,18 +146,13 @@
     <Compile Include="Utilities\Database\Queries\Tables\RecipeCategoryQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\RecipeIngredientQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\RecipeQuery.cs" />
+    <Compile Include="Utilities\UnitConversions\ConvertedIngredient.cs" />
     <Compile Include="Utilities\UnitConversions\HarvestConverter.cs" />
     <Compile Include="Utilities\UnitConversions\IUnitConvertable.cs" />
     <Compile Include="Utilities\UnitConversions\MeasurementConversionFactors.cs" />
     <Compile Include="Utilities\UnitConversions\WeightUnitConversion.cs" />
-    <Compile Include="Utilities\General\HarvestEntityFactory.cs" />
-    <Compile Include="ModelExtensions\Inventory.cs" />
-    <Compile Include="ModelExtensions\MealTime.cs" />
-    <Compile Include="ModelExtensions\PlannedMeals.cs" />
-    <Compile Include="ModelExtensions\Recipe.cs" />
-    <Compile Include="ModelExtensions\RecipeIngredient.cs" />
-    <Compile Include="MealPlanning\PlannedDay.cs" />
-    <Compile Include="MealPlanning\PlannedWeek.cs" />
+    <Compile Include="Adapters\Objects\Meal Planning\PlannedDay.cs" />
+    <Compile Include="Adapters\Objects\Meal Planning\PlannedWeek.cs" />
     <Compile Include="Utilities\UnitConversions\MeasurementUnit.cs" />
     <Compile Include="Utilities\UnitConversions\VolumeUnitConversion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -161,11 +165,11 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="HarvestModel.edmx">
+    <EntityDeploy Include="Adapters\Database\HarvestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>HarvestModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="HarvestModel.edmx.diagram">
+    <None Include="Adapters\Database\HarvestModel.edmx.diagram">
       <DependentUpon>HarvestModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
@@ -178,35 +182,36 @@
       <DependentUpon>HarvestDatabase.mdf</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HarvestModel.Context.tt">
+    <Content Include="Adapters\Database\HarvestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>HarvestModel.edmx</DependentUpon>
       <LastGenOutput>HarvestModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="HarvestModel.tt">
+    <Content Include="Adapters\Database\HarvestModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>HarvestModel.edmx</DependentUpon>
       <LastGenOutput>HarvestModel.cs</LastGenOutput>
+      <CustomToolNamespace>Core.Adapters.Database</CustomToolNamespace>
     </Content>
-    <Content Include="sqlceca40.dll">
+    <Content Include="SQL Compact DLLs\sqlceca40.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sqlcecompact40.dll">
+    <Content Include="SQL Compact DLLs\sqlcecompact40.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sqlceer40EN.dll">
+    <Content Include="SQL Compact DLLs\sqlceer40EN.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sqlceme40.dll">
+    <Content Include="SQL Compact DLLs\sqlceme40.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sqlceoledb40.dll">
+    <Content Include="SQL Compact DLLs\sqlceoledb40.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sqlceqp40.dll">
+    <Content Include="SQL Compact DLLs\sqlceqp40.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sqlcese40.dll">
+    <Content Include="SQL Compact DLLs\sqlcese40.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

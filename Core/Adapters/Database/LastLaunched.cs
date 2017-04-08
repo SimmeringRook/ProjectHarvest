@@ -7,20 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Core
+namespace Core.Adapters.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class RecipeIngredient
+    internal partial class LastLaunched
     {
-        public int RecipeID { get; set; }
-        public int InventoryID { get; set; }
-        public double Amount { get; set; }
-        public string Measurement { get; set; }
-    
-        public virtual Inventory Inventory { get; set; }
-        public virtual Metric Metric { get; set; }
-        public virtual Recipe Recipe { get; set; }
+        public System.DateTime Date { get; set; }
     }
 }

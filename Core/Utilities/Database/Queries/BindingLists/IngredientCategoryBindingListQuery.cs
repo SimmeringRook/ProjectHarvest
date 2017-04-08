@@ -2,9 +2,9 @@
 
 namespace Core.Utilities.Database.Queries.BindingLists
 {
-    public class IngredientCategoryBindingListQuery : IHarvestBindingList
+    internal class IngredientCategoryBindingListQuery : IHarvestBindingList
     {
-        public object GetBindingList(HarvestDatabaseEntities _HarvestDatabase)
+        public object GetBindingList(Adapters.Database.HarvestDatabaseEntities _HarvestDatabase)
         {
             _HarvestDatabase.IngredientCategory.Load();
             return _HarvestDatabase.IngredientCategory.Local.ToBindingList();

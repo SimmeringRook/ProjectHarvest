@@ -1,10 +1,11 @@
-﻿using System.Data.Entity;
+﻿using Core.Adapters.Database;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Core.Utilities.Database.Queries.Tables
 {
-    public class RecipeIngredientQuery : IHarvestQuery
+    internal class RecipeIngredientQuery : IHarvestQuery
     {
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {

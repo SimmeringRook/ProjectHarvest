@@ -816,7 +816,7 @@
             // 
             // inventoryBindingSource
             // 
-            this.inventoryBindingSource.DataSource = typeof(Core.Inventory);
+            //this.inventoryBindingSource.DataSource = typeof(Core.Inventory);
             // 
             // recipeTabPage
             // 
@@ -906,7 +906,7 @@
             // 
             // recipeBindingSource
             // 
-            this.recipeBindingSource.DataSource = typeof(Core.Recipe);
+            //this.recipeBindingSource.DataSource = typeof(Core.Recipe);
             // 
             // tableLayoutPanel2
             // 

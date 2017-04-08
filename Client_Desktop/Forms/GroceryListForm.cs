@@ -1,12 +1,12 @@
 ﻿using System.Windows.Forms;
-using Core;
 using System.IO;
 using System.Diagnostics;
-using Core.MealPlanning;
 using System.Collections.Generic;
 using System;
 using Core.Utilities.General;
-using Core.Utilities.Database.Queries.Tables;
+using Core.Adapters.Objects;
+using Core.Adapters;
+using System.Linq;
 
 namespace Client_Desktop
 {
@@ -41,13 +41,13 @@ namespace Client_Desktop
 
         private void buildRow(RecipeIngredient ri)
         {
-            using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
-            {
-                Inventory itemInDB = harvest.Get(ri.InventoryID) as Inventory;
+
+            //Needs testing to see if I can just use the Inventory off of ri instead
+            Inventory itemInDB = HarvestAdapter.InventoryItems.Single(item => item.ID == ri.Inventory.ID);
                 if (ri.Amount - itemInDB.Amount <= 0)
                     return;
 
-                IngredientInformation rowToBeAdded = new IngredientInformation();
+                IngredientInformation rowToBeAdded = new IngredientInformation(false, null);
                 groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
                 groceryTableLayout.Controls.Add(rowToBeAdded.NameLabel, 0, _numberOfRows);
@@ -55,14 +55,13 @@ namespace Client_Desktop
                 groceryTableLayout.Controls.Add(rowToBeAdded.Unit, 2, _numberOfRows);
                 groceryTableLayout.Controls.Add(rowToBeAdded.Selected, 3, _numberOfRows);
 
-                rowToBeAdded.NameLabel.Text = itemInDB.IngredientName;
+                rowToBeAdded.NameLabel.Text = itemInDB.Name;
                 rowToBeAdded.Quantity.Text = (ri.Amount - itemInDB.Amount).ToString();
                 rowToBeAdded.Unit.Text = ri.Measurement.ToString();
 
                 _ingredients.Add(rowToBeAdded.NameLabel.Text.PadRight(25) + rowToBeAdded.Quantity.Text.PadRight(5) + rowToBeAdded.Unit.Text.PadRight(25));
                 _ingreInfo.Add(rowToBeAdded);
                 _numberOfRows++;
-            }
         }
 
         private void createFile(string directory)
@@ -96,40 +95,18 @@ namespace Client_Desktop
         private void submitButton_Click(object sender, EventArgs e)
         {
             List<Inventory> pantry = new List<Inventory>();
-            List<IngredientInformation> Checked = new List<IngredientInformation>();
-
-            using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
+            foreach (RecipeIngredient recipeIngredient in _plannedWeek.GetAllIngredientsForWeek())
             {
-                var allItems = harvest.Get(-1) as List<Inventory>;
-
-                _plannedWeek.GetAllIngredientsForWeek().ForEach(ri =>
-                    allItems.ForEach(invItem =>
-                        {
-                            if (invItem.InventoryID == ri.InventoryID)
-                                pantry.Add(invItem);
-                        }
-                       )
-                      );
-
-                _ingreInfo.ForEach(row => {
-                    if (row.Selected.Checked)
-                        Checked.Add(row);
-                }
-                );
-
-                foreach (Inventory item in pantry)
+                if (pantry.Any(item => item.ID == recipeIngredient.Inventory.ID) == false &&
+                    _ingreInfo.Any(row => row.NameLabel.Text.Equals(recipeIngredient.Inventory.Name) &&
+                    row.Selected.Checked))
                 {
-                    foreach (var ingredient in Checked)
-                    {
-                        if (item.IngredientName.Equals(ingredient.NameLabel.Text))
-                        {
-                            item.Amount += double.Parse(ingredient.Quantity.Text);
-                            harvest.Update(item);
-                        }
-                    }
+                    recipeIngredient.Inventory.Amount += recipeIngredient.Amount;
+                    pantry.Add(recipeIngredient.Inventory);
                 }
-            } 
-
+                    
+            }
+            pantry.Clear();
             this.DialogResult = DialogResult.OK;
         }
     } 

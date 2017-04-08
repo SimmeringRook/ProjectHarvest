@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using Core.Adapters.Objects;
 using System;
 using System.Windows.Forms;
 
@@ -12,7 +12,7 @@ namespace Client_Desktop.Extensions
         {
             this.Recipe = recipe;
             this.Anchor = AnchorStyles.None;
-            this.Text = recipe.RecipeName;
+            this.Text = recipe.Name;
             this.Tag = "Recipe";
             this.AutoSize = true;
             this.Click += new System.EventHandler(ShowRecipe_Click);

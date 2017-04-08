@@ -17,37 +17,37 @@ namespace Core.Utilities.UnitConversions
             return ConversionType.IsCorrectMeasurementType(measurement);
         }
 
-        public RecipeIngredient Convert(RecipeIngredient ingredientToConvert, MeasurementUnit unitToConvertTo)
+        public ConvertedIngredient Convert(ConvertedIngredient ingredientToConvert, MeasurementUnit unitToConvertTo)
         {
             //TODO: add in error handling for attempts to convert weight to volume (or volume to weight)
-            if (!ConversionType.IsCorrectMeasurementType(unitToConvertTo) || !ConversionType.IsCorrectMeasurementType(ingredientToConvert.GetMeasurementUnit()))
+            if (!ConversionType.IsCorrectMeasurementType(unitToConvertTo) || !ConversionType.IsCorrectMeasurementType(ingredientToConvert.Measurement))
                 throw new System.Exception();
 
             //Get the list of conversion factors
             List<float> conversionFactors = MeasurementConversionFactors.GetRatios();
 
             //Ensure we're dealing with the same measurement system
-            if (IsMetricUnitSystem(ingredientToConvert.GetMeasurementUnit()) != IsMetricUnitSystem(unitToConvertTo))
+            if (IsMetricUnitSystem(ingredientToConvert.Measurement) != IsMetricUnitSystem(unitToConvertTo))
                 ConvertToSameUnitSystem(ref ingredientToConvert);
 
 
             //Volume Units belong to the same measurement system now, continue converting to the desired unit
             double convertedAmount = ingredientToConvert.Amount;
 
-            if ((int)ingredientToConvert.GetMeasurementUnit() > (int)unitToConvertTo)
+            if ((int)ingredientToConvert.Measurement > (int)unitToConvertTo)
             {
                 //Converting from bigger to smaller unit
-                for (int i = (int)ingredientToConvert.GetMeasurementUnit() - 1; i >= (int)unitToConvertTo; i--)
+                for (int i = (int)ingredientToConvert.Measurement - 1; i >= (int)unitToConvertTo; i--)
                     convertedAmount /= conversionFactors[i];
             }
             else
             {
                 //Converting from smaller to Bigger
-                for (int i = (int)ingredientToConvert.GetMeasurementUnit(); i < (int)unitToConvertTo; i++)
+                for (int i = (int)ingredientToConvert.Measurement; i < (int)unitToConvertTo; i++)
                     convertedAmount *= conversionFactors[i];
             }
 
-            return new RecipeIngredient(convertedAmount, unitToConvertTo);
+            return new ConvertedIngredient(convertedAmount, unitToConvertTo);
         }
 
         private bool IsMetricUnitSystem(MeasurementUnit unitToCheck)
@@ -55,29 +55,29 @@ namespace Core.Utilities.UnitConversions
             return (((int)unitToCheck >= (int)MeasurementUnit.MilliLiter) && ((int)unitToCheck <= (int)MeasurementUnit.Kilogram));
         }
 
-        private void ConvertToSameUnitSystem(ref RecipeIngredient ingredientToConvert)
+        private void ConvertToSameUnitSystem(ref ConvertedIngredient ingredientToConvert)
         {
             //grab a reference of the amount that needs to be converted
             double amount = ingredientToConvert.Amount;
 
-            bool startingWithMetric = IsMetricUnitSystem(ingredientToConvert.GetMeasurementUnit());
+            bool startingWithMetric = IsMetricUnitSystem(ingredientToConvert.Measurement);
             MeasurementUnit unitToStandarizeWith = (startingWithMetric)
                 ? MeasurementUnit.MilliLiter
                 : MeasurementUnit.FluidOunce;
 
             //If the ingredient is not MilliLiter or Fluid Ounce (respective to the value of startingWithMetric)
             //Convert down/up to the respective unit
-            if (ingredientToConvert.GetMeasurementUnit() != unitToStandarizeWith)
+            if (ingredientToConvert.Measurement != unitToStandarizeWith)
                 ingredientToConvert = Convert(ingredientToConvert, unitToStandarizeWith);
 
             //Metric to US
             if (startingWithMetric)
-                ingredientToConvert = new RecipeIngredient(
+                ingredientToConvert = new ConvertedIngredient(
                     ingredientToConvert.Amount * MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(),
                     MeasurementUnit.FluidOunce);
             //US to Metric
             else
-                ingredientToConvert = new RecipeIngredient(
+                ingredientToConvert = new ConvertedIngredient(
                     ingredientToConvert.Amount / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(),
                     MeasurementUnit.MilliLiter);
         }

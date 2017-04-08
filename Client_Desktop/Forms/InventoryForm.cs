@@ -1,6 +1,6 @@
-﻿using Core;
-using Core.Utilities.Database.Queries.BindingLists;
-using Core.Utilities.Database.Queries.Tables;
+﻿using Core.Adapters;
+using Core.Adapters.Objects;
+using Core.Utilities.UnitConversions;
 using Core.Utilities.Validation;
 using System;
 using System.ComponentModel;
@@ -15,7 +15,7 @@ namespace Client_Desktop
         public InventoryForm(Inventory itemToModify)
         {
             if (itemToModify != null)
-                this.itemToModify = itemToModify.Clone() as Inventory;
+                this.itemToModify = itemToModify;
             InitializeComponent();
         }
 
@@ -26,67 +26,86 @@ namespace Client_Desktop
         {
             try
             {
-                using (HarvestBindingListUtility harvestBindingList = new HarvestBindingListUtility(new IngredientCategoryBindingListQuery()))
-                {
-                    foodCategoryCombo.DataSource = harvestBindingList.GetBindingList() as BindingList<IngredientCategory>;
-
-                    harvestBindingList.HarvestBindingList = new MetricBindingListQuery();
-                    measurementCombo.DataSource = harvestBindingList.GetBindingList() as BindingList<Metric>;
-                }
-
-                if (itemToModify != null)
-                {
-                    itemToModify.PopulateGUIProperties();
-                    itemNameTextbox.Text = itemToModify.IngredientName;
-                    amountTextbox.Text = itemToModify.Amount.ToString();
-                    foodCategoryCombo.SelectedValue = itemToModify.Category;
-                    measurementCombo.SelectedValue = itemToModify.Measurement;
-                }
+                foodCategoryCombo.DataSource = HarvestAdapter.IngredientCategories;
+                measurementCombo.DataSource = HarvestAdapter.Measurements;
             }
             catch( Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
+            if (itemToModify != null)
+            {
+                itemNameTextbox.Text = itemToModify.Name;
+                amountTextbox.Text = itemToModify.Amount.ToString();
+                foodCategoryCombo.SelectedValue = itemToModify.Category;
+                measurementCombo.SelectedValue = itemToModify.Measurement;
+            }
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
         {
-            
-            if (HarvestValidator.Validate(itemNameTextbox, HarvestRegex.Name, InventoryError) == false
-                || HarvestValidator.Validate(amountTextbox, HarvestRegex.Amount, InventoryError) == false)
+            if (IsValid() == false)
             {
                 this.DialogResult = DialogResult.None;
                 return;
             }
 
-            using (HarvestTableUtility harvestDatabase = new HarvestTableUtility(new InventoryQuery()))
+            if (itemToModify != null)
             {
-                //Inventory newItem = 
-                Inventory item = CreateInventoryFromControls();
-                if (itemToModify != null)
-                    harvestDatabase.Update(item);
-                else
-                    harvestDatabase.Insert(item);
+                CheckForChanges();
             }
+            else
+            {
+                HarvestAdapter.InventoryItems.Add(CreateInventoryFromControls());
+            }
+
             itemToModify = null;
             this.DialogResult = DialogResult.OK;
         }
 
         private Inventory CreateInventoryFromControls()
         {
-            Inventory temp = Core.Utilities.General.HarvestEntityFactory.CreateInventory(
-                    itemNameTextbox.Text,
-                    float.Parse(amountTextbox.Text),
-                    measurementCombo.SelectedValue.ToString(),
-                    foodCategoryCombo.SelectedValue.ToString()
-                    );
-            temp.InventoryID = (itemToModify != null)
-                        ? itemToModify.InventoryID
-                        : 0;
+            Inventory temp = new Inventory()
+            {
+                ID = 0,
+                Name = itemNameTextbox.Text,
+                Amount = float.Parse(amountTextbox.Text),
+                Measurement = (MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), measurementCombo.SelectedValue.ToString()),
+                Category = foodCategoryCombo.SelectedValue.ToString()
+            };
             return temp;
         }
 
+        private void CheckForChanges()
+        {
+            string name = itemNameTextbox.Text;
+            if (itemToModify.Name.Equals(name) == false) itemToModify.Name = name;
+
+            double amount = double.Parse(amountTextbox.Text);
+            if (itemToModify.Amount.Equals(amount) == false) itemToModify.Amount = amount;
+
+            MeasurementUnit unit = (MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), measurementCombo.SelectedValue.ToString());
+            if (itemToModify.Measurement.Equals(unit) == false) itemToModify.Measurement = unit;
+
+            string category = foodCategoryCombo.SelectedValue.ToString();
+            if (itemToModify.Category.Equals(category) == false) itemToModify.Category = category;
+        }
+
         #region Input Validation
+
+        private bool IsValid()
+        {
+            bool noErrors = false;
+
+            if (HarvestValidator.Validate(itemNameTextbox, HarvestRegex.Name, InventoryError) == false)
+                noErrors = true;
+
+            if (HarvestValidator.Validate(amountTextbox, HarvestRegex.Amount, InventoryError) == false)
+                noErrors = true;
+
+            return noErrors;
+        }
         private void itemNameTextbox_Validating(object sender, CancelEventArgs e)
         {
             HarvestValidator.Validate((sender as TextBox), HarvestRegex.Name, InventoryError);

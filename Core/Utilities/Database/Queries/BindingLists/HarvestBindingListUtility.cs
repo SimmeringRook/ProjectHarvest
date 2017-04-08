@@ -2,18 +2,18 @@
 
 namespace Core.Utilities.Database.Queries.BindingLists
 {
-    public class HarvestBindingListUtility : IDisposable
+    internal class HarvestBindingListUtility : IDisposable
     {
-        private HarvestDatabaseEntities _HarvestDatabase;
-        public IHarvestBindingList HarvestBindingList { get; set; }
-        
-        public HarvestBindingListUtility(IHarvestBindingList harvestBindingList)
+        private Adapters.Database.HarvestDatabaseEntities _HarvestDatabase;
+        internal IHarvestBindingList HarvestBindingList { get; set; }
+
+        internal HarvestBindingListUtility(IHarvestBindingList harvestBindingList)
         {
-            _HarvestDatabase = new HarvestDatabaseEntities();
+            _HarvestDatabase = new Adapters.Database.HarvestDatabaseEntities();
             HarvestBindingList = harvestBindingList;
         }
 
-        public object GetBindingList()
+        internal object GetBindingList()
         {
             return HarvestBindingList.GetBindingList(_HarvestDatabase);
         }
