@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core;
+using System;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
@@ -6,12 +7,17 @@ namespace Client_Desktop.Extensions
     public class PlanButton : Button
     {
         private HarvestForm mainForm;
-        public PlanButton(HarvestForm mainForm)
+        private DateTime dayplanned;
+        private string mealTime;
+
+        public PlanButton(HarvestForm mainForm, DateTime dayplanned, string mealTime)
         {
             this.mainForm = mainForm;
             this.Anchor = AnchorStyles.Top;
             this.Text = "- Plan -";
             this.Tag = "Plan";
+            this.dayplanned = dayplanned;
+            this.mealTime = mealTime;
             this.Click += new System.EventHandler(PlanMealButton_Click);
         }
 
@@ -21,8 +27,9 @@ namespace Client_Desktop.Extensions
             {
                 if (picker.ShowDialog() == DialogResult.OK)
                 {
-                    //var recipePrefab = new PlannedRecipeControl(mainForm, picker.SelectedRecipe, );
-                    //((Button)sender).Parent.Controls.Add(recipePrefab);
+                    //TODO Does this still need to be constructed this way?
+                    var recipePrefab = new PlannedRecipeControl(mainForm, picker.SelectedRecipe, dayplanned, mealTime);
+                    ((Button)sender).Parent.Controls.Add(recipePrefab);
 
                     //mainForm.AddRecipeToThisWeek(recipePrefab);
                 }

@@ -9,54 +9,26 @@ using System.Windows.Forms;
 
 namespace Client_Desktop
 {
+    
     public partial class HarvestForm : Form
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
-        private PlannedWeek currentWeek;
+        public static PlannedWeek currentWeek;
+
         public HarvestForm()
-        {
+        {     
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
 
             try
             {
-                //using (HarvestTableUtility harvestTables = new HarvestTableUtility(new LastLaunchedQuery()))
-                //{
-                //    if ((harvestTables.Get(null) as List<LastLaunched>).Count < 1)
-                //    {
-                //        currentWeek = new PlannedWeek(DateTime.Today.Date, DateTime.Today.AddDays(6).Date);
-                //        LastLaunched today = new LastLaunched();
-                //        today.Date = DateTime.Today.Date;
-                //        harvestTables.Insert(today);
-                //    }
-                //    else
-                //    {
-                //        DateTime firstLaunched = new DateTime();
-                //        firstLaunched = (harvestTables.Get(-1) as List<LastLaunched>).First().Date;
-                //        currentWeek = new PlannedWeek(firstLaunched, firstLaunched.AddDays(6));
-                //    }
-                //}
-
+                //TODO: use HarvestAdapter
                 RefreshCurrentTab();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                if (ex.InnerException != null)
-                {
-                    using (StreamWriter writer = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "errorLog.txt")))
-                    {
-                        string lines = ex.Message;
-                        if (ex.InnerException != null)
-                        {
-                            lines += "\n" + ex.InnerException.Message;
-                            if (ex.InnerException.InnerException != null)
-                                lines += "\n" + ex.InnerException.InnerException.Message;
-                        }
-                        writer.WriteLine(lines);
-                    }
-                }
+            //}
+            //catch (Exception ex)
+            //{
                 
-            }
+            //}
         }
 
         #region Main Form Functionality
@@ -120,10 +92,10 @@ namespace Client_Desktop
 
             foreach (Control flowLayout in weekTableLayout.Controls)
             {
-                flowLayout.Controls.Add(new PlanButton(this));
-
                 int currentDay = weekTableLayout.GetColumn(flowLayout);
                 string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(flowLayout)];
+
+                flowLayout.Controls.Add(new PlanButton(this, currentWeek.DaysOfWeek[currentDay].Day, mealTime));
 
                 if (currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
                     foreach (Recipe plannedRecipe in currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime])
@@ -142,11 +114,9 @@ namespace Client_Desktop
                 buttons = null;
             }
         }
-
         #endregion
 
         #region Meal Tab
-
         public void AddRecipeToThisWeek(PlannedRecipeControl recipePrefab)
         {
             int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Parent);
@@ -159,9 +129,7 @@ namespace Client_Desktop
         {
             int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Parent);
             string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(recipePrefab.Parent)];
-
             currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTime].Remove(recipePrefab.RecipeButton.Recipe);
-            
             recipePrefab = null;
         }
 
@@ -185,8 +153,6 @@ namespace Client_Desktop
                     groceryList.Dispose(); 
             }
         }
-
-
         #endregion
 
         #region Inventory Tab
@@ -252,8 +218,6 @@ namespace Client_Desktop
 
             //Make sure user wants to delete the selected recipes
             string warningMessage = "Are you sure you want to delete the selected items?";
-            
-
             if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 inventoryItemsToRemove.ForEach(inventory =>
@@ -276,7 +240,6 @@ namespace Client_Desktop
         #endregion
 
         #region Recipe Tab
-
         /// <summary>
         /// This is where we make changes to the Recipe DataGridView for displaying at run time.
         /// ie, any formatting after the data has been loaded into the DataGridView.
@@ -349,7 +312,6 @@ namespace Client_Desktop
                     MessageBox.Show(ex.Message);
                 }
             }
-            
         }
 
         private void DisplayRecipeForm(Recipe recipeToModify)
@@ -367,5 +329,6 @@ namespace Client_Desktop
             DisplayRecipeForm(null);
         }
         #endregion
+        
     }
 }
