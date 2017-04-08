@@ -122,13 +122,6 @@
     <Compile Include="Adapters\Objects\Recipe Management\Recipe.cs" />
     <Compile Include="Adapters\Objects\Recipe Management\RecipeIngredient.cs" />
     <Compile Include="SmartList.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\IHarvestBindingList.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\IngredientCategoryBindingListQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\InventoryBindingListQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\MetricBindingListQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\RecipeBindingListQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\RecipeCategoryBindingList.cs" />
-    <Compile Include="Utilities\Database\Queries\BindingLists\HarvestBindingListUtility.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\HarvestTableUtility.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\IHarvestQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\IngredientCategoryQuery.cs" />

@@ -3,13 +3,12 @@ using Core.Adapters;
 using Core.Adapters.Objects;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop
 {
-    
+
     public partial class HarvestForm : Form
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
@@ -20,15 +19,8 @@ namespace Client_Desktop
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
 
-            try
-            {
                 //TODO: use HarvestAdapter
-                RefreshCurrentTab();
-            //}
-            //catch (Exception ex)
-            //{
-                
-            //}
+            RefreshCurrentTab();
         }
 
         #region Main Form Functionality
