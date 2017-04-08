@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Core.Utilities.UnitConversions
 {
     public class HarvestConverter : IDisposable
     {
         public IUnitConvertable ConversionType;
-
+        private string invalidConversionExceptionMessage = "Harvest encountered an issue when trying to convert from: {0} to {1}.\n" +
+                    "Please ensure that the measurement category (Volume vs Weight units) Ingredient matches the same category as its Inventory item.\n" +
+                    "Ingredient: {2} uses {0}\nInventory Item: {2} uses {3}";
         public HarvestConverter(IUnitConvertable conversionType)
         {
             ConversionType = conversionType;
@@ -17,34 +18,39 @@ namespace Core.Utilities.UnitConversions
             return ConversionType.IsCorrectMeasurementType(measurement);
         }
 
+        /// <summary>
+        /// Returns the given Ingredient's amount, converted to the same unit as unitToConvertTo.
+        /// </summary>
         public ConvertedIngredient Convert(ConvertedIngredient ingredientToConvert, MeasurementUnit unitToConvertTo)
         {
-            //TODO: add in error handling for attempts to convert weight to volume (or volume to weight)
             if (!ConversionType.IsCorrectMeasurementType(unitToConvertTo) || !ConversionType.IsCorrectMeasurementType(ingredientToConvert.Measurement))
-                throw new System.Exception();
-
-            //Get the list of conversion factors
-            List<float> conversionFactors = MeasurementConversionFactors.GetRatios();
-
-            //Ensure we're dealing with the same measurement system
+            {
+                string completeExceptionMessage = string.Format(
+                    invalidConversionExceptionMessage,
+                    ingredientToConvert.Measurement, 
+                    unitToConvertTo.ToString(),
+                    ingredientToConvert.Ingredient.Inventory.Name,
+                    ingredientToConvert.Ingredient.Inventory.Measurement
+                    ); //TODO Can I tie in the recipe to this?
+                throw new InvalidConversionException(completeExceptionMessage);
+            }
+                
             if (IsMetricUnitSystem(ingredientToConvert.Measurement) != IsMetricUnitSystem(unitToConvertTo))
                 ConvertToSameUnitSystem(ref ingredientToConvert);
 
-
-            //Volume Units belong to the same measurement system now, continue converting to the desired unit
             double convertedAmount = ingredientToConvert.Amount;
 
             if ((int)ingredientToConvert.Measurement > (int)unitToConvertTo)
             {
                 //Converting from bigger to smaller unit
                 for (int i = (int)ingredientToConvert.Measurement - 1; i >= (int)unitToConvertTo; i--)
-                    convertedAmount /= conversionFactors[i];
+                    convertedAmount /= MeasurementConversionFactors.ConversionFactors[i];
             }
             else
             {
                 //Converting from smaller to Bigger
                 for (int i = (int)ingredientToConvert.Measurement; i < (int)unitToConvertTo; i++)
-                    convertedAmount *= conversionFactors[i];
+                    convertedAmount *= MeasurementConversionFactors.ConversionFactors[i];
             }
 
             return new ConvertedIngredient(convertedAmount, unitToConvertTo);
@@ -55,31 +61,31 @@ namespace Core.Utilities.UnitConversions
             return (((int)unitToCheck >= (int)MeasurementUnit.MilliLiter) && ((int)unitToCheck <= (int)MeasurementUnit.Kilogram));
         }
 
+        /// <summary>
+        /// Converts the ingredient to the same measurement system.
+        /// </summary>
+        /// <param name="ingredientToConvert"></param>
         private void ConvertToSameUnitSystem(ref ConvertedIngredient ingredientToConvert)
         {
-            //grab a reference of the amount that needs to be converted
-            double amount = ingredientToConvert.Amount;
-
-            bool startingWithMetric = IsMetricUnitSystem(ingredientToConvert.Measurement);
-            MeasurementUnit unitToStandarizeWith = (startingWithMetric)
+            MeasurementUnit unitToStandarizeWith = (IsMetricUnitSystem(ingredientToConvert.Measurement))
                 ? MeasurementUnit.MilliLiter
                 : MeasurementUnit.FluidOunce;
 
-            //If the ingredient is not MilliLiter or Fluid Ounce (respective to the value of startingWithMetric)
-            //Convert down/up to the respective unit
             if (ingredientToConvert.Measurement != unitToStandarizeWith)
                 ingredientToConvert = Convert(ingredientToConvert, unitToStandarizeWith);
-
-            //Metric to US
-            if (startingWithMetric)
+               
+            if (IsMetricUnitSystem(ingredientToConvert.Measurement))
+            {
                 ingredientToConvert = new ConvertedIngredient(
                     ingredientToConvert.Amount * MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(),
                     MeasurementUnit.FluidOunce);
-            //US to Metric
+            }
             else
+            {
                 ingredientToConvert = new ConvertedIngredient(
                     ingredientToConvert.Amount / MeasurementConversionFactors.GetMilliliterToFluidOunceRatio(),
                     MeasurementUnit.MilliLiter);
+            }  
         }
 
         #region IDisposable Support
@@ -91,29 +97,19 @@ namespace Core.Utilities.UnitConversions
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
+
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
+                ConversionType = null;
+                invalidConversionExceptionMessage = null;
                 disposedValue = true;
             }
         }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~HarvestConverter() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
 
         // This code added to correctly implement the disposable pattern.
         void IDisposable.Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
         #endregion
     }

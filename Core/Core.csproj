@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\Database\Extensions\PlannedMeals.cs" />
     <Compile Include="Adapters\Factories\InventoryFactory.cs" />
     <Compile Include="Adapters\Factories\PlannedMealFactory.cs" />
     <Compile Include="Adapters\Factories\RecipeFactory.cs" />
@@ -135,14 +136,15 @@
     <Compile Include="Utilities\Database\Queries\Tables\RecipeCategoryQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\RecipeIngredientQuery.cs" />
     <Compile Include="Utilities\Database\Queries\Tables\RecipeQuery.cs" />
-    <Compile Include="Utilities\UnitConversions\ConvertedIngredient.cs" />
+    <Compile Include="Utilities\General\ConvertedIngredient.cs" />
     <Compile Include="Utilities\UnitConversions\HarvestConverter.cs" />
+    <Compile Include="Utilities\General\InvalidConversionException.cs" />
     <Compile Include="Utilities\UnitConversions\IUnitConvertable.cs" />
     <Compile Include="Utilities\UnitConversions\MeasurementConversionFactors.cs" />
     <Compile Include="Utilities\UnitConversions\WeightUnitConversion.cs" />
     <Compile Include="Adapters\Objects\Meal Planning\PlannedDay.cs" />
     <Compile Include="Adapters\Objects\Meal Planning\PlannedWeek.cs" />
-    <Compile Include="Utilities\UnitConversions\MeasurementUnit.cs" />
+    <Compile Include="Utilities\General\MeasurementUnit.cs" />
     <Compile Include="Utilities\UnitConversions\VolumeUnitConversion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Validation\HarvestValidator.cs" />

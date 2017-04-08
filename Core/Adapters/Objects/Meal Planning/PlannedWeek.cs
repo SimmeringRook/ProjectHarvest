@@ -41,11 +41,19 @@ namespace Core.Adapters.Objects
 
         private double ConvertedAmount(RecipeIngredient ingredientToConvert, RecipeIngredient unitToConvertTo)
         {
-            using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
+            try
             {
-                if (conversion.IsCorrectMeasurementType(ingredientToConvert.Measurement) == false)
-                    conversion.ConversionType = new WeightUnitConversion();
-                return conversion.Convert(new ConvertedIngredient(ingredientToConvert), unitToConvertTo.Measurement).Amount;
+                using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
+                {
+                    if (conversion.IsCorrectMeasurementType(ingredientToConvert.Measurement) == false)
+                        conversion.ConversionType = new WeightUnitConversion();
+                    return conversion.Convert(new ConvertedIngredient(ingredientToConvert), unitToConvertTo.Measurement).Amount;
+                }
+            }
+            catch (InvalidConversionException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+                return 0.0;
             }
         }
 

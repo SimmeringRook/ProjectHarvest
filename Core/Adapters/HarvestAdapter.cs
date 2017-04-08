@@ -211,18 +211,67 @@ namespace Core.Adapters
         }
         #endregion
 
-        #region Planned Meals
+        #region Planned Meals/Week
 
         private static List<Objects.PlannedMeal> _plannedMeals = new List<Objects.PlannedMeal>();
-        public static List<Objects.PlannedMeal> PlannedMeals
+        internal static List<Objects.PlannedMeal> PlannedMeals
         {
             get { return _GetValidPlannedMealCache(); }
         }
-
         private static List<Objects.PlannedMeal> _GetValidPlannedMealCache()
         {
+            using (HarvestTableUtility plannedTable = new HarvestTableUtility(new PlannedMealQuery()))
+            {
+                var databasePlannedMeals = (plannedTable.Get(-1) as List<Database.PlannedMeals>).Where(meal => 
+                meal.DatePlanned >= CurrentWeek.StartOfWeek &&
+                meal.DatePlanned <= CurrentWeek.EndOfWeek).ToList();
+
+                if (_plannedMeals.Count < databasePlannedMeals.Count)
+                {
+                    _plannedMeals.Clear();
+                    foreach (var meal in databasePlannedMeals)
+                        _plannedMeals.Add(PlannedMealFactory.Create_Client_From_Database(meal));
+                }
+                else if (_plannedMeals.Count > databasePlannedMeals.Count)
+                {
+                    foreach (var plannedMeal in _plannedMeals)
+                    {
+                        Database.PlannedMeals databasePlan = PlannedMealFactory.Create_Database_From_Client(plannedMeal);
+                        if (databasePlannedMeals.Any(meal => meal.Equals(databasePlan)) == false)
+                            plannedTable.Update(databasePlan);
+                    }
+                }
+            }
 
             return _plannedMeals;
+        }
+
+        private static Objects.PlannedWeek _currentWeek = null;
+        public static Objects.PlannedWeek CurrentWeek { get { return _GetCurrentWeekCache(); } }
+        private static Objects.PlannedWeek _GetCurrentWeekCache()
+        {
+            if (_currentWeek == null)
+                _BuildNewCurrentWeek();
+
+            return _currentWeek;
+        }
+
+        private static void _BuildNewCurrentWeek()
+        {
+            DateTime startOfWeek = DateTime.Today;
+            using (HarvestTableUtility launchTable = new HarvestTableUtility(new LastLaunchedQuery()))
+            {
+                var lastHarvestLaunch = launchTable.Get(null) as List<Database.LastLaunched>;
+                if (lastHarvestLaunch.Count == 0)
+                {
+                    launchTable.Insert(startOfWeek);
+                }
+                else
+                {
+                    startOfWeek = lastHarvestLaunch.First().Date;
+                }
+            }
+            _currentWeek = new Objects.PlannedWeek(startOfWeek, startOfWeek.AddDays(6));
         }
         #endregion
 

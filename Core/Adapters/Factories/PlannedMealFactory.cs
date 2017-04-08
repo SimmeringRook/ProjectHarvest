@@ -32,5 +32,23 @@ namespace Core.Adapters.Factories
 
             return new Objects.PlannedMeal();
         }
+
+        #region Database Object
+        /// <summary>
+        /// This takes a Client_Desktop Inventory object and transfers its data over to an Inventory database Object.
+        /// </summary>
+        /// <param name="clientMeal"></param>
+        /// <returns></returns>
+        internal static Database.PlannedMeals Create_Database_From_Client(Objects.PlannedMeal clientMeal)
+        {
+            Database.PlannedMeals databaseMeal = new Database.PlannedMeals();
+
+            databaseMeal.RecipeID = clientMeal.PlannedRecipe.ID;
+            databaseMeal.DatePlanned = clientMeal.Date;
+            databaseMeal.MealEaten = clientMeal.HasBeenEaten;
+            databaseMeal.MealName = clientMeal.MealTime;
+            return databaseMeal;
+        }
+        #endregion
     }
 }

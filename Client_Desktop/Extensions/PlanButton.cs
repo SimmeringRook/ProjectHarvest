@@ -27,11 +27,8 @@ namespace Client_Desktop.Extensions
             {
                 if (picker.ShowDialog() == DialogResult.OK)
                 {
-                    //TODO Does this still need to be constructed this way?
                     var recipePrefab = new PlannedRecipeControl(mainForm, picker.SelectedRecipe, dayplanned, mealTime);
                     ((Button)sender).Parent.Controls.Add(recipePrefab);
-
-                    //mainForm.AddRecipeToThisWeek(recipePrefab);
                 }
 
             }
