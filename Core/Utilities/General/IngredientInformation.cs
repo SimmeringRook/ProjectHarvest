@@ -26,12 +26,12 @@ namespace Core.Utilities.General
             if (isEditable)
             {
                 Controls.Add(Name = GetTextboxTemplate(isAmount: false));
+                Controls.Add(Type = GetCategoryComboTemplate());
             }
             else
             {
                 Controls.Add(NameLabel = GetLabelTemplate());
             }
-            Controls.Add(Type = GetCategoryComboTemplate());
             Controls.Add(Quantity = GetTextboxTemplate(isAmount: true));
             Controls.Add(Unit = GetUnitComboTemplate());
             Controls.Add(Selected = GetCheckBoxTemplate());

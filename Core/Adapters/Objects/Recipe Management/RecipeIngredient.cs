@@ -17,7 +17,7 @@ namespace Core.Adapters.Objects
         public MeasurementUnit Measurement { get; set; }
 
         private bool _dirty;
-        internal bool IsDirty { get { return _dirty; } }
+        public bool IsDirty { get { return _dirty; } }
 
         public RecipeIngredient()
         {

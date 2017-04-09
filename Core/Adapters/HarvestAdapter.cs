@@ -235,15 +235,20 @@ namespace Core.Adapters
                 else if (_plannedMeals.Count > databasePlannedMeals.Count)
                 {
                     foreach (var plannedMeal in _plannedMeals)
-                    {
-                        Database.PlannedMeals databasePlan = PlannedMealFactory.Create_Database_From_Client(plannedMeal);
-                        if (databasePlannedMeals.Any(meal => meal.Equals(databasePlan)) == false)
-                            plannedTable.Update(databasePlan);
-                    }
+                        if (plannedMeal.IsDirty)
+                            plannedTable.Update(PlannedMealFactory.Create_Database_From_Client(plannedMeal));
                 }
             }
 
             return _plannedMeals;
+        }
+
+        internal static void UnplanMeal(Objects.PlannedMeal meal)
+        {
+            if (meal.IsDirty)
+                using (HarvestTableUtility plannedTable = new HarvestTableUtility(new PlannedMealQuery()))
+                    plannedTable.Update(PlannedMealFactory.Create_Database_From_Client(meal));
+            _plannedMeals.Remove(meal);
         }
 
         private static Objects.PlannedWeek _currentWeek = null;

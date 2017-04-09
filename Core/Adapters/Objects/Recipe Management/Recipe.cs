@@ -42,7 +42,7 @@ namespace Core.Adapters.Objects
         }
 
         private bool _dirty;
-        internal bool IsDirty { get { return _dirty; } }
+        public bool IsDirty { get { return _dirty; } }
 
         public List<RecipeIngredient> AssociatedIngredients { get; set; }
 

@@ -12,7 +12,7 @@ namespace Client_Desktop
     public partial class HarvestForm : Form
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
-        public static PlannedWeek currentWeek;
+
 
         public HarvestForm()
         {     
@@ -78,20 +78,25 @@ namespace Client_Desktop
             return null;
         }
 
+
+        #endregion
+
+        #region Meal Tab
         private void LoadWeek()
         {
             ClearControls();
 
             foreach (Control flowLayout in weekTableLayout.Controls)
             {
-                int currentDay = weekTableLayout.GetColumn(flowLayout);
+                int dayIndex = weekTableLayout.GetColumn(flowLayout);
+                DateTime currentDay = HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].Day;
                 string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(flowLayout)];
 
-                flowLayout.Controls.Add(new PlanButton(this, currentWeek.DaysOfWeek[currentDay].Day, mealTime));
+                flowLayout.Controls.Add(new PlanButton(currentDay, mealTime));
 
-                if (currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime].Count > 0)
-                    foreach (Recipe plannedRecipe in currentWeek.DaysOfWeek[currentDay].MealsForDay[mealTime])
-                        flowLayout.Controls.Add(new PlannedRecipeControl(this, plannedRecipe, currentWeek.DaysOfWeek[currentDay].Day, mealTime));
+                if (HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay.Count > 0)
+                    foreach (PlannedMeal plannedRecipe in HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay)
+                        flowLayout.Controls.Add(new PlannedRecipeControl(plannedRecipe));
             }
         }
 
@@ -106,40 +111,10 @@ namespace Client_Desktop
                 buttons = null;
             }
         }
-        #endregion
-
-        #region Meal Tab
-        public void AddRecipeToThisWeek(PlannedRecipeControl recipePrefab)
-        {
-            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Parent);
-            string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(recipePrefab.Parent)];
-                if (currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTime].Contains(recipePrefab.RecipeButton.Recipe) == false)
-                    currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTime].Add(recipePrefab.RecipeButton.Recipe);
-        }
-
-        public void RemoveRecipeFromThisWeek(PlannedRecipeControl recipePrefab)
-        {
-            int dayOfWeek = weekTableLayout.GetColumn(recipePrefab.Parent);
-            string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(recipePrefab.Parent)];
-            currentWeek.DaysOfWeek[dayOfWeek].MealsForDay[mealTime].Remove(recipePrefab.RecipeButton.Recipe);
-            recipePrefab = null;
-        }
 
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (Control flowControl in weekTableLayout.Controls)
-                foreach (Control control in flowControl.Controls)
-                    if (control is PlannedRecipeControl)
-                    {
-                        RecipeButton button = (control as PlannedRecipeControl).RecipeButton;
-                        int dayIndex = weekTableLayout.GetColumn(flowControl);
-                        string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(flowControl)];
-
-                        if (currentWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Any(r => r.ID == button.Recipe.ID) == false)
-                            currentWeek.DaysOfWeek[dayIndex].MealsForDay[mealTime].Add(button.Recipe);
-                    }
-
-            using (GroceryListForm groceryList = new GroceryListForm(currentWeek))
+            using (GroceryListForm groceryList = new GroceryListForm())
             {
                 if (groceryList.ShowDialog() == DialogResult.OK)
                     groceryList.Dispose(); 

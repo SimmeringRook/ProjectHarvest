@@ -1,137 +1,103 @@
-﻿using Core.Adapters.Objects;
+﻿using Core.Adapters;
+using Core.Adapters.Objects;
+using Core.Utilities.UnitConversions;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
 {
     public class PlannedRecipeControl : FlowLayoutPanel
     {
-        //public FlowLayoutPanel Container;
+        public PlannedMeal PlannedMeal;
+        //Controls
         public RecipeButton RecipeButton;
         private Button deleteButton;
         private Button ateButton;
-        private HarvestForm mainForm;
-        private DateTime dayPlanned;
-        private string mealTime;
 
-        public PlannedRecipeControl(HarvestForm mainForm, Recipe selectedRecipe, DateTime dayPlanned, string mealTime)
+        public PlannedRecipeControl(PlannedMeal plannedRecipe)
         {
-            this.mainForm = mainForm;
-            this.dayPlanned = dayPlanned;
-            this.mealTime = mealTime;
+            this.PlannedMeal = plannedRecipe;
 
-            //Container = new FlowLayoutPanel();
             this.Margin = new Padding(5, 2, 0, 2);
             this.AutoSize = true;
             this.BorderStyle = BorderStyle.FixedSingle;
             
-
-            RecipeButton = new RecipeButton(selectedRecipe);
+            RecipeButton = new RecipeButton(PlannedMeal.PlannedRecipe);
             this.Controls.Add(RecipeButton);
 
-            deleteButton = newDeleteButton();
+            deleteButton = _CreateButtonTemplate("X", deleteButton_Click);
             this.Controls.Add(deleteButton);
 
-            ateButton = newAteButton();
+            ateButton = _CreateButtonTemplate("A", ateButton_Click);
             this.Controls.Add(ateButton);
 
+            if (plannedRecipe.HasBeenEaten)
+                SetControlsForHasBeenEaten();
         }
 
-        #region Delete Button
-        private Button newDeleteButton()
-        {
-            Button delete = new Button();
-            delete.Text = "X";
-            delete.Size = new System.Drawing.Size(20, RecipeButton.Height);
-            delete.Click += new EventHandler(deleteButton_Click);
-            return delete;
-        }
-
-        private void deleteButton_Click(object sender, EventArgs e)
-        {
-            //TODO tie in with HarvestAdapter to remove a planned meal from the week
-            Control parentOfParent = this.Parent;
-
-            //Remove recipe from plan
-            mainForm.RemoveRecipeFromThisWeek(this);
-
-            RecipeButton = null;
-
-            deleteButton = null;
-            this.Controls.Clear();
-            parentOfParent.Controls.Remove(this);
-        }
-        #endregion
-
-        private Button newAteButton()
-        {
-            Button ate = new Button();
-            ate.Text = "A";
-            ate.Size = new System.Drawing.Size(20, RecipeButton.Height);
-            ate.Click += new EventHandler(ateButton_Click);
-            return ate;
-        }
-
-
-
-        //TODO Refactor to use HarvestAdapter
-        private void ateButton_Click(object sender, EventArgs e)
-        {
-            string messageTitle = "";
-            List<Inventory> pantry = new List<Inventory>();
-
-            using (HarvestTableUtility harvest = new HarvestTableUtility(new InventoryQuery()))
-            {
-                var allInventories = harvest.Get(-1) as List<Inventory>;
-                foreach (var ri in RecipeButton.Recipe.GetIngredients())
-                {
-                    foreach (var item in allInventories)
-                    {
-                        if (item.InventoryID == ri.InventoryID)
-                        {
-                            //Need to convert to same measurements before this subrtaction
-                            item.Amount -= ri.Amount;
-                            pantry.Add(item);
-                        }
-                    }
-                }
-
-                foreach (var item in pantry)
-                {
-                    harvest.Update(item);
-                }
-
-                harvest.HarvestQuery = new PlannedMealQuery();
-                var recipesForDay = harvest.Get(dayplanned) as List<PlannedMeals>;
-
-                foreach(var meal in recipesForDay)
-                {
-                    if (meal.MealTime.MealName.Equals(mealTime.MealName) && meal.RecipeID == RecipeButton.Recipe.RecipeID)
-                    {
-                        meal.MealEaten = true;
-                        harvest.Update(meal);
-
-                        if (MessageBox.Show("Remove from plan?", messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            deleteButton_Click(sender, e);                            
-                        }
-                        else
-                        {
-                            RecipeButton.Enabled = false;
-                            ateButton.Visible = false;
-                        }
-
-                        break;
-                    }
-                }                
-            }            
-        }
-
-        internal void SetControlsForHasBeenEaten()
+        private void SetControlsForHasBeenEaten()
         {
             RecipeButton.Enabled = false;
             ateButton.Visible = false;
         }
+
+        private Button _CreateButtonTemplate(string text, EventHandler eventHandler)
+        {
+            Button template = new Button();
+            template.Text = text;
+            template.Size = new System.Drawing.Size(20, RecipeButton.Height);
+            template.Click += new EventHandler(eventHandler);
+            return template;
+        }
+
+        #region Button Click Events
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            //Remove recipe from plan
+            foreach (var plannedDay in HarvestAdapter.CurrentWeek.DaysOfWeek)
+            {
+                if (plannedDay.Day.Equals(PlannedMeal.Date))
+                {
+                    plannedDay.UnplanRecipe(PlannedMeal);
+                    break;
+                }
+            }
+
+            //TODO Do this but with the Dispose pattern
+            foreach (Control control in this.Controls)
+                control.Dispose();
+
+            this.Controls.Clear();
+            this.Parent.Controls.Remove(this);
+        }
+
+        private void ateButton_Click(object sender, EventArgs e)
+        {
+            PlannedMeal.HasBeenEaten = true;
+            try
+            {
+                foreach (RecipeIngredient ingredient in RecipeButton.Recipe.AssociatedIngredients)
+                    using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
+                    {
+                        if (conversion.IsCorrectMeasurementType(ingredient.Measurement) == false)
+                            conversion.ConversionType = new WeightUnitConversion();
+                        ingredient.Inventory.Amount -= conversion.Convert(new ConvertedIngredient(ingredient), ingredient.Inventory.Measurement).Amount;
+                    }
+            }
+            catch (InvalidConversionException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (MessageBox.Show("Remove from plan?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                deleteButton_Click(sender, e);
+            }
+            else
+            {
+                SetControlsForHasBeenEaten();
+            }
+        }
+        #endregion
     }
 }

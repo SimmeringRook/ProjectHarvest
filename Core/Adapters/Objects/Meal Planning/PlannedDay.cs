@@ -15,15 +15,15 @@ namespace Core.Adapters.Objects
             Day = day;
         }
 
-        public void PlanRecipe(Recipe recipe, string mealTime)
+        public void PlanRecipe(PlannedMeal mealToPlan)
         {
-            HarvestAdapter.PlannedMeals.Add(new PlannedMeal(recipe, mealTime, Day, false));
+            HarvestAdapter.PlannedMeals.Add(mealToPlan);
 
         }
 
-        public void UnplanRecipe(Recipe recipe, string mealTime)
+        public void UnplanRecipe(PlannedMeal mealToUnplan)
         {
-            HarvestAdapter.PlannedMeals.Remove(new PlannedMeal(recipe, mealTime, Day, false));
+            HarvestAdapter.UnplanMeal(mealToUnplan);
         }
 
         public List<RecipeIngredient> GetIngredientsForToday()
