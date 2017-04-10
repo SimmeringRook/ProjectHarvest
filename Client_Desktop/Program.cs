@@ -18,10 +18,11 @@ namespace Client_Desktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             HarvestForm mainForm = null;
+            mainForm = new HarvestForm();
+            Application.Run(mainForm);
             try
             {
-                mainForm = new HarvestForm();
-                Application.Run(mainForm);
+                
             }
             catch (Exception ex)
             {

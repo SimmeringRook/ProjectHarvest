@@ -63,7 +63,6 @@ namespace Client_Desktop.Extensions
                 }
             }
 
-            //TODO Do this but with the Dispose pattern
             foreach (Control control in this.Controls)
                 control.Dispose();
 

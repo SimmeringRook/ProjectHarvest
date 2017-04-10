@@ -6,6 +6,7 @@ using Core.Utilities.General;
 using Core.Adapters.Objects;
 using Core.Adapters;
 using Core.Utilities.Validation;
+using System.ComponentModel;
 
 namespace Client_Desktop
 {
@@ -20,15 +21,7 @@ namespace Client_Desktop
             InitializeComponent();
 
             _numberOfRows = recipeTableLayout.RowCount - 1;
-            if (recipe.ID != 0)
-            {
-                LoadRecipe(recipe);
-            }
-            else
-            {
-                AddNewIngredientRow();
-            }
-
+            LoadRecipe(recipe);
             subtractButton.Enabled = (_Ingredients.Count > 1);
         }
         
@@ -36,10 +29,16 @@ namespace Client_Desktop
         {
             try
             {
-                _recipeToModify = HarvestAdapter.Recipes.Single(r => r.ID == recipe.ID);
-                DisplayRecipeToModify();
-                
-                categoryCombo.DataSource = HarvestAdapter.RecipeCategories;
+                if (recipe != null)
+                {
+                    _recipeToModify = HarvestAdapter.Recipes.Single(r => r.ID == recipe.ID);
+                    DisplayRecipeToModify();
+                }
+                else
+                {
+                    AddNewIngredientRow();
+                }
+                categoryCombo.DataSource = HarvestAdapter.RecipeCategories.ToList();
             }
             catch (Exception ex)
             {
@@ -78,19 +77,17 @@ namespace Client_Desktop
             recipeTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             for (int column = 0; column < rowToBeAdded.Controls.Count; column++)
-            {
                 recipeTableLayout.Controls.Add(rowToBeAdded.Controls[column], column, _numberOfRows);
-            }
 
             rowToBeAdded.Selected.CheckStateChanged += Selected_CheckStateChanged;
 
             try
             {
-                Binding typeBinding = new Binding("SelectedItem", HarvestAdapter.IngredientCategories, "Category", true, DataSourceUpdateMode.OnPropertyChanged);
-                rowToBeAdded.SetDataBindings(rowToBeAdded.Type, typeBinding, "Category");
+                Binding typeBinding = new Binding("SelectedItem", HarvestAdapter.IngredientCategories.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
+                rowToBeAdded.SetDataBindings(rowToBeAdded.Type, typeBinding);
 
-                Binding unitBinding = new Binding("SelectedItem", HarvestAdapter.Measurements, "Measurement", true, DataSourceUpdateMode.OnPropertyChanged);
-                rowToBeAdded.SetDataBindings(rowToBeAdded.Unit, unitBinding, "Measurement");
+                Binding unitBinding = new Binding("SelectedItem", HarvestAdapter.Measurements.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
+                rowToBeAdded.SetDataBindings(rowToBeAdded.Unit, unitBinding);
             }
             catch (Exception ex)
             {
@@ -134,7 +131,7 @@ namespace Client_Desktop
 
         #endregion
 
-        private void addModifyRecipeButton_Click(object sender, EventArgs e)
+        private void SubmitButton_Click(object sender, EventArgs e)
         {
             if (IsValid() == false)
                 return;
@@ -144,6 +141,12 @@ namespace Client_Desktop
                 if (_recipeToModify != null)
                 {//update
                     CheckForChangesToRecipe();
+                    foreach (var i in _Ingredients)
+                    {
+                        var newRI = i.GetRecipeIngredient();
+                        if (_recipeToModify.AssociatedIngredients.Contains(newRI) == false)
+                            _recipeToModify.AssociatedIngredients.Add(newRI);
+                    }
                 }
                 else
                 {//create
@@ -155,6 +158,16 @@ namespace Client_Desktop
             {
                 MessageBox.Show(ex.Message);
             }          
+        }
+
+        private void RecipeNameTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            HarvestValidator.Validate(RecipeNameTextBox, HarvestRegex.Name, recipeErrorProvider);
+        }
+
+        private void servingsTextbox_Validating(object sender, CancelEventArgs e)
+        {
+            HarvestValidator.Validate(servingsTextbox, HarvestRegex.Amount, recipeErrorProvider);
         }
 
         private bool IsValid()

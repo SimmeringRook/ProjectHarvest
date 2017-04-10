@@ -13,13 +13,10 @@ namespace Client_Desktop
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
 
-
         public HarvestForm()
         {     
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-
-                //TODO: use HarvestAdapter
             RefreshCurrentTab();
         }
 
@@ -52,33 +49,20 @@ namespace Client_Desktop
         /// </summary>
         public void RefreshCurrentTab()
         {
-            DataGridView gridOnTab = GetDataGridForTabPage(pantryTabControl.SelectedTab);
             switch (pantryTabControl.SelectedIndex)
             {
                 case 0:
                     LoadWeek();
                     break;
                 case 1:
-                    gridOnTab.DataSource = HarvestAdapter.InventoryItems;
+                    InventoryGridView.DataSource = HarvestAdapter.InventoryItems.ToList();
                     break;
                 case 2:
-                    gridOnTab.DataSource = HarvestAdapter.InventoryItems;
+                    RecipeGridView.DataSource = HarvestAdapter.Recipes.ToList();
                     break;
             }
             pantryTabControl.SelectedTab.Refresh();
         }
-
-        private static DataGridView GetDataGridForTabPage(TabPage selectedTab)
-        {
-            foreach (Control control in selectedTab.Controls)
-                if (control is TableLayoutPanel)
-                    foreach (Control ctrl in control.Controls)
-                        if (ctrl is DataGridView)
-                            return ctrl as DataGridView;
-            return null;
-        }
-
-
         #endregion
 
         #region Meal Tab
@@ -123,22 +107,6 @@ namespace Client_Desktop
         #endregion
 
         #region Inventory Tab
-        /// <summary>
-        /// Translate MetricID and FoodTypeID into respective strings; assign the text value to the modify button
-        /// </summary>
-        private void InventoryGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            Inventory item = (Inventory)InventoryGridView.Rows[e.RowIndex].DataBoundItem;
-            if (InventoryGridView.Columns[e.ColumnIndex].Name == "Measurement")
-                e.Value = item.Measurement;
-
-            if (InventoryGridView.Columns[e.ColumnIndex].Name == "FoodCategory")
-                e.Value = item.Category;
-
-            if (InventoryGridView.Columns[e.ColumnIndex].Name == "ModifyInventory")
-                e.Value = "...";
-        }
-
         /// <summary>
         /// Display an Inventory Item input form that allows the user to create a new Inventory record.
         /// </summary>
@@ -189,9 +157,9 @@ namespace Client_Desktop
             {
                 inventoryItemsToRemove.ForEach(inventory =>
                 {
-                    if (Core.Adapters.HarvestAdapter.Recipes.Any(r => r.AssociatedIngredients.Any(ri => ri.Inventory.ID == inventory.ID)) == false)
+                    if (HarvestAdapter.Recipes.Any(r => r.AssociatedIngredients.Any(ri => ri.Inventory.ID == inventory.ID)) == false)
                     {
-                        Core.Adapters.HarvestAdapter.InventoryItems.Remove(inventory);
+                        HarvestAdapter.InventoryItems.Remove(inventory);
                     }    
                     else
                     {

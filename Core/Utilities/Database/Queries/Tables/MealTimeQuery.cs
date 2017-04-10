@@ -10,10 +10,7 @@ namespace Core.Utilities.Database.Queries.Tables
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.MealTime.Load();
-            if (itemID is int)
-                return HarvestDatabase.MealTime.ToList();
-            var mealTime = HarvestDatabase.MealTime.Where(meal => meal.MealName.Equals(itemID as string));
-            return mealTime;
+            return HarvestDatabase.MealTime.ToList();
         }
 
         public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)

@@ -4,6 +4,7 @@ using Core.Utilities.UnitConversions;
 using Core.Utilities.Validation;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop
@@ -26,8 +27,13 @@ namespace Client_Desktop
         {
             try
             {
-                foodCategoryCombo.DataSource = HarvestAdapter.IngredientCategories;
-                measurementCombo.DataSource = HarvestAdapter.Measurements;
+                Binding typeBinding = new Binding("SelectedItem", HarvestAdapter.IngredientCategories.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
+                foodCategoryCombo.DataBindings.Add(typeBinding);
+                foodCategoryCombo.DataSource = typeBinding.DataSource;
+
+                Binding unitBinding = new Binding("SelectedItem", HarvestAdapter.Measurements.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
+                measurementCombo.DataBindings.Add(unitBinding);
+                measurementCombo.DataSource = unitBinding.DataSource;
             }
             catch( Exception ex)
             {
@@ -96,13 +102,13 @@ namespace Client_Desktop
 
         private bool IsValid()
         {
-            bool noErrors = false;
+            bool noErrors = true;
 
             if (HarvestValidator.Validate(itemNameTextbox, HarvestRegex.Name, InventoryError) == false)
-                noErrors = true;
+                noErrors = false;
 
             if (HarvestValidator.Validate(amountTextbox, HarvestRegex.Amount, InventoryError) == false)
-                noErrors = true;
+                noErrors = false;
 
             return noErrors;
         }

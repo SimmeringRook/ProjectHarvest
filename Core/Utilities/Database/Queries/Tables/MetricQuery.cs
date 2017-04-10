@@ -11,8 +11,7 @@ namespace Core.Utilities.Database.Queries.Tables
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Metric.Load();
-            Inventory item = HarvestDatabase.Inventory.SingleOrDefault(i => i.InventoryID == (int)itemID);
-            return HarvestDatabase.Metric.SingleOrDefault(m => m.Measurement.Equals(item.Measurement));
+            return HarvestDatabase.Metric.ToList();
         }
 
         public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)

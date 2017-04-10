@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.filtersLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -37,8 +38,13 @@
             this.RecipeGridView = new System.Windows.Forms.DataGridView();
             this.selectButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
+            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.servingsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.categoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecipeGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersLabel
@@ -112,7 +118,14 @@
             // 
             this.RecipeGridView.AllowUserToAddRows = false;
             this.RecipeGridView.AllowUserToDeleteRows = false;
+            this.RecipeGridView.AutoGenerateColumns = false;
+            this.RecipeGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.RecipeGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RecipeGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.nameDataGridViewTextBoxColumn,
+            this.servingsDataGridViewTextBoxColumn,
+            this.categoryDataGridViewTextBoxColumn});
+            this.RecipeGridView.DataSource = this.recipeBindingSource;
             this.RecipeGridView.Location = new System.Drawing.Point(20, 193);
             this.RecipeGridView.Name = "RecipeGridView";
             this.RecipeGridView.ReadOnly = true;
@@ -141,6 +154,34 @@
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
+            // recipeBindingSource
+            // 
+            this.recipeBindingSource.DataSource = typeof(Core.Adapters.Objects.Recipe);
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // servingsDataGridViewTextBoxColumn
+            // 
+            this.servingsDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.servingsDataGridViewTextBoxColumn.DataPropertyName = "Servings";
+            this.servingsDataGridViewTextBoxColumn.HeaderText = "Servings";
+            this.servingsDataGridViewTextBoxColumn.Name = "servingsDataGridViewTextBoxColumn";
+            this.servingsDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // categoryDataGridViewTextBoxColumn
+            // 
+            this.categoryDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
+            this.categoryDataGridViewTextBoxColumn.HeaderText = "Category";
+            this.categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
+            this.categoryDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // RecipePickerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -156,6 +197,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecipeGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,10 +212,11 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.DataGridView RecipeGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn recipeNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn servingsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rCategoryDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button selectButton;
         private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn servingsDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource recipeBindingSource;
     }
 }

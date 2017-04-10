@@ -11,8 +11,7 @@ namespace Core.Utilities.Database.Queries.Tables
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.IngredientCategory.Load();
-            Inventory item = HarvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID == (int) itemID);
-            return HarvestDatabase.IngredientCategory.SingleOrDefault(ingredientCategory => ingredientCategory.Category.Equals(item.Category));
+            return HarvestDatabase.IngredientCategory.ToList();
         }
 
         public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)

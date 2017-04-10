@@ -27,9 +27,10 @@ namespace Core.Adapters
                     {
                         recipeTable.Update(RecipeFactory.Create_Database_From_Client(recipe));
 
+                        //If this was a new recipe, add ingredients to the RecipeIngredient table
                         if (recipe.ID == 0)
-                        {//This was a new recipe, add ingredients to the RI table
-                            databaseRecipes = recipeTable.Get(-1) as List<Database.Recipe>;
+                        {
+                            databaseRecipes = recipeTable.Get(-1) as List<Database.Recipe>; 
                             recipe.ID = databaseRecipes.Single(r => r.RecipeName.Equals(recipe.Name)).RecipeID;
 
                             foreach (var recipeIngredient in recipe.AssociatedIngredients)
@@ -85,9 +86,11 @@ namespace Core.Adapters
                 {
                     if (item.IsDirty)
                     {
-                        inventoryTable.Update(InventoryFactory.Create_Database_From_Client(item));
+                        Database.Inventory dbItem = InventoryFactory.Create_Database_From_Client(item);
+                        inventoryTable.Update(dbItem);
+                        item.ID = InventoryFactory.Create_Client_From_Database(inventoryTable.Get(dbItem) as Database.Inventory).ID;
+                        item.ResetDirtyFlag();
                     }
-                        
                 }
 
                 databaseInventoryItems = inventoryTable.Get(-1) as List<Database.Inventory>;
@@ -100,6 +103,11 @@ namespace Core.Adapters
             }
             return _inventories;
         }
+        public static void Remove_Item(Objects.Inventory item)
+        {
+            using (HarvestTableUtility inventoryTable = new HarvestTableUtility(new InventoryQuery()))
+                inventoryTable.Remove(InventoryFactory.Create_Database_From_Client(item));
+        }
         #endregion
 
         #region Recipe Ingredient
@@ -107,15 +115,15 @@ namespace Core.Adapters
         internal static void Add_Ingredient_To_Recipe(Objects.Recipe recipe, Objects.RecipeIngredient riToAdd)
         {
             if (InventoryItems.Any(item => item.Name.Equals(riToAdd.Inventory.Name)) == false)
-            {
                 InventoryItems.Add(riToAdd.Inventory);
-            }
 
-            using(HarvestTableUtility recipeIngredientTable = new HarvestTableUtility(new RecipeCategoryQuery()))
-            {
-                riToAdd.Inventory = InventoryItems.Single(item => item.Name.Equals(riToAdd.Inventory.Name));
+            riToAdd.RecipeID = recipe.ID;
+            riToAdd.Inventory = InventoryItems.Single(item => item.Name.Equals(riToAdd.Inventory.Name));
+
+            using (HarvestTableUtility recipeIngredientTable = new HarvestTableUtility(new RecipeIngredientQuery()))
                 recipeIngredientTable.Update(RecipeIngredientFactory.Create_Database_From_Client(riToAdd));
-            }
+
+           
         }
 
         public static void Remove_Ingredient_From_Recipe(Objects.Recipe recipe, string ingredientName)
@@ -211,7 +219,7 @@ namespace Core.Adapters
         }
         #endregion
 
-        #region Planned Meals/Week
+        #region Planned Meals
 
         private static List<Objects.PlannedMeal> _plannedMeals = new List<Objects.PlannedMeal>();
         internal static List<Objects.PlannedMeal> PlannedMeals
@@ -250,7 +258,9 @@ namespace Core.Adapters
                     plannedTable.Update(PlannedMealFactory.Create_Database_From_Client(meal));
             _plannedMeals.Remove(meal);
         }
+        #endregion
 
+        #region Current Week
         private static Objects.PlannedWeek _currentWeek = null;
         public static Objects.PlannedWeek CurrentWeek { get { return _GetCurrentWeekCache(); } }
         private static Objects.PlannedWeek _GetCurrentWeekCache()
@@ -269,7 +279,8 @@ namespace Core.Adapters
                 var lastHarvestLaunch = launchTable.Get(null) as List<Database.LastLaunched>;
                 if (lastHarvestLaunch.Count == 0)
                 {
-                    launchTable.Insert(startOfWeek);
+                    
+                    launchTable.Insert(new Database.LastLaunched() { Date = startOfWeek });
                 }
                 else
                 {

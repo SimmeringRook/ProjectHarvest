@@ -96,12 +96,10 @@ namespace Core.Utilities.General
             return template;
         }
 
-        public void SetDataBindings(ComboBox control, Binding dataBinding, string dataMember)
+        public void SetDataBindings(ComboBox control, Binding dataBinding)
         {
             control.DataBindings.Add(dataBinding);
             control.DataSource = dataBinding.DataSource;
-            control.DisplayMember = dataMember;
-            control.ValueMember = dataMember;
         }
 
         public void LoadExistingData(RecipeIngredient ingredient)

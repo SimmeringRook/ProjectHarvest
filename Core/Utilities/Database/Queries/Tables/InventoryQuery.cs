@@ -11,9 +11,13 @@ namespace Core.Utilities.Database.Queries.Tables
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
-            if ((int)itemID == -1)
-                return HarvestDatabase.Inventory.ToList();
-            return HarvestDatabase.Inventory.SingleOrDefault(inventory => inventory.InventoryID.Equals((int) itemID));
+            if (itemID is Inventory)
+            {
+                Inventory dbItem = itemID as Inventory;
+                return HarvestDatabase.Inventory.Single(i => i.IngredientName.Equals(dbItem.IngredientName));
+            }
+            
+            return HarvestDatabase.Inventory.ToList();
         }
 
         public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)
