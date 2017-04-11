@@ -8,6 +8,9 @@ namespace Core.Utilities.Validation
         private static readonly string _amountErrorMessage = "Only 0-9 and and one '.' are permitted. (123.45)";
         public static bool Validate(TextBox inputTextbox, string regexPattern, ErrorProvider formErrorProvider)
         {
+            if (inputTextbox == null)
+                throw new System.NotImplementedException();
+
             if (string.IsNullOrWhiteSpace(inputTextbox.Text))
             {
                 formErrorProvider.SetError(inputTextbox, "This field can not be empty.");
@@ -23,7 +26,8 @@ namespace Core.Utilities.Validation
                 return false;
             }
 
-            formErrorProvider.SetError(inputTextbox, string.Empty);
+            if (formErrorProvider != null)
+                formErrorProvider.SetError(inputTextbox, string.Empty);
             return true;
         }
     }

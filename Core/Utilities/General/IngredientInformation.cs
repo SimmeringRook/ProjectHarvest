@@ -52,9 +52,9 @@ namespace Core.Utilities.General
             TextBox template = new TextBox();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
             if (isAmount)
-                template.Validating += nameTextbox_Validating;
-            else
                 template.Validating += quantityTextbox_Validating;
+            else
+                template.Validating += nameTextbox_Validating;
             return template;
         }
 
