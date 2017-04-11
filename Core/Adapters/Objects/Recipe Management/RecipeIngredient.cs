@@ -5,16 +5,16 @@ namespace Core.Adapters.Objects
     public class RecipeIngredient
     {
         private int _id;
-        public int RecipeID { get; set; }
+        public int RecipeID { get { return _id; } set { _id = value; _dirty = true; } }
 
         private Inventory _inventory;
-        public Inventory Inventory { get; set; }
+        public Inventory Inventory { get { return _inventory; } set { _inventory = value; _dirty = true; } }
 
         private double _amount;
-        public double Amount { get; set; }
+        public double Amount { get { return _amount; } set { _amount = value; _dirty = true; } }
 
         private MeasurementUnit _measurement;
-        public MeasurementUnit Measurement { get; set; }
+        public MeasurementUnit Measurement { get { return _measurement; } set { _measurement = value; _dirty = true; } }
 
         private bool _dirty;
         public bool IsDirty { get { return _dirty; } }

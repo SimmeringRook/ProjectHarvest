@@ -104,16 +104,20 @@ namespace Core.Utilities.General
 
         public void LoadExistingData(RecipeIngredient ingredient)
         {
+            Name.Text = ingredient.Inventory.Name;
             Quantity.Text = ingredient.Amount.ToString();
 
             int index = -1;
             foreach (MeasurementUnit unit in Unit.Items)
                 if (unit.Equals(ingredient.Measurement))
                    index = Unit.Items.IndexOf(unit);
-            Unit.SelectedItem = Unit.Items[index];     
+            Unit.SelectedItem = Unit.Items[index];
 
-            Name.Text = ingredient.Inventory.Name;
-            Type.SelectedValue = ingredient.Inventory.Category;
+            index = -1;
+            foreach (string category in Type.Items)
+                if (category.Equals(ingredient.Inventory.Category))
+                    index = Type.Items.IndexOf(category);
+            Type.SelectedItem = Type.Items[index];
 
             Selected.Checked = false;
         }

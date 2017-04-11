@@ -28,7 +28,7 @@ namespace Core.Adapters.Factories
             using(HarvestTableUtility harvestDatabase = new HarvestTableUtility(new InventoryQuery()))
             {
                 //Get the record from the database
-                var dbInventory = harvestDatabase.Get(id) as Database.Inventory;
+                var dbInventory = (harvestDatabase.Get(id) as List<Database.Inventory>).Single(item => item.InventoryID == id);
                 //Build the client object from the record
                 clientInventory = Create_Client_From_Database(dbInventory);
             }
