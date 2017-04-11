@@ -222,7 +222,7 @@ namespace Core.Adapters
         #region Planned Meals
 
         private static List<Objects.PlannedMeal> _plannedMeals = new List<Objects.PlannedMeal>();
-        internal static List<Objects.PlannedMeal> PlannedMeals
+        public static List<Objects.PlannedMeal> PlannedMeals
         {
             get { return _GetValidPlannedMealCache(); }
         }

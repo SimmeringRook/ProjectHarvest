@@ -1,13 +1,14 @@
-﻿using Core;
+﻿using Core.Adapters;
 using Core.Adapters.Objects;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
 {
     public class PlanButton : Button
     {
-        private DateTime dayplanned;
+        private DateTime dayPlanned;
         private string mealTime;
 
         public PlanButton(DateTime dayplanned, string mealTime)
@@ -15,7 +16,7 @@ namespace Client_Desktop.Extensions
             this.Anchor = AnchorStyles.Top;
             this.Text = "- Plan -";
             this.Tag = "Plan";
-            this.dayplanned = dayplanned;
+            this.dayPlanned = dayplanned;
             this.mealTime = mealTime;
             this.Click += new System.EventHandler(PlanMealButton_Click);
         }
@@ -28,8 +29,10 @@ namespace Client_Desktop.Extensions
                 {
                     PlannedMeal meal = new PlannedMeal();
                     meal.PlannedRecipe = picker.SelectedRecipe;
-                    meal.Date = dayplanned;
+                    meal.Date = dayPlanned;
                     meal.MealTime = mealTime;
+
+                    HarvestAdapter.PlannedMeals.Add(meal);
 
                     PlannedRecipeControl recipePrefab = new PlannedRecipeControl(meal);
                     ((Button)sender).Parent.Controls.Add(recipePrefab);

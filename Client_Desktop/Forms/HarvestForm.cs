@@ -101,7 +101,7 @@ namespace Client_Desktop
             using (GroceryListForm groceryList = new GroceryListForm())
             {
                 if (groceryList.ShowDialog() == DialogResult.OK)
-                    groceryList.Dispose(); 
+                    RefreshCurrentTab();
             }
         }
         #endregion

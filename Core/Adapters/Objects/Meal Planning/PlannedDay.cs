@@ -35,10 +35,10 @@ namespace Core.Adapters.Objects
                 //Compare the recipe ingredients in 'this' recipe to the 'master list' (allIngredients)
                 foreach (RecipeIngredient recipeIngredient in meal.PlannedRecipe.AssociatedIngredients)
                 {
-                    RecipeIngredient ingredientToAdd = allIngredients.SingleOrDefault(_ingredient => _ingredient.Equals(recipeIngredient));
                     //If the recipe is already in allIngredients
-                    if (allIngredients.Contains(ingredientToAdd))
+                    if (allIngredients.Any(_ingredient => _ingredient.Equals(recipeIngredient)))
                     {
+                        RecipeIngredient ingredientToAdd = allIngredients.SingleOrDefault(_ingredient => recipeIngredient.Equals(_ingredient));
                         //convert the amount required to the same unit as what allIngredients has
                         int indexOfIngredient = allIngredients.IndexOf(ingredientToAdd);
                         allIngredients[indexOfIngredient].Amount += ConvertedAmount(recipeIngredient, ingredientToAdd.Measurement);
@@ -46,7 +46,7 @@ namespace Core.Adapters.Objects
                     else
                     {
                         //Otherwise, it doesn't exist in the list yet, add it.
-                        allIngredients.Add(ingredientToAdd);
+                        allIngredients.Add(recipeIngredient);
                     }
                 }
                 
