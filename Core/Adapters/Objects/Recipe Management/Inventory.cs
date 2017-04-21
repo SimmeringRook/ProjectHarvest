@@ -1,16 +1,18 @@
 ﻿using Core.Utilities.UnitConversions;
+using System.ComponentModel;
 
 namespace Core.Adapters.Objects
 {
-    public class Inventory
+    public class Inventory : INotifyPropertyChanged
     {
+        #region Properties
         private int _id;
         public int ID
         {
             get
             { return _id; }
             set
-            { _id = value; _dirty = true; }
+            { _id = value; OnPropertyChanged("ID"); }
         }
 
         private string _name;
@@ -19,7 +21,7 @@ namespace Core.Adapters.Objects
             get
             { return _name; }
             set
-            { _name = value; _dirty = true; }
+            { _name = value; OnPropertyChanged("Name"); }
         }
 
         private string _category;
@@ -28,7 +30,7 @@ namespace Core.Adapters.Objects
             get
             { return _category; }
             set
-            { _category = value; _dirty = true; }
+            { _category = value; OnPropertyChanged("Category"); }
         }
 
         private double _amount;
@@ -37,7 +39,7 @@ namespace Core.Adapters.Objects
             get
             { return _amount; }
             set
-            { _amount = value; _dirty = true; }
+            { _amount = value; OnPropertyChanged("Amount"); }
         }
 
         private MeasurementUnit _measurement;
@@ -46,15 +48,22 @@ namespace Core.Adapters.Objects
             get
             { return _measurement; }
             set
-            { _measurement = value; _dirty = true; }
+            { _measurement = value; OnPropertyChanged("Measurement"); }
         }
+        #endregion
 
-        private bool _dirty;
-        public bool IsDirty { get { return _dirty; } }
+        #region NotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         public Inventory()
         {
-            _dirty = false;
+
         }
 
 
@@ -65,7 +74,6 @@ namespace Core.Adapters.Objects
             _category = string.Copy(category);
             _amount = amount;
             _measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), unit);
-            _dirty = false;
         }
 
         public override bool Equals(object obj)
@@ -79,11 +87,6 @@ namespace Core.Adapters.Objects
         public override int GetHashCode()
         {
             return Utilities.General.HashGenerator.Hash(this.ID, this.Name, this.Category);
-        }
-
-        internal void ResetDirtyFlag()
-        {
-            _dirty = false;
         }
     }
 }

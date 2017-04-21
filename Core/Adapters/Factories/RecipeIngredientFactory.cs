@@ -1,10 +1,5 @@
-﻿using Core.Utilities.Database.Queries.Tables;
-using Core.Utilities.UnitConversions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Cache;
+using Core.Utilities.Queries;
 
 namespace Core.Adapters.Factories
 {
@@ -43,20 +38,10 @@ namespace Core.Adapters.Factories
         /// It will attempt to get all Recipe Ingredient records from the database for the associated recipe,
         /// and then return a list of Client Recipe Ingredients.
         /// </summary>
-        internal static List<Objects.RecipeIngredient> GetIngredients_For_ClientRecipe(Objects.Recipe clientRecipe)
+        internal static Cache<Objects.RecipeIngredient> GetIngredients_For_ClientRecipe(Objects.Recipe clientRecipe)
         {
-            List<Objects.RecipeIngredient> ingredients = new List<Objects.RecipeIngredient>();
-
-            using (HarvestTableUtility harvestTables = new HarvestTableUtility(new RecipeIngredientQuery()))
-            {
-                List<Database.RecipeIngredient> databaseRecipeIngredients = harvestTables.Get(clientRecipe.ID) as List<Database.RecipeIngredient>;
-                databaseRecipeIngredients.ForEach(dbItem => 
-                {
-                    ingredients.Add(Create_Client_From_Database(dbItem));
-                });
-            }
-
-            return ingredients;
+            using (HarvestEntitiesUtility harvestTables = new HarvestEntitiesUtility(new RecipeIngredientQuery()))
+                return harvestTables.Get(clientRecipe.ID) as Cache<Objects.RecipeIngredient>;
         }
 
         internal static Database.RecipeIngredient Create_Database_From_Client(Objects.RecipeIngredient clientRecipeIngredient)

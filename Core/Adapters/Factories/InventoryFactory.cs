@@ -1,4 +1,4 @@
-﻿using Core.Utilities.Database.Queries.Tables;
+﻿using Core.Utilities.Queries;
 using Core.Utilities.UnitConversions;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace Core.Adapters.Factories
             if(id == 0)
                 return Create_Client_From_Database(null);
             
-            using(HarvestTableUtility harvestDatabase = new HarvestTableUtility(new InventoryQuery()))
+            using(HarvestEntitiesUtility harvestDatabase = new HarvestEntitiesUtility(new InventoryQuery()))
             {
                 //Get the record from the database
                 var dbInventory = (harvestDatabase.Get(id) as List<Database.Inventory>).Single(item => item.InventoryID == id);

@@ -58,7 +58,7 @@ namespace Client_Desktop.Extensions
             {
                 if (plannedDay.Day.Equals(PlannedMeal.Date))
                 {
-                    plannedDay.UnplanRecipe(PlannedMeal);
+                    HarvestAdapter.PlannedMeals.Remove(PlannedMeal);
                     break;
                 }
             }
@@ -88,14 +88,16 @@ namespace Client_Desktop.Extensions
                 MessageBox.Show(ex.Message);
             }
 
-            if (MessageBox.Show("Remove from plan?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                deleteButton_Click(sender, e);
-            }
-            else
-            {
-                SetControlsForHasBeenEaten();
-            }
+            SetControlsForHasBeenEaten();
+
+            //if (MessageBox.Show("Remove from plan?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            //{
+            //    deleteButton_Click(sender, e);
+            //}
+            //else
+            //{
+            //    SetControlsForHasBeenEaten();
+            //}
         }
         #endregion
     }

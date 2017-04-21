@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\Database\Extensions\PlannedMeals.cs" />
+    <Compile Include="Adapters\Factories\DelegateFactory.cs" />
     <Compile Include="Adapters\Factories\InventoryFactory.cs" />
     <Compile Include="Adapters\Factories\PlannedMealFactory.cs" />
     <Compile Include="Adapters\Factories\RecipeFactory.cs" />
@@ -118,24 +119,26 @@
     </Compile>
     <Compile Include="Adapters\Factories\RecipeIngredientFactory.cs" />
     <Compile Include="Adapters\HarvestAdapter.cs" />
+    <Compile Include="Cache\HarvestList.cs" />
+    <Compile Include="Cache\InventoryCache.cs" />
+    <Compile Include="Cache\RecipeCache.cs" />
     <Compile Include="Adapters\Objects\Meal Planning\PlannedMeal.cs" />
     <Compile Include="Adapters\Objects\Recipe Management\Inventory.cs" />
     <Compile Include="Adapters\Objects\Recipe Management\Recipe.cs" />
     <Compile Include="Adapters\Objects\Recipe Management\RecipeIngredient.cs" />
-    <Compile Include="SmartList.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\HarvestTableUtility.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\IHarvestQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\IngredientCategoryQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\InventoryQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\LastLaunchedQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\MealTimeQuery.cs" />
+    <Compile Include="Utilities\Queries\HarvestEntitiesUtility.cs" />
+    <Compile Include="Utilities\Queries\IHarvestQuery.cs" />
+    <Compile Include="Utilities\Queries\IngredientCategoryQuery.cs" />
+    <Compile Include="Utilities\Queries\InventoryQuery.cs" />
+    <Compile Include="Utilities\Queries\LastLaunchedQuery.cs" />
+    <Compile Include="Utilities\Queries\MealTimeQuery.cs" />
     <Compile Include="Utilities\General\HashGenerator.cs" />
     <Compile Include="Utilities\General\IngredientInformation.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\MetricQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\PlannedMealQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\RecipeCategoryQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\RecipeIngredientQuery.cs" />
-    <Compile Include="Utilities\Database\Queries\Tables\RecipeQuery.cs" />
+    <Compile Include="Utilities\Queries\MetricQuery.cs" />
+    <Compile Include="Utilities\Queries\PlannedMealQuery.cs" />
+    <Compile Include="Utilities\Queries\RecipeCategoryQuery.cs" />
+    <Compile Include="Utilities\Queries\RecipeIngredientQuery.cs" />
+    <Compile Include="Utilities\Queries\RecipeQuery.cs" />
     <Compile Include="Utilities\General\ConvertedIngredient.cs" />
     <Compile Include="Utilities\UnitConversions\HarvestConverter.cs" />
     <Compile Include="Utilities\General\InvalidConversionException.cs" />

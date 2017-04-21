@@ -122,9 +122,10 @@ namespace Core.Utilities.General
             Selected.Checked = false;
         }
 
-        public RecipeIngredient GetRecipeIngredient()
+        public RecipeIngredient GetRecipeIngredient(int recipeID)
         {
             RecipeIngredient ingredient = new RecipeIngredient();
+            ingredient.RecipeID = recipeID;
             ingredient.Amount = double.Parse(Quantity.Text);
             ingredient.Measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), Unit.SelectedValue.ToString());
 
@@ -140,6 +141,8 @@ namespace Core.Utilities.General
                 ingredient.Inventory.Amount = 0.0;
                 ingredient.Inventory.Category = Type.SelectedValue.ToString();
                 ingredient.Inventory.Measurement = ingredient.Measurement;
+
+                Adapters.HarvestAdapter.InventoryItems.Add(ingredient.Inventory);
             }
 
             return ingredient;

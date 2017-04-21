@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3efccace55274bf7bf81b938fc82a879" Name="Diagram1">
-        <EntityTypeShape EntityType="HarvestModel.IngredientCategory" Width="1.5" PointX="0.5" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HarvestModel.IngredientCategory" Width="2" PointX="0.5" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="HarvestModel.Inventory" Width="1.5" PointX="2.875" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="HarvestModel.LastLaunched" Width="1.5" PointX="11.375" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="HarvestModel.MealHistory" Width="1.5" PointX="8.375" PointY="3.5" IsExpanded="true" />

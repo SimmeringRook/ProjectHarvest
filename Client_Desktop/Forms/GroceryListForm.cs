@@ -86,7 +86,7 @@ namespace Client_Desktop
         {
             foreach (RecipeIngredient recipeIngredient in HarvestAdapter.CurrentWeek.GetAllIngredientsForWeek())
             {
-                if (recipeIngredient.Inventory.IsDirty == false &&
+                if (/* TODO: Remove when verified no issue was caused :: recipeIngredient.Inventory.IsDirty == false &&*/
                     _ingredientRows.Any(row => row.NameLabel.Text.Equals(recipeIngredient.Inventory.Name) &&
                         row.Selected.Checked))
                     recipeIngredient.Inventory.Amount += recipeIngredient.Amount;

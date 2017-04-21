@@ -1,5 +1,5 @@
-﻿using Core.Adapters.Factories;
-using Core.Utilities.Database.Queries.Tables;
+﻿using Core.Cache;
+using Core.Utilities.Queries;
 using Core.Utilities.UnitConversions;
 using System;
 using System.Collections.Generic;
@@ -9,255 +9,29 @@ namespace Core.Adapters
 {
     public static class HarvestAdapter
     {
+        public static void InitializeCaches()
+        {
+            var rCache = Recipes;
+            rCache = null;
+            var iCache = InventoryItems;
+            iCache = null;
+        }
+
         #region Recipe
-        private static List<Objects.Recipe> _recipes = new List<Objects.Recipe>();
-        public static List<Objects.Recipe> Recipes
-        {
-            get { return _GetValidRecipeCache(); }
-        }
-
-        private static List<Objects.Recipe> _GetValidRecipeCache()
-        {
-            using (HarvestTableUtility recipeTable = new HarvestTableUtility(new RecipeQuery()))
-            {
-                List<Database.Recipe> databaseRecipes = recipeTable.Get(-1) as List<Database.Recipe>;
-                foreach (Objects.Recipe recipe in _recipes)
-                {
-                    if (recipe.IsDirty)
-                    {
-                        recipeTable.Update(RecipeFactory.Create_Database_From_Client(recipe));
-
-                        //If this was a new recipe, add ingredients to the RecipeIngredient table
-                        if (recipe.ID == 0)
-                        {
-                            databaseRecipes = recipeTable.Get(-1) as List<Database.Recipe>; 
-                            recipe.ID = databaseRecipes.Single(r => r.RecipeName.Equals(recipe.Name)).RecipeID;
-
-                            foreach (var recipeIngredient in recipe.AssociatedIngredients)
-                                Add_Ingredient_To_Recipe(recipe, recipeIngredient);
-                        }
-                            
-                    }
-                }
-
-                databaseRecipes = recipeTable.Get(-1) as List<Database.Recipe>;
-                if (_recipes.Count != databaseRecipes.Count)
-                {
-                    _recipes.Clear();
-                    foreach (Database.Recipe dbRecipe in databaseRecipes)
-                        _recipes.Add(RecipeFactory.Create_Client_From_Database(dbRecipe));
-                }
-            }
-            return _recipes;
-        }
-
-        public static void Remove_Recipe(Objects.Recipe recipeToRemove)
-        {
-            using (HarvestTableUtility harvest = new HarvestTableUtility(new RecipeIngredientQuery()))
-            {
-                //Remove Ingredients first
-                recipeToRemove.AssociatedIngredients.ForEach(ingredient => { harvest.Remove(ingredient); });
-
-                //Remove all planned meals using this recipe
-                harvest.HarvestQuery = new PlannedMealQuery();
-                var plansWithThisRecipe = (harvest.Get(-1) as List<Database.PlannedMeals>).Where(p => p.RecipeID == recipeToRemove.ID).ToList();
-                plansWithThisRecipe.ForEach(plan => { harvest.Remove(plan); });
-
-                //Delete the recipe
-                harvest.HarvestQuery = new RecipeQuery();
-                harvest.Remove(RecipeFactory.Create_Database_From_Client(recipeToRemove));
-            }
-        }
+        private static RecipeCache<Objects.Recipe> _recipes = new HarvestEntitiesUtility(new RecipeQuery()).Get(-1) as RecipeCache<Objects.Recipe>;
+        public static RecipeCache<Objects.Recipe> Recipes { get { return _recipes; } }
         #endregion
 
         #region Inventory
-        private static List<Objects.Inventory> _inventories = new List<Objects.Inventory>();
-        public static List<Objects.Inventory> InventoryItems
-        {
-            get { return _GetValidInventoryCache(); }
-        }
-
-        private static List<Objects.Inventory> _GetValidInventoryCache()
-        {
-            using (HarvestTableUtility inventoryTable = new HarvestTableUtility(new InventoryQuery()))
-            {
-                List<Database.Inventory> databaseInventoryItems = inventoryTable.Get(-1) as List<Database.Inventory>;
-                foreach (Objects.Inventory item in _inventories)
-                {
-                    if (item.IsDirty)
-                    {
-                        Database.Inventory dbItem = InventoryFactory.Create_Database_From_Client(item);
-                        inventoryTable.Update(dbItem);
-                        item.ID = InventoryFactory.Create_Client_From_Database(inventoryTable.Get(dbItem) as Database.Inventory).ID;
-                        item.ResetDirtyFlag();
-                    }
-                }
-
-                databaseInventoryItems = inventoryTable.Get(-1) as List<Database.Inventory>;
-                if (_inventories.Count < databaseInventoryItems.Count)
-                {
-                    _inventories.Clear();
-                    foreach (Database.Inventory dbItem in databaseInventoryItems)
-                        _inventories.Add(InventoryFactory.Create_Client_From_Database(dbItem));
-                }
-            }
-            return _inventories;
-        }
-        public static void Remove_Item(Objects.Inventory item)
-        {
-            using (HarvestTableUtility inventoryTable = new HarvestTableUtility(new InventoryQuery()))
-                inventoryTable.Remove(InventoryFactory.Create_Database_From_Client(item));
-        }
-        #endregion
-
-        #region Recipe Ingredient
-
-        internal static void Add_Ingredient_To_Recipe(Objects.Recipe recipe, Objects.RecipeIngredient riToAdd)
-        {
-            if (InventoryItems.Any(item => item.Name.Equals(riToAdd.Inventory.Name)) == false)
-                InventoryItems.Add(riToAdd.Inventory);
-
-            riToAdd.RecipeID = recipe.ID;
-            riToAdd.Inventory = InventoryItems.Single(item => item.Name.Equals(riToAdd.Inventory.Name));
-
-            using (HarvestTableUtility recipeIngredientTable = new HarvestTableUtility(new RecipeIngredientQuery()))
-                recipeIngredientTable.Update(RecipeIngredientFactory.Create_Database_From_Client(riToAdd));
-
-           
-        }
-
-        public static void Remove_Ingredient_From_Recipe(Objects.Recipe recipe, string ingredientName)
-        {
-            Objects.RecipeIngredient itemToRemove = null;
-            foreach (var ri in recipe.AssociatedIngredients)
-            {
-                if (ri.Inventory.Name.Equals(ingredientName))
-                    itemToRemove = ri;
-            }
-
-            if (itemToRemove == null)
-                return;
-
-            recipe.AssociatedIngredients.Remove(itemToRemove);
-
-            using (HarvestTableUtility recipeIngredientTable = new HarvestTableUtility(new RecipeIngredientQuery()))
-            {
-                 recipeIngredientTable.Remove(itemToRemove);
-            }
-
-            recipe.SetDirtyFlag();
-        }
-
-        #endregion
-
-        #region Recipe Category
-        private static List<string> _recipeCategories = new List<string>();
-        public static List<string> RecipeCategories
-        {
-            get { return _GetValidRecipeCategoryCache(); }
-        }
-
-        private static List<string> _GetValidRecipeCategoryCache()
-        {
-            using (HarvestTableUtility categoryTable = new HarvestTableUtility(new RecipeCategoryQuery()))
-            {
-                var databaseCategories = categoryTable.Get(-1) as List<Database.RecipeClass>;
-                if (_recipeCategories.Count != databaseCategories.Count)
-                {
-                    _recipeCategories.Clear();
-                    foreach (var category in databaseCategories)
-                        _recipeCategories.Add(category.RCategory);
-                } 
-            }
-            return _recipeCategories;
-        }
-        #endregion
-
-        #region Ingredient Category
-        private static List<string> _ingredientCategories = new List<string>();
-        public static List<string> IngredientCategories
-        {
-            get { return _GetValidIngredientCategoryCache(); }
-        }
-
-        private static List<string> _GetValidIngredientCategoryCache()
-        {
-            using (HarvestTableUtility categoryTable = new HarvestTableUtility(new IngredientCategoryQuery()))
-            {
-                var databaseCategories = categoryTable.Get(-1) as List<Database.IngredientCategory>;
-                if (_ingredientCategories.Count != databaseCategories.Count)
-                {
-                    _ingredientCategories.Clear();
-                    foreach (var category in databaseCategories)
-                        _ingredientCategories.Add(category.Category);
-                }
-            }
-            return _ingredientCategories;
-        }
-        #endregion
-
-        #region Meal Time
-        private static List<string> _mealTimes = new List<string>();
-        public static List<string> MealTimes
-        {
-            get { return _GetValidMealTimeCache(); }
-        }
-
-        private static List<string> _GetValidMealTimeCache()
-        {
-            using (HarvestTableUtility mealTimeTable = new HarvestTableUtility(new MealTimeQuery()))
-            {
-                var databaseMealTimes = mealTimeTable.Get(-1) as List<Database.MealTime>;
-                if (_mealTimes.Count != databaseMealTimes.Count)
-                {
-                    _mealTimes.Clear();
-                    foreach (var mealTime in databaseMealTimes)
-                        _mealTimes.Add(mealTime.MealName);
-                }
-            }
-            return _mealTimes;
-        }
+        private static InventoryCache<Objects.Inventory> _inventories = new HarvestEntitiesUtility(new InventoryQuery()).Get(-1) as InventoryCache<Objects.Inventory>;
+        public static InventoryCache<Objects.Inventory> InventoryItems { get { return _inventories; } }
         #endregion
 
         #region Planned Meals
 
-        private static List<Objects.PlannedMeal> _plannedMeals = new List<Objects.PlannedMeal>();
-        public static List<Objects.PlannedMeal> PlannedMeals
-        {
-            get { return _GetValidPlannedMealCache(); }
-        }
-        private static List<Objects.PlannedMeal> _GetValidPlannedMealCache()
-        {
-            using (HarvestTableUtility plannedTable = new HarvestTableUtility(new PlannedMealQuery()))
-            {
-                var databasePlannedMeals = (plannedTable.Get(-1) as List<Database.PlannedMeals>).Where(meal => 
-                meal.DatePlanned >= CurrentWeek.StartOfWeek &&
-                meal.DatePlanned <= CurrentWeek.EndOfWeek).ToList();
+        private static Cache<Objects.PlannedMeal> _plannedMeals = new HarvestEntitiesUtility(new PlannedMealQuery()).Get(-1) as Cache<Objects.PlannedMeal>;
 
-                if (_plannedMeals.Count < databasePlannedMeals.Count)
-                {
-                    _plannedMeals.Clear();
-                    foreach (var meal in databasePlannedMeals)
-                        _plannedMeals.Add(PlannedMealFactory.Create_Client_From_Database(meal));
-                }
-                else if (_plannedMeals.Count > databasePlannedMeals.Count)
-                {
-                    foreach (var plannedMeal in _plannedMeals)
-                        if (plannedMeal.IsDirty)
-                            plannedTable.Update(PlannedMealFactory.Create_Database_From_Client(plannedMeal));
-                }
-            }
-
-            return _plannedMeals;
-        }
-
-        internal static void UnplanMeal(Objects.PlannedMeal meal)
-        {
-            if (meal.IsDirty)
-                using (HarvestTableUtility plannedTable = new HarvestTableUtility(new PlannedMealQuery()))
-                    plannedTable.Update(PlannedMealFactory.Create_Database_From_Client(meal));
-            _plannedMeals.Remove(meal);
-        }
+        public static Cache<Objects.PlannedMeal> PlannedMeals { get { return _plannedMeals; } }
         #endregion
 
         #region Current Week
@@ -274,13 +48,12 @@ namespace Core.Adapters
         private static void _BuildNewCurrentWeek()
         {
             DateTime startOfWeek = DateTime.Today;
-            using (HarvestTableUtility launchTable = new HarvestTableUtility(new LastLaunchedQuery()))
+            using (HarvestEntitiesUtility launchTable = new HarvestEntitiesUtility(new LastLaunchedQuery()))
             {
                 var lastHarvestLaunch = launchTable.Get(null) as List<Database.LastLaunched>;
                 if (lastHarvestLaunch.Count == 0)
                 {
-                    
-                    launchTable.Insert(new Database.LastLaunched() { Date = startOfWeek });
+                    launchTable.Update(new Database.LastLaunched() { Date = startOfWeek });
                 }
                 else
                 {
@@ -291,28 +64,24 @@ namespace Core.Adapters
         }
         #endregion
 
-        #region Measurements
-        private static List<MeasurementUnit> _measurementUnits = new List<MeasurementUnit>();
-        public static List<MeasurementUnit> Measurements
-        {
-            get { return _GetValidMeasurementCache(); }
-        }
-
-        private static List<MeasurementUnit> _GetValidMeasurementCache()
-        {
-            using (HarvestTableUtility metricTable = new HarvestTableUtility(new MetricQuery()))
-            {
-                var databaseMeasurements = metricTable.Get(-1) as List<Database.Metric>;
-                if (_measurementUnits.Count != databaseMeasurements.Count)
-                {
-                    _measurementUnits.Clear();
-                    foreach (var metric in databaseMeasurements)
-                        _measurementUnits.Add((MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), metric.Measurement));
-                }
-            }
-            return _measurementUnits;
-        }
+        #region Recipe Category
+        private static List<string> _recipeCategories = new HarvestEntitiesUtility(new RecipeCategoryQuery()).Get(-1) as List<string>;
+        public static List<string> RecipeCategories { get { return _recipeCategories; } }
         #endregion
 
+        #region Ingredient Category
+        private static List<string> _ingredientCategories = new HarvestEntitiesUtility(new IngredientCategoryQuery()).Get(-1) as List<string>;
+        public static List<string> IngredientCategories { get { return _ingredientCategories; } }
+        #endregion
+
+        #region Meal Time
+        private static List<string> _mealTimes = new HarvestEntitiesUtility(new MealTimeQuery()).Get(-1) as List<string>;
+        public static List<string> MealTimes { get { return _mealTimes; } }
+        #endregion
+
+        #region Measurements
+        private static List<MeasurementUnit> _measurementUnits = new HarvestEntitiesUtility(new MetricQuery()).Get(-1) as List<MeasurementUnit>;
+        public static List<MeasurementUnit> Measurements { get { return _measurementUnits; } }
+        #endregion
     }
 }

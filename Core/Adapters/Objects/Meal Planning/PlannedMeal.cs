@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Core.Adapters.Objects
 {
-    public class PlannedMeal
+    public class PlannedMeal : INotifyPropertyChanged
     {
         private Recipe _plannedRecipe;
         public Recipe PlannedRecipe
@@ -14,7 +11,7 @@ namespace Core.Adapters.Objects
             get
             { return _plannedRecipe; }
             set
-            { _plannedRecipe = value; _dirty = true; }
+            { _plannedRecipe = value; OnPropertyChanged("PlannedRecipe"); }
         }
 
         private string _mealTime;
@@ -23,7 +20,7 @@ namespace Core.Adapters.Objects
             get
             { return _mealTime; }
             set
-            { _mealTime = value; _dirty = true; }
+            { _mealTime = value; OnPropertyChanged("MealTime"); }
         }
 
         private DateTime _date;
@@ -32,7 +29,7 @@ namespace Core.Adapters.Objects
             get
             { return _date; }
             set
-            { _date = value; _dirty = true; }
+            { _date = value; OnPropertyChanged("Date"); }
         }
 
         private bool _hasBeenEaten;
@@ -41,24 +38,26 @@ namespace Core.Adapters.Objects
             get
             { return _hasBeenEaten; }
             set
-            { _hasBeenEaten = value; _dirty = true; }
+            { _hasBeenEaten = value; OnPropertyChanged("HasBeenEaten"); }
         }
 
-        private bool _dirty;
-        public bool IsDirty { get { return _dirty; } }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public PlannedMeal()
         {
-            _dirty = false;
             _date = DateTime.Today;
             _mealTime = "Error";
-            _plannedRecipe = Factories.RecipeFactory.Create_Client_From_Database(0);
+            _plannedRecipe = new Recipe();
             _hasBeenEaten = false;
         }
 
         internal PlannedMeal(Recipe recipe, string mealTime, DateTime date, bool hasBeenEaten)
         {
-            _dirty = false;
             _plannedRecipe = recipe;
             _mealTime = string.Copy(mealTime);
             _date = date.Date;
@@ -79,14 +78,6 @@ namespace Core.Adapters.Objects
         public override int GetHashCode()
         {
             return Utilities.General.HashGenerator.Hash(this.Date.Date, this.MealTime, this.HasBeenEaten, this.PlannedRecipe.ID);
-        }
-
-        /// <summary>
-        /// Sets the IsDirty property to return true until the object has been re-synchronized with the database.
-        /// </summary>
-        internal void SetDirtyFlag()
-        {
-            _dirty = true;
         }
     }
 }

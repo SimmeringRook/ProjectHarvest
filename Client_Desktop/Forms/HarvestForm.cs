@@ -17,6 +17,16 @@ namespace Client_Desktop
         {     
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
+
+            try
+            {
+                HarvestAdapter.InitializeCaches();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("An exception occured while trying to initialize the cache.\n" + ex.Message);
+            }
+
             RefreshCurrentTab();
         }
 
@@ -238,14 +248,13 @@ namespace Client_Desktop
                 try
                 {
                     foreach (Recipe recipe in recipesToRemove)
-                        Core.Adapters.HarvestAdapter.Remove_Recipe(recipe);
-                    
-                    RefreshCurrentTab();
+                        HarvestAdapter.Recipes.Remove(recipe);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+                RefreshCurrentTab();
             }
         }
 

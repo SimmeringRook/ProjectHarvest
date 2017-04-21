@@ -143,14 +143,22 @@ namespace Client_Desktop
                     CheckForChangesToRecipe();
                     foreach (var i in _Ingredients)
                     {
-                        var newRI = i.GetRecipeIngredient();
+                        var newRI = i.GetRecipeIngredient(_recipeToModify.ID);
                         if (_recipeToModify.AssociatedIngredients.Contains(newRI) == false)
                             _recipeToModify.AssociatedIngredients.Add(newRI);
                     }
                 }
                 else
                 {//create
+                    
                     HarvestAdapter.Recipes.Add(GetRecipeFromControls());
+                    var temp = HarvestAdapter.Recipes.Last();
+                    foreach (var ingredient in _Ingredients)
+                    {
+                        temp.AssociatedIngredients.Add(ingredient.GetRecipeIngredient(temp.ID));
+                    }
+                    
+
                 }
                 this.DialogResult = DialogResult.OK;
             }
@@ -197,11 +205,6 @@ namespace Client_Desktop
             temp.Category = categoryCombo.SelectedValue.ToString();
             temp.Servings = double.Parse(servingsTextbox.Text);
             temp.ID = 0;
-
-            foreach (var ingredient in _Ingredients)
-            {
-                temp.AssociatedIngredients.Add(ingredient.GetRecipeIngredient());
-            }
             return temp;
         }
 
@@ -230,7 +233,10 @@ namespace Client_Desktop
                 try
                 {
                     foreach (IngredientInformation ingredientToDelete in ingredientInfoToDiscard)
-                        HarvestAdapter.Remove_Ingredient_From_Recipe(_recipeToModify, ingredientToDelete.Name.Text);
+                    {
+                        var ingredient = _recipeToModify.AssociatedIngredients.Single(ing => ing.Inventory.Name.Equals(ingredientToDelete.Name.Text));
+                        _recipeToModify.AssociatedIngredients.Remove(ingredient);
+                    }
                 }
                 catch (Exception ex)
                 {

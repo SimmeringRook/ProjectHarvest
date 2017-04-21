@@ -1,4 +1,4 @@
-﻿using Core.Utilities.Database.Queries.Tables;
+﻿using Core.Utilities.Queries;
 using System.Collections.Generic;
 
 namespace Core.Adapters.Factories
@@ -23,6 +23,7 @@ namespace Core.Adapters.Factories
                     databaseRecipe.RCategory);
 
                 clientRecipe.AssociatedIngredients = RecipeIngredientFactory.GetIngredients_For_ClientRecipe(clientRecipe);
+                clientRecipe.AssociatedIngredients.RaiseListChangedEvents = true;
                 return clientRecipe;
             }
 
@@ -31,7 +32,7 @@ namespace Core.Adapters.Factories
 
         internal static Objects.Recipe Create_Client_From_Database(int recipeID)
         {
-            using (HarvestTableUtility recipeTable = new HarvestTableUtility(new RecipeQuery()))
+            using (HarvestEntitiesUtility recipeTable = new HarvestEntitiesUtility(new RecipeQuery()))
                 return Create_Client_From_Database(recipeTable.Get(recipeID) as Database.Recipe);
         }
         #endregion

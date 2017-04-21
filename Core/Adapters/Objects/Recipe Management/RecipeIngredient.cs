@@ -1,27 +1,49 @@
 ﻿using Core.Utilities.UnitConversions;
+using System.ComponentModel;
 
 namespace Core.Adapters.Objects
 {
-    public class RecipeIngredient
+    public class RecipeIngredient : INotifyPropertyChanged
     {
+        #region Properties
         private int _id;
-        public int RecipeID { get { return _id; } set { _id = value; _dirty = true; } }
+        public int RecipeID {
+            get { return _id; }
+            set { _id = value; OnPropertyChanged("RecipeID"); }
+        }
 
         private Inventory _inventory;
-        public Inventory Inventory { get { return _inventory; } set { _inventory = value; _dirty = true; } }
+        public Inventory Inventory {
+            get { return _inventory; }
+            set { _inventory = value; OnPropertyChanged("Inventory"); }
+        }
 
         private double _amount;
-        public double Amount { get { return _amount; } set { _amount = value; _dirty = true; } }
+        public double Amount
+        {
+            get { return _amount; }
+            set { _amount = value; OnPropertyChanged("Amount"); }
+        }
 
         private MeasurementUnit _measurement;
-        public MeasurementUnit Measurement { get { return _measurement; } set { _measurement = value; _dirty = true; } }
+        public MeasurementUnit Measurement
+        {
+            get { return _measurement; }
+            set { _measurement = value; OnPropertyChanged("Measurement"); }
+        }
+        #endregion
 
-        private bool _dirty;
-        public bool IsDirty { get { return _dirty; } }
+        #region NotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         public RecipeIngredient()
         {
-            _dirty = false;
             _id = 0;
             _inventory = Factories.InventoryFactory.Create_Client_From_Database(0);
             _amount = 0.0;
@@ -30,7 +52,6 @@ namespace Core.Adapters.Objects
 
         internal RecipeIngredient(int id, Inventory inventory, double amount, string unit)
         {
-            _dirty = false;
             _id = id;
             _inventory = inventory;
             _amount = amount;
@@ -50,14 +71,6 @@ namespace Core.Adapters.Objects
         public override int GetHashCode()
         {
             return Utilities.General.HashGenerator.Hash(this.RecipeID, this.Inventory.GetHashCode(), this.Amount, this.Measurement);
-        }
-
-        /// <summary>
-        /// Sets the IsDirty property to return true until the object has been re-synchronized with the database.
-        /// </summary>
-        internal void SetDirtyFlag()
-        {
-            _dirty = true;
         }
     }
 }
