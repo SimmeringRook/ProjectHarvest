@@ -46,6 +46,7 @@ namespace Client_Desktop
             }
             recipe = null;
         }
+
         private void DisplayRecipeToModify()
         {
             //Populate Recipe Controls with Information

@@ -12,6 +12,7 @@ namespace Client_Desktop
     public partial class HarvestForm : Form
     {
         private List<Inventory> inventoryItemsToRemove = new List<Inventory>();
+        private List<Recipe> recipesToRemove = new List<Recipe>();
 
         public HarvestForm()
         {     
@@ -237,7 +238,6 @@ namespace Client_Desktop
             }
         }
 
-        private List<Recipe> recipesToRemove = new List<Recipe>();
         private void RecipeRemoveSelectedButton_Click(object sender, EventArgs e)
         {
             //Make sure user wants to delete the selected recipes

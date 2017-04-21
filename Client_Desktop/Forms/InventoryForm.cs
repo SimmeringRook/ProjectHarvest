@@ -58,15 +58,10 @@ namespace Client_Desktop
             }
 
             if (itemToModify != null)
-            {
                 CheckForChanges();
-            }
             else
-            {
                 HarvestAdapter.InventoryItems.Add(CreateInventoryFromControls());
-            }
 
-            itemToModify = null;
             this.DialogResult = DialogResult.OK;
         }
 
