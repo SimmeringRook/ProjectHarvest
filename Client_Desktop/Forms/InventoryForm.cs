@@ -11,13 +11,12 @@ namespace Client_Desktop
 {
     public partial class InventoryForm : Form
     {
-        private Inventory itemToModify = null;
+        private Inventory _inventoryItem = null;
 
         public InventoryForm(Inventory itemToModify)
         {
             InitializeComponent();
-            if (itemToModify != null)
-                this.itemToModify = itemToModify;
+            _inventoryItem = itemToModify;
 
             try
             {
@@ -32,58 +31,59 @@ namespace Client_Desktop
 
         private void InventoryForm_Load(object sender, EventArgs e)
         {
-            if (itemToModify != null)
+            if (_inventoryItem != null)
             {
-                itemNameTextbox.Text = itemToModify.Name;
-                amountTextbox.Text = itemToModify.Amount.ToString();
-                foodCategoryCombo.SelectedIndex = foodCategoryCombo.Items.IndexOf(itemToModify.Category);
-                measurementCombo.SelectedIndex = measurementCombo.Items.IndexOf(itemToModify.Measurement);
+                itemNameTextbox.Text = _inventoryItem.Name;
+                amountTextbox.Text = _inventoryItem.Amount.ToString();
+                foodCategoryCombo.SelectedIndex = foodCategoryCombo.Items.IndexOf(_inventoryItem.Category);
+                measurementCombo.SelectedIndex = measurementCombo.Items.IndexOf(_inventoryItem.Measurement);
             }
         }
 
-        private void acceptButton_Click(object sender, EventArgs e)
+        private void submitButton_Click(object sender, EventArgs e)
         {
             if (IsValid() == false)
-            {
-                this.DialogResult = DialogResult.None;
                 return;
+            try
+            {
+                if (_inventoryItem != null)
+                    CheckForChanges();
+                else
+                    HarvestAdapter.InventoryItems.Add(CreateInventoryFromControls());
             }
-
-            if (itemToModify != null)
-                CheckForChanges();
-            else
-                HarvestAdapter.InventoryItems.Add(CreateInventoryFromControls());
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             this.DialogResult = DialogResult.OK;
         }
 
+        #region Create New Object Or Update Existing
         private Inventory CreateInventoryFromControls()
         {
-            Inventory temp = new Inventory()
-            {
-                ID = 0,
-                Name = itemNameTextbox.Text,
-                Amount = float.Parse(amountTextbox.Text),
-                Measurement = (MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), measurementCombo.SelectedValue.ToString()),
-                Category = foodCategoryCombo.SelectedValue.ToString()
-            };
+            Inventory temp = new Inventory();
+            temp.Name = itemNameTextbox.Text;
+            temp.Amount = double.Parse(amountTextbox.Text);
+            temp.Measurement = (MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), measurementCombo.SelectedValue.ToString());
+            temp.Category = foodCategoryCombo.SelectedValue.ToString();
             return temp;
         }
 
         private void CheckForChanges()
         {
             string name = itemNameTextbox.Text;
-            if (itemToModify.Name.Equals(name) == false) itemToModify.Name = name;
+            if (_inventoryItem.Name.Equals(name) == false) _inventoryItem.Name = name;
 
             double amount = double.Parse(amountTextbox.Text);
-            if (itemToModify.Amount.Equals(amount) == false) itemToModify.Amount = amount;
+            if (_inventoryItem.Amount.Equals(amount) == false) _inventoryItem.Amount = amount;
 
             MeasurementUnit unit = (MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), measurementCombo.SelectedValue.ToString());
-            if (itemToModify.Measurement.Equals(unit) == false) itemToModify.Measurement = unit;
+            if (_inventoryItem.Measurement.Equals(unit) == false) _inventoryItem.Measurement = unit;
 
             string category = foodCategoryCombo.SelectedValue.ToString();
-            if (itemToModify.Category.Equals(category) == false) itemToModify.Category = category;
+            if (_inventoryItem.Category.Equals(category) == false) _inventoryItem.Category = category;
         }
+        #endregion
 
         #region Input Validation
 
@@ -107,6 +107,24 @@ namespace Client_Desktop
         private void amountTextbox_Validating(object sender, CancelEventArgs e)
         {
             HarvestValidator.Validate((sender as TextBox), HarvestRegex.Amount, InventoryError);
+        }
+        #endregion
+
+        #region IDisposable
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+
+            _inventoryItem = null;
+
+            base.Dispose(disposing);
         }
         #endregion
     }

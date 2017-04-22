@@ -38,9 +38,6 @@ namespace Client_Desktop
             RefreshCurrentTab();
         }
 
-        /// <summary>
-        /// Loads the relevant table for the current TabPage, and rebinds the table to the datagridview
-        /// </summary>
         public void RefreshCurrentTab()
         {
             try
@@ -109,9 +106,6 @@ namespace Client_Desktop
         #endregion
 
         #region Inventory Tab
-        /// <summary>
-        /// Display an Inventory Item input form that allows the user to create a new Inventory record.
-        /// </summary>
         private void AddInventoryButton_Click(object sender, EventArgs e)
         {
             AddOrModifiyInventoryItem(null);
@@ -160,14 +154,11 @@ namespace Client_Desktop
                 inventoryItemsToRemove.ForEach(inventory =>
                 {
                     if (HarvestAdapter.Recipes.Any(r => r.AssociatedIngredients.Any(ri => ri.Inventory.ID == inventory.ID)) == false)
-                    {
-                        HarvestAdapter.InventoryItems.Remove(inventory);
-                    }    
+                        HarvestAdapter.InventoryItems.Remove(inventory); 
                     else
-                    {
-                        string recipeBoundItemErrorMessage = ", because it is required for at least one recipe. It must be removed from the recipe before it can be deleted from the Inventory.";
-                        MessageBox.Show("Unable to delete " + inventory.Name + recipeBoundItemErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        MessageBox.Show(
+                            "Unable to delete " + inventory.Name + ", because it is required for at least one recipe. " + inventory.Name + " must be removed from the recipe(s) before it can be deleted from the Inventory.", 
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 });
 
                 RefreshCurrentTab();
@@ -177,10 +168,6 @@ namespace Client_Desktop
         #endregion
 
         #region Recipe Tab
-        /// <summary>
-        /// This is where we make changes to the Recipe DataGridView for displaying at run time.
-        /// ie, any formatting after the data has been loaded into the DataGridView.
-        /// </summary>
         private void RecipeGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             //Set up tooltip and text for the button control in the Modify column
@@ -188,7 +175,6 @@ namespace Client_Desktop
             {
                 foreach (DataGridViewCell cell in row.Cells)
                 {
-                    //Ensure We're only adding and modifiying the value (text) of the button column
                     if (cell.ColumnIndex == RecipeGridView.Columns["Modify"].Index)
                     {
                         cell.ToolTipText = "Click to modify this recipe.";
@@ -196,10 +182,6 @@ namespace Client_Desktop
                     }
                 }
             }
-            
-            //Tell the columns to fill up the entire size of the DataGridView Control        
-            RecipeGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            RecipeGridView.AutoResizeColumns();
         }
 
         /// <summary>
@@ -207,34 +189,35 @@ namespace Client_Desktop
         /// </summary>
         private void RecipeGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridView recipeGrid = (DataGridView)sender;
-
-            //Modify Button
-            if (recipeGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >=0)
+            if (RecipeGridView.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                //We need to reference the recipe that was clicked
-                //and pass that to the form that will handle the modifications
-                //for the recipe
                 DisplayRecipeForm((Recipe)RecipeGridView.Rows[e.RowIndex].DataBoundItem);
             }
-
-            //Remove checkbox
-            else if (recipeGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
+            else if (RecipeGridView.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
             {
                 Recipe recipeToRemove = (Recipe)RecipeGridView.Rows[e.RowIndex].DataBoundItem;
-
-                ////Prevent awkward duplication of trying to remove the same recipe more than once
                 if (recipesToRemove.Contains(recipeToRemove) == false)
                     recipesToRemove.Add(recipeToRemove);
             }
         }
 
+        private void RecipeAddNewRecipeButton_Click(object sender, EventArgs e)
+        {
+            DisplayRecipeForm(null);
+        }
+
+        private void DisplayRecipeForm(Recipe recipeToModify)
+        {
+            using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
+            {
+                if (addRecipe.ShowDialog() == DialogResult.OK)
+                    RefreshCurrentTab();
+            }
+        }
+
         private void RecipeRemoveSelectedButton_Click(object sender, EventArgs e)
         {
-            //Make sure user wants to delete the selected recipes
-            string warningMessage = "Are you sure you want to delete the selected recipes?";
-
-            if (MessageBox.Show(warningMessage, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            if (MessageBox.Show("Are you sure you want to delete the selected recipes?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 try
                 {
@@ -249,21 +232,7 @@ namespace Client_Desktop
             }
         }
 
-        private void DisplayRecipeForm(Recipe recipeToModify)
-        {
-            // Display the Add Recipe form
-            using (RecipeForm addRecipe = new RecipeForm(recipeToModify))
-            {
-                if (addRecipe.ShowDialog() == DialogResult.OK)
-                    RefreshCurrentTab();
-            }
-        }
-
-        private void RecipeAddNewRecipeButton_Click(object sender, EventArgs e)
-        {
-            DisplayRecipeForm(null);
-        }
-        #endregion
         
+        #endregion
     }
 }

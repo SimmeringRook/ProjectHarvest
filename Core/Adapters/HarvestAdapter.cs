@@ -1,9 +1,6 @@
 ﻿using Core.Cache;
 using Core.Utilities.Queries;
 using Core.Utilities.UnitConversions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Adapters
 {
@@ -31,23 +28,23 @@ namespace Core.Adapters
         #endregion
 
         #region Recipe Category
-        private static List<string> _recipeCategories = new HarvestEntitiesUtility(new RecipeCategoryQuery()).Get(-1) as List<string>;
-        public static List<string> RecipeCategories { get { return _recipeCategories; } }
+        private static Cache<string> _recipeCategories = new HarvestEntitiesUtility(new RecipeCategoryQuery()).Get(-1) as Cache<string>;
+        public static Cache<string> RecipeCategories { get { return _recipeCategories; } }
         #endregion
 
         #region Ingredient Category
-        private static List<string> _ingredientCategories = new HarvestEntitiesUtility(new IngredientCategoryQuery()).Get(-1) as List<string>;
-        public static List<string> IngredientCategories { get { return _ingredientCategories; } }
+        private static Cache<string> _ingredientCategories = new HarvestEntitiesUtility(new IngredientCategoryQuery()).Get(-1) as Cache<string>;
+        public static Cache<string> IngredientCategories { get { return _ingredientCategories; } }
         #endregion
 
         #region Meal Time
-        private static List<string> _mealTimes = new HarvestEntitiesUtility(new MealTimeQuery()).Get(-1) as List<string>;
-        public static List<string> MealTimes { get { return _mealTimes; } }
+        private static Cache<string> _mealTimes = new HarvestEntitiesUtility(new MealTimeQuery()).Get(-1) as Cache<string>;
+        public static Cache<string> MealTimes { get { return _mealTimes; } }
         #endregion
 
         #region Measurements
-        private static List<MeasurementUnit> _measurementUnits = new HarvestEntitiesUtility(new MetricQuery()).Get(-1) as List<MeasurementUnit>;
-        public static List<MeasurementUnit> Measurements { get { return _measurementUnits; } }
+        private static Cache<MeasurementUnit> _measurementUnits = new HarvestEntitiesUtility(new MetricQuery()).Get(-1) as Cache<MeasurementUnit>;
+        public static Cache<MeasurementUnit> Measurements { get { return _measurementUnits; } }
         #endregion
     }
 }

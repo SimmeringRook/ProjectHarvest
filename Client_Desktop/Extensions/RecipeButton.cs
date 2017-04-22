@@ -18,16 +18,12 @@ namespace Client_Desktop.Extensions
             this.Click += new System.EventHandler(ShowRecipe_Click);
         }
 
-
         public void ShowRecipe_Click(object sender, EventArgs e)
         {
             using (RecipeForm recipe = new RecipeForm((sender as RecipeButton).Recipe))
             {
                 if (recipe.ShowDialog() == DialogResult.OK)
-                {
                     return;
-                }
-                   
             }
         }
 

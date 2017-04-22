@@ -5,6 +5,7 @@ namespace Core.Adapters.Objects
 {
     public class PlannedMeal : INotifyPropertyChanged
     {
+        #region Properties
         private Recipe _plannedRecipe;
         public Recipe PlannedRecipe
         {
@@ -40,13 +41,7 @@ namespace Core.Adapters.Objects
             set
             { _hasBeenEaten = value; OnPropertyChanged("HasBeenEaten"); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        #endregion
 
         public PlannedMeal()
         {
@@ -63,6 +58,15 @@ namespace Core.Adapters.Objects
             _date = date.Date;
             _hasBeenEaten = hasBeenEaten;
         }
+
+        #region NotifyPropertChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         public override bool Equals(object obj)
         {

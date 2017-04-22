@@ -1,5 +1,4 @@
-﻿using Core.Adapters.Factories;
-using Core.Utilities.Queries;
+﻿using Core.Utilities.Queries;
 using System.ComponentModel;
 
 namespace Core.Cache
@@ -27,9 +26,11 @@ namespace Core.Cache
         protected override void RemoveItem(int index)
         {
             RaiseListChangedEvents = false;
+
             using (HarvestEntitiesUtility harvest = new HarvestEntitiesUtility(this[index]))
                 harvest.Remove(this[index]);
             base.RemoveItem(index);
+
             RaiseListChangedEvents = true;
         }
     }

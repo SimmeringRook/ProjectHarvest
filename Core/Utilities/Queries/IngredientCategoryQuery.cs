@@ -1,6 +1,6 @@
 ﻿using Core.Adapters.Database;
+using Core.Cache;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -12,9 +12,12 @@ namespace Core.Utilities.Queries
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.IngredientCategory.Load();
-            List<string> categories = new List<string>();
+            Cache<string> categories = new Cache<string>();
+
             foreach (IngredientCategory category in HarvestDatabase.IngredientCategory.ToList())
                 categories.Add(category.Category);
+
+            categories.RaiseListChangedEvents = true;
             return categories;
         }
 

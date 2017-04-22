@@ -1,6 +1,6 @@
 ﻿using Core.Adapters.Database;
+using Core.Cache;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -11,9 +11,12 @@ namespace Core.Utilities.Queries
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.MealTime.Load();
-            List<string> mealTimes = new List<string>();
+            Cache<string> mealTimes = new Cache<string>();
+
             foreach (MealTime mealTIme in HarvestDatabase.MealTime.ToList())
                 mealTimes.Add(mealTIme.MealName);
+
+            mealTimes.RaiseListChangedEvents = true;
             return mealTimes;
         }
 

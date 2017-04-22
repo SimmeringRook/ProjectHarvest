@@ -33,15 +33,6 @@ namespace Core.Adapters.Objects
         }
         #endregion
 
-        #region NotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         public RecipeIngredient()
         {
             _id = 0;
@@ -57,6 +48,15 @@ namespace Core.Adapters.Objects
             _amount = amount;
             _measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), unit);
         }
+
+        #region NotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         public override bool Equals(object obj)
         {

@@ -12,15 +12,14 @@ namespace Client_Desktop
 {
     public partial class RecipeForm : Form
     {
+        private Recipe _recipe = null;
         private int _numberOfRows;
-        private List<IngredientInformation> _Ingredients = new List<IngredientInformation>();
-        private Recipe _recipeToModify;
-
+        private List<IngredientInformation> _listOfIngredients = new List<IngredientInformation>();
+        
         public RecipeForm(Recipe recipe)
         {
             InitializeComponent();
-            if (recipe != null)
-                _recipeToModify = recipe;
+             _recipe = recipe;
 
             try
             {
@@ -35,26 +34,26 @@ namespace Client_Desktop
         private void RecipeForm_Load(object sender, EventArgs e)
         {
             _numberOfRows = recipeTableLayout.RowCount - 1;
-            subtractButton.Enabled = (_Ingredients.Count > 1);
+            subtractButton.Enabled = (_listOfIngredients.Count > 1);
 
-            if (_recipeToModify != null)
-                DisplayRecipeToModify();
+            if (_recipe != null)
+                _DisplayRecipe();
             else
                 AddNewIngredientRow();
         }
 
-        private void DisplayRecipeToModify()
+        private void _DisplayRecipe()
         {
             //Populate Recipe Controls with Information
-            RecipeNameTextBox.Text = _recipeToModify.Name;
-            categoryCombo.SelectedIndex = categoryCombo.Items.IndexOf(_recipeToModify.Category);
-            servingsTextbox.Text = _recipeToModify.Servings.ToString();
+            RecipeNameTextBox.Text = _recipe.Name;
+            categoryCombo.SelectedIndex = categoryCombo.Items.IndexOf(_recipe.Category);
+            servingsTextbox.Text = _recipe.Servings.ToString();
 
             //Create rows for each ingredient and populate
-            for (int i = 0; i < _recipeToModify.AssociatedIngredients.Count; i++)
+            for (int i = 0; i < _recipe.AssociatedIngredients.Count; i++)
             {
                 AddNewIngredientRow();
-                _Ingredients[i].LoadExistingData(_recipeToModify.AssociatedIngredients[i]);
+                _listOfIngredients[i].LoadExistingData(_recipe.AssociatedIngredients[i]);
             }
             RecipeNameTextBox.Focus();
         }
@@ -75,31 +74,21 @@ namespace Client_Desktop
 
             for (int column = 0; column < rowToBeAdded.Controls.Count; column++)
                 recipeTableLayout.Controls.Add(rowToBeAdded.Controls[column], column, _numberOfRows);
-
-            rowToBeAdded.Selected.CheckStateChanged += Selected_CheckStateChanged;
+            rowToBeAdded.Selected.CheckStateChanged += (object sender, EventArgs e) => { removeSelectedButton.Enabled = _listOfIngredients.Any(row => row.Selected.Checked); };
 
             try
             {
-                Binding typeBinding = new Binding("SelectedItem", HarvestAdapter.IngredientCategories.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
-                rowToBeAdded.SetDataBindings(rowToBeAdded.Type, typeBinding);
-
-                Binding unitBinding = new Binding("SelectedItem", HarvestAdapter.Measurements.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
-                rowToBeAdded.SetDataBindings(rowToBeAdded.Unit, unitBinding);
+                rowToBeAdded.Category.DataSource = HarvestAdapter.IngredientCategories.ToList();
+                rowToBeAdded.Unit.DataSource = HarvestAdapter.Measurements.ToList();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
-            _Ingredients.Add(rowToBeAdded);
+            _listOfIngredients.Add(rowToBeAdded);
             _numberOfRows++;
         }
-
-        private void Selected_CheckStateChanged(object sender, EventArgs e)
-        {
-            removeSelectedButton.Enabled = _Ingredients.Any(row => row.Selected.Checked);
-        }
-
         #endregion
 
         #region Remove Rows
@@ -122,94 +111,7 @@ namespace Client_Desktop
             recipeTableLayout.RowStyles.RemoveAt(_numberOfRows - 1);
             recipeTableLayout.RowCount = _numberOfRows - 1;
 
-            _Ingredients.Remove(_Ingredients.Last());
-        }
-        #endregion
-
-        #endregion
-
-        private void SubmitButton_Click(object sender, EventArgs e)
-        {
-            if (IsValid() == false)
-                return;
-
-            try
-            {
-                if (_recipeToModify != null)
-                {//update
-                    CheckForChangesToRecipe();
-                    foreach (var i in _Ingredients)
-                    {
-                        var newRI = i.GetRecipeIngredient(_recipeToModify.ID);
-                        if (_recipeToModify.AssociatedIngredients.Contains(newRI) == false)
-                            _recipeToModify.AssociatedIngredients.Add(newRI);
-                    }
-                }
-                else
-                {//create
-                    
-                    HarvestAdapter.Recipes.Add(GetRecipeFromControls());
-                    var temp = HarvestAdapter.Recipes.Last();
-                    foreach (var ingredient in _Ingredients)
-                    {
-                        temp.AssociatedIngredients.Add(ingredient.GetRecipeIngredient(temp.ID));
-                    }
-                    
-
-                }
-                this.DialogResult = DialogResult.OK;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }          
-        }
-
-        private void RecipeNameTextBox_Validating(object sender, CancelEventArgs e)
-        {
-            HarvestValidator.Validate(RecipeNameTextBox, HarvestRegex.Name, recipeErrorProvider);
-        }
-
-        private void servingsTextbox_Validating(object sender, CancelEventArgs e)
-        {
-            HarvestValidator.Validate(servingsTextbox, HarvestRegex.Amount, recipeErrorProvider);
-        }
-
-        private bool IsValid()
-        {
-            bool noErrors = true;
-
-            //Validate Recipe
-            if (HarvestValidator.Validate(RecipeNameTextBox, HarvestRegex.Name, recipeErrorProvider) == false ||
-                HarvestValidator.Validate(servingsTextbox, HarvestRegex.Amount, recipeErrorProvider) == false)
-                noErrors = false;
-
-            //Validate Ingredients
-            foreach (var row in _Ingredients)
-            {
-                if (HarvestValidator.Validate(row.Name, HarvestRegex.Name, recipeErrorProvider) == false ||
-                    HarvestValidator.Validate(row.Quantity, HarvestRegex.Amount, recipeErrorProvider) == false)
-                    noErrors = false;
-            }
-
-            return noErrors;
-        }
-
-        private Recipe GetRecipeFromControls()
-        {
-            Recipe temp = new Recipe();
-            temp.Name = RecipeNameTextBox.Text;
-            temp.Category = categoryCombo.SelectedValue.ToString();
-            temp.Servings = double.Parse(servingsTextbox.Text);
-            temp.ID = 0;
-            return temp;
-        }
-
-        private void CheckForChangesToRecipe()
-        {
-            if (_recipeToModify.Name.Equals(RecipeNameTextBox.Text) == false) _recipeToModify.Name = RecipeNameTextBox.Text;
-            if (_recipeToModify.Category.Equals(categoryCombo.SelectedValue.ToString()) == false) _recipeToModify.Category = categoryCombo.SelectedValue.ToString();
-            if (_recipeToModify.Servings.Equals(double.Parse(servingsTextbox.Text)) == false) _recipeToModify.Servings = double.Parse(servingsTextbox.Text);
+            _listOfIngredients.Remove(_listOfIngredients.Last());
         }
 
         private void removeSelectedButton_Click(object sender, EventArgs e)
@@ -218,21 +120,21 @@ namespace Client_Desktop
             List<IngredientInformation> ingredientInfoToDiscard = new List<IngredientInformation>();
 
             //Find out what needs to be deleted
-            _Ingredients.ForEach(row => {
+            _listOfIngredients.ForEach(row => {
                 if (!row.Selected.Checked) { ingredientInfoToKeep.Add(row); }
-                else { ingredientInfoToDiscard.Add(row); }   
+                else { ingredientInfoToDiscard.Add(row); }
             });
 
             //if this is an existing Recipe
-            if (_recipeToModify != null)
+            if (_recipe != null)
             {
                 //Delete the record tying the Ingredient to the Recipe
                 try
                 {
                     foreach (IngredientInformation ingredientToDelete in ingredientInfoToDiscard)
                     {
-                        var ingredient = _recipeToModify.AssociatedIngredients.Single(ing => ing.Inventory.Name.Equals(ingredientToDelete.Name.Text));
-                        _recipeToModify.AssociatedIngredients.Remove(ingredient);
+                        var ingredient = _recipe.AssociatedIngredients.Single(ing => ing.Inventory.Name.Equals(ingredientToDelete.Name.Text));
+                        _recipe.AssociatedIngredients.Remove(ingredient);
                     }
                 }
                 catch (Exception ex)
@@ -242,17 +144,17 @@ namespace Client_Desktop
             }
 
             ClearIngredientTableLayout();
+            ingredientInfoToDiscard.Clear();
+
             RebuildIngredientTableLayout(ingredientInfoToKeep);
 
-            //allow GC
-            ingredientInfoToDiscard.Clear();
-            ingredientInfoToKeep.Clear();
             removeSelectedButton.Enabled = false;
         }
+        #endregion
 
         private void ClearIngredientTableLayout()
         {
-            _Ingredients.Clear();
+            _listOfIngredients.Clear();
 
             //Delete everything from the table
             recipeTableLayout.RowCount = _numberOfRows = 0;
@@ -265,14 +167,101 @@ namespace Client_Desktop
             foreach (IngredientInformation row in ingredientsToKeep)
             {
                 //Clear out obsolete references
-                row.Type.DataBindings.Clear();
+                row.Category.DataBindings.Clear();
                 row.Unit.DataBindings.Clear();
-                row.Selected.CheckStateChanged -= Selected_CheckStateChanged;
                 //Create the row
                 AddNewIngredientRow(row);
             }
+            ingredientsToKeep.Clear();
+        }
+        #endregion
+
+        private void submitButton_Click(object sender, EventArgs e)
+        {
+            if (IsValid() == false)
+                return;
+            try
+            {
+                if (_recipe != null)
+                {
+                    CheckForChangesToRecipe();
+                }
+                else
+                {
+                    Recipe newRecipe = GetRecipeFromControls();
+                    HarvestAdapter.Recipes.Add(newRecipe);
+
+                    foreach (var ingredient in _listOfIngredients)
+                        newRecipe.AssociatedIngredients.Add(ingredient.GetRecipeIngredient(newRecipe.ID));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            this.DialogResult = DialogResult.OK;
         }
 
+        #region Create New Object Or Update Existing
+        private Recipe GetRecipeFromControls()
+        {
+            Recipe temp = new Recipe();
+            temp.Name = RecipeNameTextBox.Text;
+            temp.Category = categoryCombo.SelectedValue.ToString();
+            temp.Servings = double.Parse(servingsTextbox.Text);
+            temp.ID = 0;
+            return temp;
+        }
+
+        private void CheckForChangesToRecipe()
+        {
+            if (_recipe.Name.Equals(RecipeNameTextBox.Text) == false) _recipe.Name = RecipeNameTextBox.Text;
+            if (_recipe.Category.Equals(categoryCombo.SelectedValue.ToString()) == false) _recipe.Category = categoryCombo.SelectedValue.ToString();
+            if (_recipe.Servings.Equals(double.Parse(servingsTextbox.Text)) == false) _recipe.Servings = double.Parse(servingsTextbox.Text);
+
+            foreach (IngredientInformation ingredient in _listOfIngredients)
+            {
+                RecipeIngredient newRecipeIngredient = ingredient.GetRecipeIngredient(_recipe.ID);
+                if (!_recipe.AssociatedIngredients.Contains(newRecipeIngredient))
+                    _recipe.AssociatedIngredients.Add(newRecipeIngredient);
+            }
+        }
+        #endregion
+
+        #region Input Validation
+        private bool IsValid()
+        {
+            bool noErrors = true;
+
+            //Validate Recipe
+            if (HarvestValidator.Validate(RecipeNameTextBox, HarvestRegex.Name, recipeErrorProvider) == false ||
+                HarvestValidator.Validate(servingsTextbox, HarvestRegex.Amount, recipeErrorProvider) == false)
+                noErrors = false;
+
+            //Validate Ingredients
+            foreach (var row in _listOfIngredients)
+            {
+                if (HarvestValidator.Validate(row.Name, HarvestRegex.Name, recipeErrorProvider) == false ||
+                    HarvestValidator.Validate(row.Quantity, HarvestRegex.Amount, recipeErrorProvider) == false)
+                    noErrors = false;
+            }
+
+            return noErrors;
+        }
+        private void recipeNameTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            HarvestValidator.Validate(RecipeNameTextBox, HarvestRegex.Name, recipeErrorProvider);
+        }
+
+        private void servingsTextbox_Validating(object sender, CancelEventArgs e)
+        {
+            HarvestValidator.Validate(servingsTextbox, HarvestRegex.Amount, recipeErrorProvider);
+        }
+
+
+        #endregion
+
+        #region IDisposable
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -284,10 +273,11 @@ namespace Client_Desktop
                 components.Dispose();
             }
 
-            _recipeToModify = null;
-            _Ingredients = null;
+            _recipe = null;
+            _listOfIngredients = null;
 
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

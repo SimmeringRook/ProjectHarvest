@@ -1,5 +1,5 @@
-﻿using Core.Utilities.Queries;
-using System.Collections.Generic;
+﻿using Core.Cache;
+using Core.Utilities.Queries;
 
 namespace Core.Adapters.Factories
 {
@@ -16,17 +16,14 @@ namespace Core.Adapters.Factories
             if (databaseRecipe != null)
             {
                 //Populate the Client_Desktop version of the Recipe Object
-                Objects.Recipe clientRecipe = new Objects.Recipe(
-                    databaseRecipe.RecipeID, 
-                    databaseRecipe.RecipeName, 
-                    databaseRecipe.Servings, 
-                    databaseRecipe.RCategory);
+                Objects.Recipe clientRecipe = new Objects.Recipe( databaseRecipe.RecipeID, databaseRecipe.RecipeName, 
+                    databaseRecipe.Servings, databaseRecipe.RCategory);
 
-                clientRecipe.AssociatedIngredients = RecipeIngredientFactory.GetIngredients_For_ClientRecipe(clientRecipe);
+                clientRecipe.AssociatedIngredients = GetIngredients_For_ClientRecipe(clientRecipe);
                 clientRecipe.AssociatedIngredients.RaiseListChangedEvents = true;
                 return clientRecipe;
             }
-
+            
             return new Objects.Recipe();
         }
 
@@ -35,6 +32,12 @@ namespace Core.Adapters.Factories
             using (HarvestEntitiesUtility recipeTable = new HarvestEntitiesUtility(new RecipeQuery()))
                 return Create_Client_From_Database(recipeTable.Get(recipeID) as Database.Recipe);
         }
+
+        internal static Cache<Objects.RecipeIngredient> GetIngredients_For_ClientRecipe(Objects.Recipe clientRecipe)
+        {
+            using (HarvestEntitiesUtility harvestTables = new HarvestEntitiesUtility(new RecipeIngredientQuery()))
+                return harvestTables.Get(clientRecipe.ID) as Cache<Objects.RecipeIngredient>;
+        }
         #endregion
 
         #region Database Object
@@ -42,8 +45,6 @@ namespace Core.Adapters.Factories
         /// <summary>
         /// This takes a Client_Desktop Recipe object and transfers its data over to a Recipe database object.
         /// </summary>
-        /// <param name="clientRecipe"></param>
-        /// <returns></returns>
         internal static Database.Recipe Create_Database_From_Client(Objects.Recipe clientRecipe)
         {
             Database.Recipe databaseRecipe = new Database.Recipe();

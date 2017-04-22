@@ -18,13 +18,18 @@ namespace Core.Utilities.Queries
             LastLaunchedQuery launchQuery = new LastLaunchedQuery();
             LastLaunched firstTimeLaunched = launchQuery.Get(-1, HarvestDatabase) as LastLaunched;
 
+            Cache<PlannedMeal> plannedMeals = null;
+
             if (firstTimeLaunched != null)
-                return _GetPlannedMealsWithinDateRange(firstTimeLaunched.Date, HarvestDatabase);
+                plannedMeals = getPlannedMealsWithinDateRange(firstTimeLaunched.Date, HarvestDatabase);
             else
-                return new Cache<PlannedMeal>();
+                plannedMeals = new Cache<PlannedMeal>();
+
+            plannedMeals.RaiseListChangedEvents = true;
+            return plannedMeals;
         }
 
-        private Cache<PlannedMeal> _GetPlannedMealsWithinDateRange(DateTime startDate, HarvestDatabaseEntities HarvestDatabase)
+        private Cache<PlannedMeal> getPlannedMealsWithinDateRange(DateTime startDate, HarvestDatabaseEntities HarvestDatabase)
         {
             DateTime endDate = startDate.AddDays(6);
             Cache<PlannedMeal> plannedMeals = new Cache<PlannedMeal>();
@@ -35,41 +40,39 @@ namespace Core.Utilities.Queries
             foreach (var plan in results)
                 plannedMeals.Add(PlannedMealFactory.Create_Client_From_Database(plan));
 
-            plannedMeals.RaiseListChangedEvents = true;
-
             return plannedMeals;
         }
 
         public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
-            PlannedMeals item = itemToRemove as PlannedMeals;
+            PlannedMeal item = itemToRemove as PlannedMeal;
+
             var planToDelete = HarvestDatabase.PlannedMeals.Single(
                 p => 
-                p.RecipeID == item.RecipeID &&
-                DbFunctions.TruncateTime(p.DatePlanned) == DbFunctions.TruncateTime(item.DatePlanned) &&
-                p.MealName == item.MealName
+                p.RecipeID == item.PlannedRecipe.ID &&
+                DbFunctions.TruncateTime(p.DatePlanned) == DbFunctions.TruncateTime(item.Date) &&
+                p.MealName.Equals(item.MealTime)
                 );
+
             HarvestDatabase.PlannedMeals.Remove(planToDelete);
             HarvestDatabase.SaveChanges();
         }
 
         public void Update(object itemToChange, HarvestDatabaseEntities HarvestDatabase)
         {
-            HarvestDatabase.PlannedMeals.Load();
-            HarvestDatabase.PlannedMeals.AddOrUpdate(itemToChange as PlannedMeals);
-            HarvestDatabase.SaveChanges();
+            AddOrUpdate(itemToChange as PlannedMeal, HarvestDatabase);
         }
         public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)
         {
-            HarvestDatabase.PlannedMeals.Load();
-            HarvestDatabase.PlannedMeals.Add(itemToAdd as PlannedMeals);
-            HarvestDatabase.SaveChanges();
+            AddOrUpdate(itemToAdd as PlannedMeal, HarvestDatabase);
         }
 
-        private void AddOrUpdate()
+        private void AddOrUpdate(PlannedMeal plannedMeal, HarvestDatabaseEntities HarvestDatabase)
         {
-
+            HarvestDatabase.PlannedMeals.Load();
+            HarvestDatabase.PlannedMeals.AddOrUpdate(PlannedMealFactory.Create_Database_From_Client(plannedMeal as PlannedMeal));
+            HarvestDatabase.SaveChanges();
         }
     }
 }

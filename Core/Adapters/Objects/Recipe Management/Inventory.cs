@@ -52,20 +52,14 @@ namespace Core.Adapters.Objects
         }
         #endregion
 
-        #region NotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         public Inventory()
         {
-
+            _id = 0;
+            _name = "Empty";
+            _category = "Error";
+            _amount = 0.0;
+            _measurement = MeasurementUnit.Cup;
         }
-
 
         internal Inventory(int id, string name, string category, double amount, string unit)
         {
@@ -75,6 +69,15 @@ namespace Core.Adapters.Objects
             _amount = amount;
             _measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), unit);
         }
+
+        #region NotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         public override bool Equals(object obj)
         {

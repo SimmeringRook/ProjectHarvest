@@ -67,7 +67,5 @@ namespace Core.Adapters.Objects
                 return 0.0;
             }
         }
-
-
     }
 }

@@ -44,15 +44,6 @@ namespace Core.Adapters.Objects
         public Cache<RecipeIngredient> AssociatedIngredients { get; set; }
         #endregion
 
-        #region NotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         public Recipe()
         {
             _id = 0;
@@ -70,6 +61,15 @@ namespace Core.Adapters.Objects
             _servings = servings;
             _category = string.Copy(category);
         }
+
+        #region NotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
 
         public override bool Equals(object obj)
         {

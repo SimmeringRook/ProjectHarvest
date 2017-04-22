@@ -18,7 +18,7 @@ namespace Core.Utilities.Queries
 
             if ((int)itemID == -1)
             {
-                Cache.RecipeCache<Adapters.Objects.Recipe> allRecipes = new Cache.RecipeCache<Adapters.Objects.Recipe>();
+                RecipeCache<Adapters.Objects.Recipe> allRecipes = new RecipeCache<Adapters.Objects.Recipe>();
                 foreach (Recipe databaseRecipe in HarvestDatabase.Recipe.ToList())
                     allRecipes.Add(RecipeFactory.Create_Client_From_Database(databaseRecipe));
                 allRecipes.RaiseListChangedEvents = true;

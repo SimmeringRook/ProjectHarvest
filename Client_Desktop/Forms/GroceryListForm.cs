@@ -23,12 +23,11 @@ namespace Client_Desktop
             _numberOfRows = groceryTableLayout.RowCount - 1;
 
             foreach (RecipeIngredient ri in HarvestAdapter.CurrentWeek.GetAllIngredientsForWeek())
-                buildRow(ri);
+                BuildRow(ri);
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void GroceryListForm_Load(object sender, EventArgs e)
         {
-            base.OnLoad(e);
             if (_ingredientRows.Count < 1)
             {
                 MessageBox.Show("No items need to be purchased for the meals you currently have planned.", "Empty Grocery List", MessageBoxButtons.OK);
@@ -36,7 +35,7 @@ namespace Client_Desktop
             }
         }
 
-        private void buildRow(RecipeIngredient recipeIngredient)
+        private void BuildRow(RecipeIngredient recipeIngredient)
         {
             if (recipeIngredient.Amount - recipeIngredient.Inventory.Amount <= 0)
                 return;
@@ -45,9 +44,7 @@ namespace Client_Desktop
             groceryTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             for (int column = 0; column < rowToBeAdded.Controls.Count; column++)
-            {
                 groceryTableLayout.Controls.Add(rowToBeAdded.Controls[column], column, _numberOfRows);
-            }
 
             rowToBeAdded.NameLabel.Text = recipeIngredient.Inventory.Name;
             rowToBeAdded.Quantity.Text = (recipeIngredient.Amount - recipeIngredient.Inventory.Amount).ToString();
@@ -64,7 +61,7 @@ namespace Client_Desktop
             try
             {
                 if (_groceryListIngredients.Count > 0)
-                    createFile(directoryPath);
+                    CreateFile(directoryPath);
 
                 Process.Start(directoryPath);
             }
@@ -75,7 +72,7 @@ namespace Client_Desktop
             this.DialogResult = DialogResult.OK;
         }
 
-        private void createFile(string directory)
+        private void CreateFile(string directory)
         {
             string filename = HarvestAdapter.CurrentWeek.StartOfWeek.Date.ToString("MM_dd_yyyy") + ".txt";
 
@@ -104,6 +101,23 @@ namespace Client_Desktop
                 }
             }
             this.DialogResult = DialogResult.OK;
+        }
+        #endregion
+
+        #region IDisposable
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+                _groceryListIngredients = null;
+                _ingredientRows = null;
+            }
+            base.Dispose(disposing);
         }
         #endregion
     }

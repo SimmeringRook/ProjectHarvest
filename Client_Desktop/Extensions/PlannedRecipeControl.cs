@@ -11,8 +11,8 @@ namespace Client_Desktop.Extensions
         public PlannedMeal PlannedMeal;
         //Controls
         public RecipeButton RecipeButton;
-        private Button deleteButton;
-        private Button ateButton;
+        private Button _deleteButton;
+        private Button _ateButton;
 
         public PlannedRecipeControl(PlannedMeal plannedRecipe)
         {
@@ -25,11 +25,11 @@ namespace Client_Desktop.Extensions
             RecipeButton = new RecipeButton(PlannedMeal.PlannedRecipe);
             this.Controls.Add(RecipeButton);
 
-            deleteButton = _CreateButtonTemplate("X", deleteButton_Click);
-            this.Controls.Add(deleteButton);
+            _deleteButton = CreateButtonTemplate("X", deleteButton_Click);
+            this.Controls.Add(_deleteButton);
 
-            ateButton = _CreateButtonTemplate("A", ateButton_Click);
-            this.Controls.Add(ateButton);
+            _ateButton = CreateButtonTemplate("A", ateButton_Click);
+            this.Controls.Add(_ateButton);
 
             if (plannedRecipe.HasBeenEaten)
                 SetControlsForHasBeenEaten();
@@ -38,10 +38,10 @@ namespace Client_Desktop.Extensions
         private void SetControlsForHasBeenEaten()
         {
             RecipeButton.Enabled = false;
-            ateButton.Visible = false;
+            _ateButton.Visible = false;
         }
 
-        private Button _CreateButtonTemplate(string text, EventHandler eventHandler)
+        private Button CreateButtonTemplate(string text, EventHandler eventHandler)
         {
             Button template = new Button();
             template.Text = text;
@@ -53,15 +53,9 @@ namespace Client_Desktop.Extensions
         #region Button Click Events
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            //Remove recipe from plan
             foreach (var plannedDay in HarvestAdapter.CurrentWeek.DaysOfWeek)
-            {
                 if (plannedDay.Day.Equals(PlannedMeal.Date))
-                {
                     HarvestAdapter.PlannedMeals.Remove(PlannedMeal);
-                    break;
-                }
-            }
 
             foreach (Control control in this.Controls)
                 control.Dispose();
@@ -89,15 +83,6 @@ namespace Client_Desktop.Extensions
             }
 
             SetControlsForHasBeenEaten();
-
-            //if (MessageBox.Show("Remove from plan?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            //{
-            //    deleteButton_Click(sender, e);
-            //}
-            //else
-            //{
-            //    SetControlsForHasBeenEaten();
-            //}
         }
         #endregion
     }

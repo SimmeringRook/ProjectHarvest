@@ -1,7 +1,6 @@
 ﻿using Core.Adapters;
 using Core.Adapters.Objects;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
@@ -37,9 +36,7 @@ namespace Client_Desktop.Extensions
                     PlannedRecipeControl recipePrefab = new PlannedRecipeControl(meal);
                     ((Button)sender).Parent.Controls.Add(recipePrefab);
                 }
-
             }
         }
-
     }
 }

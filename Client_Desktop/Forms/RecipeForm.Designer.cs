@@ -57,7 +57,7 @@
             this.RecipeNameTextBox.Name = "RecipeNameTextBox";
             this.RecipeNameTextBox.Size = new System.Drawing.Size(340, 31);
             this.RecipeNameTextBox.TabIndex = 2;
-            this.RecipeNameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.RecipeNameTextBox_Validating);
+            this.RecipeNameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.recipeNameTextBox_Validating);
             // 
             // RecipeTypeLabel
             // 
@@ -216,7 +216,7 @@
             this.addModifyRecipeButton.TabIndex = 15;
             this.addModifyRecipeButton.Text = "Submit";
             this.addModifyRecipeButton.UseVisualStyleBackColor = true;
-            this.addModifyRecipeButton.Click += new System.EventHandler(this.SubmitButton_Click);
+            this.addModifyRecipeButton.Click += new System.EventHandler(this.submitButton_Click);
             // 
             // label6
             // 

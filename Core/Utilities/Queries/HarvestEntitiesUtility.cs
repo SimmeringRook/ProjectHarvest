@@ -18,27 +18,17 @@ namespace Core.Utilities.Queries
         internal HarvestEntitiesUtility(object queryObject)
         {
             _HarvestDatabase = new Adapters.Database.HarvestDatabaseEntities();
+
             if (queryObject is Recipe)
-            {
                 HarvestQuery = new RecipeQuery();
-            }
             else if (queryObject is Inventory)
-            {
                 HarvestQuery = new InventoryQuery();
-            }
             else if (queryObject is RecipeIngredient)
-            {
                 HarvestQuery = new RecipeIngredientQuery();
-            }
             else if (queryObject is PlannedMeal)
-            {
                 HarvestQuery = new PlannedMealQuery();
-            }
             else
-            {
-                //TODO Finish
                 throw new NotImplementedException();
-            }
         }
 
         internal void Insert(object itemToAdd)
@@ -84,6 +74,5 @@ namespace Core.Utilities.Queries
             Dispose(true);
         }
         #endregion
-
     }
 }
