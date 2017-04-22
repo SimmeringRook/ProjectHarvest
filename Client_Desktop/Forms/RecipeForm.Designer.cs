@@ -53,7 +53,7 @@
             // RecipeNameTextBox
             // 
             this.RecipeNameTextBox.Location = new System.Drawing.Point(458, 108);
-            this.RecipeNameTextBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.RecipeNameTextBox.Margin = new System.Windows.Forms.Padding(6);
             this.RecipeNameTextBox.Name = "RecipeNameTextBox";
             this.RecipeNameTextBox.Size = new System.Drawing.Size(340, 31);
             this.RecipeNameTextBox.TabIndex = 2;
@@ -74,7 +74,7 @@
             this.categoryCombo.DisplayMember = "RCategory";
             this.categoryCombo.FormattingEnabled = true;
             this.categoryCombo.Location = new System.Drawing.Point(458, 158);
-            this.categoryCombo.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.categoryCombo.Margin = new System.Windows.Forms.Padding(6);
             this.categoryCombo.Name = "categoryCombo";
             this.categoryCombo.Size = new System.Drawing.Size(238, 33);
             this.categoryCombo.TabIndex = 4;
@@ -93,7 +93,7 @@
             // servingsTextbox
             // 
             this.servingsTextbox.Location = new System.Drawing.Point(458, 212);
-            this.servingsTextbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.servingsTextbox.Margin = new System.Windows.Forms.Padding(6);
             this.servingsTextbox.Name = "servingsTextbox";
             this.servingsTextbox.Size = new System.Drawing.Size(104, 31);
             this.servingsTextbox.TabIndex = 6;
@@ -114,7 +114,7 @@
             // 
             this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addButton.Location = new System.Drawing.Point(24, 725);
-            this.addButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.addButton.Margin = new System.Windows.Forms.Padding(6);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(90, 44);
             this.addButton.TabIndex = 8;
@@ -126,7 +126,7 @@
             // 
             this.subtractButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.subtractButton.Location = new System.Drawing.Point(126, 725);
-            this.subtractButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.subtractButton.Margin = new System.Windows.Forms.Padding(6);
             this.subtractButton.Name = "subtractButton";
             this.subtractButton.Size = new System.Drawing.Size(82, 44);
             this.subtractButton.TabIndex = 9;
@@ -138,7 +138,7 @@
             // 
             this.removeSelectedButton.Enabled = false;
             this.removeSelectedButton.Location = new System.Drawing.Point(840, 725);
-            this.removeSelectedButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.removeSelectedButton.Margin = new System.Windows.Forms.Padding(6);
             this.removeSelectedButton.Name = "removeSelectedButton";
             this.removeSelectedButton.Size = new System.Drawing.Size(244, 44);
             this.removeSelectedButton.TabIndex = 10;
@@ -188,9 +188,9 @@
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.26366F));
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
             this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 192F));
-            this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.recipeTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 72F));
             this.recipeTableLayout.Location = new System.Drawing.Point(0, 6);
-            this.recipeTableLayout.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.recipeTableLayout.Margin = new System.Windows.Forms.Padding(6);
             this.recipeTableLayout.Name = "recipeTableLayout";
             this.recipeTableLayout.RowCount = 1;
             this.recipeTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -202,7 +202,7 @@
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.recipeTableLayout);
             this.panel1.Location = new System.Drawing.Point(24, 310);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1060, 404);
             this.panel1.TabIndex = 14;
@@ -210,7 +210,7 @@
             // addModifyRecipeButton
             // 
             this.addModifyRecipeButton.Location = new System.Drawing.Point(384, 725);
-            this.addModifyRecipeButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.addModifyRecipeButton.Margin = new System.Windows.Forms.Padding(6);
             this.addModifyRecipeButton.Name = "addModifyRecipeButton";
             this.addModifyRecipeButton.Size = new System.Drawing.Size(272, 44);
             this.addModifyRecipeButton.TabIndex = 15;
@@ -254,9 +254,10 @@
             this.Controls.Add(this.RecipeTypeLabel);
             this.Controls.Add(this.RecipeNameTextBox);
             this.Controls.Add(this.recipeNameLabel);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "RecipeForm";
             this.Text = "Recipe";
+            this.Load += new System.EventHandler(this.RecipeForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.recipeErrorProvider)).EndInit();

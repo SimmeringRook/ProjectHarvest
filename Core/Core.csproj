@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\Database\Extensions\PlannedMeals.cs" />
-    <Compile Include="Adapters\Factories\DelegateFactory.cs" />
     <Compile Include="Adapters\Factories\InventoryFactory.cs" />
     <Compile Include="Adapters\Factories\PlannedMealFactory.cs" />
     <Compile Include="Adapters\Factories\RecipeFactory.cs" />
@@ -119,7 +118,7 @@
     </Compile>
     <Compile Include="Adapters\Factories\RecipeIngredientFactory.cs" />
     <Compile Include="Adapters\HarvestAdapter.cs" />
-    <Compile Include="Cache\HarvestList.cs" />
+    <Compile Include="Cache\Cache.cs" />
     <Compile Include="Cache\InventoryCache.cs" />
     <Compile Include="Cache\RecipeCache.cs" />
     <Compile Include="Adapters\Objects\Meal Planning\PlannedMeal.cs" />

@@ -18,16 +18,6 @@ namespace Client_Desktop
         {     
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-
-            try
-            {
-                HarvestAdapter.InitializeCaches();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("An exception occured while trying to initialize the cache.\n" + ex.Message);
-            }
-
             RefreshCurrentTab();
         }
 
@@ -45,14 +35,7 @@ namespace Client_Desktop
 
         private void pantryTabControl_Selected(object sender, TabControlEventArgs e)
         {
-            try
-            {
-                RefreshCurrentTab();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            RefreshCurrentTab();
         }
 
         /// <summary>
@@ -60,19 +43,26 @@ namespace Client_Desktop
         /// </summary>
         public void RefreshCurrentTab()
         {
-            switch (pantryTabControl.SelectedIndex)
+            try
             {
-                case 0:
-                    LoadWeek();
-                    break;
-                case 1:
-                    InventoryGridView.DataSource = HarvestAdapter.InventoryItems.ToList();
-                    break;
-                case 2:
-                    RecipeGridView.DataSource = HarvestAdapter.Recipes.ToList();
-                    break;
+                switch (pantryTabControl.SelectedIndex)
+                {
+                    case 0:
+                        LoadWeek();
+                        break;
+                    case 1:
+                        InventoryGridView.DataSource = HarvestAdapter.InventoryItems.ToList();
+                        break;
+                    case 2:
+                        RecipeGridView.DataSource = HarvestAdapter.Recipes.ToList();
+                        break;
+                }
+                pantryTabControl.SelectedTab.Refresh();
             }
-            pantryTabControl.SelectedTab.Refresh();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
 
@@ -91,7 +81,8 @@ namespace Client_Desktop
 
                 if (HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay.Count > 0)
                     foreach (PlannedMeal plannedRecipe in HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay)
-                        flowLayout.Controls.Add(new PlannedRecipeControl(plannedRecipe));
+                        if (plannedRecipe.MealTime.Equals(mealTime))
+                            flowLayout.Controls.Add(new PlannedRecipeControl(plannedRecipe));
             }
         }
 

@@ -12,7 +12,7 @@ namespace Core.Utilities.Queries
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.LastLaunched.Load();
-            return HarvestDatabase.LastLaunched.ToList();
+            return HarvestDatabase.LastLaunched.ToList().FirstOrDefault();
         }
 
         public void Insert(object itemToAdd, HarvestDatabaseEntities HarvestDatabase)

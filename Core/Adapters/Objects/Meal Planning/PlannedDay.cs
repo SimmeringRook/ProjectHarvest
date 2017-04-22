@@ -14,42 +14,32 @@ namespace Core.Adapters.Objects
         {
             Day = day;
         }
-
-        //public void PlanRecipe(PlannedMeal mealToPlan)
-        //{
-        //    HarvestAdapter.PlannedMeals.Add(mealToPlan);
-
-        //}
-
-        //public void UnplanRecipe(PlannedMeal mealToUnplan)
-        //{
-        //    HarvestAdapter.UnplanMeal(mealToUnplan);
-        //}
-
         public List<RecipeIngredient> GetIngredientsForToday()
         {
             List<RecipeIngredient> allIngredients = new List<RecipeIngredient>();
 
             foreach (var meal in MealsForDay)
             {
-                //Compare the recipe ingredients in 'this' recipe to the 'master list' (allIngredients)
-                foreach (RecipeIngredient recipeIngredient in meal.PlannedRecipe.AssociatedIngredients)
+                if (meal.HasBeenEaten == false)
                 {
-                    //If the recipe is already in allIngredients
-                    if (allIngredients.Any(_ingredient => _ingredient.Equals(recipeIngredient)))
+                    //Compare the recipe ingredients in 'this' recipe to the 'master list' (allIngredients)
+                    foreach (RecipeIngredient recipeIngredient in meal.PlannedRecipe.AssociatedIngredients)
                     {
-                        RecipeIngredient ingredientToAdd = allIngredients.SingleOrDefault(_ingredient => recipeIngredient.Equals(_ingredient));
-                        //convert the amount required to the same unit as what allIngredients has
-                        int indexOfIngredient = allIngredients.IndexOf(ingredientToAdd);
-                        allIngredients[indexOfIngredient].Amount += ConvertedAmount(recipeIngredient, ingredientToAdd.Measurement);
-                    }
-                    else
-                    {
-                        //Otherwise, it doesn't exist in the list yet, add it.
-                        allIngredients.Add(recipeIngredient);
+                        //If the recipe is already in allIngredients
+                        if (allIngredients.Any(_ingredient => _ingredient.Equals(recipeIngredient)))
+                        {
+                            RecipeIngredient ingredientToAdd = allIngredients.SingleOrDefault(_ingredient => recipeIngredient.Equals(_ingredient));
+                            //convert the amount required to the same unit as what allIngredients has
+                            int indexOfIngredient = allIngredients.IndexOf(ingredientToAdd);
+                            allIngredients[indexOfIngredient].Amount += ConvertedAmount(recipeIngredient, ingredientToAdd.Measurement);
+                        }
+                        else
+                        {
+                            //Otherwise, it doesn't exist in the list yet, add it.
+                            allIngredients.Add(recipeIngredient);
+                        }
                     }
                 }
-                
             }
        
             return allIngredients;

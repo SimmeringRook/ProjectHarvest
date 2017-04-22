@@ -1,5 +1,6 @@
 ﻿using Core.Adapters.Database;
 using Core.Adapters.Factories;
+using Core.Adapters.Objects;
 using Core.Cache;
 using System;
 using System.Data.Entity;
@@ -13,27 +14,31 @@ namespace Core.Utilities.Queries
         public object Get(object itemID, HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.PlannedMeals.Load();
-            if (itemID is int)
-                return HarvestDatabase.PlannedMeals.ToList();
-            else if (itemID is Adapters.Objects.PlannedWeek)
-            {
-                Adapters.Objects.PlannedWeek CurrentWeek = itemID as Adapters.Objects.PlannedWeek;
 
-                Cache<Adapters.Objects.PlannedMeal> plannedMeals = new Cache<Adapters.Objects.PlannedMeal>();
-                foreach (var plan in HarvestDatabase.PlannedMeals.Where(meal => meal.DatePlanned >= CurrentWeek.StartOfWeek 
-                && meal.DatePlanned <= CurrentWeek.EndOfWeek).ToList())
-                {
-                    plannedMeals.Add(PlannedMealFactory.Create_Client_From_Database(plan));
-                }
+            LastLaunchedQuery launchQuery = new LastLaunchedQuery();
+            LastLaunched firstTimeLaunched = launchQuery.Get(-1, HarvestDatabase) as LastLaunched;
 
-                return plannedMeals;
-            }
-                
-            DateTime day = (DateTime) itemID;
-            return HarvestDatabase.PlannedMeals.Where(plannedMeal => DbFunctions.TruncateTime(plannedMeal.DatePlanned) == DbFunctions.TruncateTime(day)).ToList();
+            if (firstTimeLaunched != null)
+                return _GetPlannedMealsWithinDateRange(firstTimeLaunched.Date, HarvestDatabase);
+            else
+                return new Cache<PlannedMeal>();
         }
 
+        private Cache<PlannedMeal> _GetPlannedMealsWithinDateRange(DateTime startDate, HarvestDatabaseEntities HarvestDatabase)
+        {
+            DateTime endDate = startDate.AddDays(6);
+            Cache<PlannedMeal> plannedMeals = new Cache<PlannedMeal>();
+            var results = HarvestDatabase.PlannedMeals.Where(meal => meal.DatePlanned >= startDate && meal.DatePlanned <= endDate).ToList();
 
+            plannedMeals.RaiseListChangedEvents = false;
+
+            foreach (var plan in results)
+                plannedMeals.Add(PlannedMealFactory.Create_Client_From_Database(plan));
+
+            plannedMeals.RaiseListChangedEvents = true;
+
+            return plannedMeals;
+        }
 
         public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {

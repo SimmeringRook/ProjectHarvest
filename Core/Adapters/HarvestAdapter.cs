@@ -9,14 +9,6 @@ namespace Core.Adapters
 {
     public static class HarvestAdapter
     {
-        public static void InitializeCaches()
-        {
-            var rCache = Recipes;
-            rCache = null;
-            var iCache = InventoryItems;
-            iCache = null;
-        }
-
         #region Recipe
         private static RecipeCache<Objects.Recipe> _recipes = new HarvestEntitiesUtility(new RecipeQuery()).Get(-1) as RecipeCache<Objects.Recipe>;
         public static RecipeCache<Objects.Recipe> Recipes { get { return _recipes; } }
@@ -28,40 +20,14 @@ namespace Core.Adapters
         #endregion
 
         #region Planned Meals
-
         private static Cache<Objects.PlannedMeal> _plannedMeals = new HarvestEntitiesUtility(new PlannedMealQuery()).Get(-1) as Cache<Objects.PlannedMeal>;
 
         public static Cache<Objects.PlannedMeal> PlannedMeals { get { return _plannedMeals; } }
         #endregion
 
         #region Current Week
-        private static Objects.PlannedWeek _currentWeek = null;
-        public static Objects.PlannedWeek CurrentWeek { get { return _GetCurrentWeekCache(); } }
-        private static Objects.PlannedWeek _GetCurrentWeekCache()
-        {
-            if (_currentWeek == null)
-                _BuildNewCurrentWeek();
-
-            return _currentWeek;
-        }
-
-        private static void _BuildNewCurrentWeek()
-        {
-            DateTime startOfWeek = DateTime.Today;
-            using (HarvestEntitiesUtility launchTable = new HarvestEntitiesUtility(new LastLaunchedQuery()))
-            {
-                var lastHarvestLaunch = launchTable.Get(null) as List<Database.LastLaunched>;
-                if (lastHarvestLaunch.Count == 0)
-                {
-                    launchTable.Update(new Database.LastLaunched() { Date = startOfWeek });
-                }
-                else
-                {
-                    startOfWeek = lastHarvestLaunch.First().Date;
-                }
-            }
-            _currentWeek = new Objects.PlannedWeek(startOfWeek, startOfWeek.AddDays(6));
-        }
+        private static Objects.PlannedWeek _currentWeek = new Objects.PlannedWeek();
+        public static Objects.PlannedWeek CurrentWeek { get { return _currentWeek; } }
         #endregion
 
         #region Recipe Category

@@ -26,6 +26,16 @@ namespace Client_Desktop
                 buildRow(ri);
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            if (_ingredientRows.Count < 1)
+            {
+                MessageBox.Show("No items need to be purchased for the meals you currently have planned.", "Empty Grocery List", MessageBoxButtons.OK);
+                this.DialogResult = DialogResult.OK;
+            }
+        }
+
         private void buildRow(RecipeIngredient recipeIngredient)
         {
             if (recipeIngredient.Amount - recipeIngredient.Inventory.Amount <= 0)
@@ -86,11 +96,12 @@ namespace Client_Desktop
         {
             foreach (RecipeIngredient recipeIngredient in HarvestAdapter.CurrentWeek.GetAllIngredientsForWeek())
             {
-                if (/* TODO: Remove when verified no issue was caused :: recipeIngredient.Inventory.IsDirty == false &&*/
-                    _ingredientRows.Any(row => row.NameLabel.Text.Equals(recipeIngredient.Inventory.Name) &&
-                        row.Selected.Checked))
-                    recipeIngredient.Inventory.Amount += recipeIngredient.Amount;
-                    
+                IngredientInformation currentRow = _ingredientRows.Single(row => row.NameLabel.Text.Equals(recipeIngredient.Inventory.Name));
+                if (currentRow.Selected.Checked)
+                {
+                    double purchaseAmount = double.Parse(currentRow.Quantity.Text);
+                    recipeIngredient.Inventory.Amount += (purchaseAmount > recipeIngredient.Amount) ? purchaseAmount : recipeIngredient.Amount;
+                }
             }
             this.DialogResult = DialogResult.OK;
         }

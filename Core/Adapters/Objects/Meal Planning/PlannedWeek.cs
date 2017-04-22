@@ -1,4 +1,5 @@
-﻿using Core.Utilities.UnitConversions;
+﻿using Core.Utilities.Queries;
+using Core.Utilities.UnitConversions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,22 @@ namespace Core.Adapters.Objects
         public DateTime StartOfWeek { get; private set; }
         public DateTime EndOfWeek { get; private set; }
 
-        public PlannedWeek(DateTime start, DateTime end)
+        public PlannedWeek()
         {
-            StartOfWeek = start;
-            EndOfWeek = end;
+            StartOfWeek = DateTime.Today;
 
-            for (DateTime d = start; d.DayOfYear <= end.DayOfYear; d = d.AddDays(1))
+            using (HarvestEntitiesUtility launchTable = new HarvestEntitiesUtility(new LastLaunchedQuery()))
+            {
+                var firstLaunch = launchTable.Get(-1) as Database.LastLaunched;
+                if (firstLaunch == null)
+                    launchTable.Update(new Database.LastLaunched() { Date = StartOfWeek });
+                else
+                    StartOfWeek = firstLaunch.Date;
+            }
+
+            EndOfWeek = StartOfWeek.AddDays(6);
+
+            for (DateTime d = StartOfWeek; d.DayOfYear <= EndOfWeek.DayOfYear; d = d.AddDays(1))
                 DaysOfWeek.Add(new PlannedDay(d));
         }
 

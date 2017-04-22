@@ -19,39 +19,35 @@ namespace Client_Desktop
         public RecipeForm(Recipe recipe)
         {
             InitializeComponent();
+            if (recipe != null)
+                _recipeToModify = recipe;
 
-            _numberOfRows = recipeTableLayout.RowCount - 1;
-            LoadRecipe(recipe);
-            subtractButton.Enabled = (_Ingredients.Count > 1);
-        }
-        
-        private void LoadRecipe(Recipe recipe)
-        {
             try
             {
-                if (recipe != null)
-                {
-                    _recipeToModify = HarvestAdapter.Recipes.Single(r => r.ID == recipe.ID);
-                    DisplayRecipeToModify();
-                }
-                else
-                {
-                    AddNewIngredientRow();
-                }
                 categoryCombo.DataSource = HarvestAdapter.RecipeCategories.ToList();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            recipe = null;
+        }
+
+        private void RecipeForm_Load(object sender, EventArgs e)
+        {
+            _numberOfRows = recipeTableLayout.RowCount - 1;
+            subtractButton.Enabled = (_Ingredients.Count > 1);
+
+            if (_recipeToModify != null)
+                DisplayRecipeToModify();
+            else
+                AddNewIngredientRow();
         }
 
         private void DisplayRecipeToModify()
         {
             //Populate Recipe Controls with Information
             RecipeNameTextBox.Text = _recipeToModify.Name;
-            categoryCombo.SelectedValue = _recipeToModify.Category;
+            categoryCombo.SelectedIndex = categoryCombo.Items.IndexOf(_recipeToModify.Category);
             servingsTextbox.Text = _recipeToModify.Servings.ToString();
 
             //Create rows for each ingredient and populate

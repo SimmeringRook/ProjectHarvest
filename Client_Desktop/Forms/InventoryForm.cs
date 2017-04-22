@@ -15,37 +15,29 @@ namespace Client_Desktop
 
         public InventoryForm(Inventory itemToModify)
         {
+            InitializeComponent();
             if (itemToModify != null)
                 this.itemToModify = itemToModify;
-            InitializeComponent();
-        }
 
-        /// <summary>
-        /// Initialize the controls with Data from the Database or from the Item to be modified
-        /// </summary>
-        private void InventoryForm_Load(object sender, EventArgs e)
-        {
             try
             {
-                Binding typeBinding = new Binding("SelectedItem", HarvestAdapter.IngredientCategories.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
-                foodCategoryCombo.DataBindings.Add(typeBinding);
-                foodCategoryCombo.DataSource = typeBinding.DataSource;
-
-                Binding unitBinding = new Binding("SelectedItem", HarvestAdapter.Measurements.ToList(), "", true, DataSourceUpdateMode.OnPropertyChanged);
-                measurementCombo.DataBindings.Add(unitBinding);
-                measurementCombo.DataSource = unitBinding.DataSource;
+                foodCategoryCombo.DataSource = HarvestAdapter.IngredientCategories.ToList();
+                measurementCombo.DataSource = HarvestAdapter.Measurements.ToList();
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
 
+        private void InventoryForm_Load(object sender, EventArgs e)
+        {
             if (itemToModify != null)
             {
                 itemNameTextbox.Text = itemToModify.Name;
                 amountTextbox.Text = itemToModify.Amount.ToString();
-                foodCategoryCombo.SelectedValue = itemToModify.Category;
-                measurementCombo.SelectedValue = itemToModify.Measurement;
+                foodCategoryCombo.SelectedIndex = foodCategoryCombo.Items.IndexOf(itemToModify.Category);
+                measurementCombo.SelectedIndex = measurementCombo.Items.IndexOf(itemToModify.Measurement);
             }
         }
 
