@@ -217,19 +217,22 @@ namespace Client_Desktop
 
         private void RecipeRemoveSelectedButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete the selected recipes?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            try
             {
-                try
+                foreach (Recipe recipe in recipesToRemove)
                 {
-                    foreach (Recipe recipe in recipesToRemove)
-                        HarvestAdapter.Recipes.Remove(recipe);
+                    if (HarvestAdapter.PlannedMeals.Any(meal => meal.PlannedRecipe.Equals(recipe)))
+                        MessageBox.Show("You must removed all planned meals for " + recipe.Name + " before it can be deleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                        if (MessageBox.Show("Are you sure you want to delete the selected recipes?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                            HarvestAdapter.Recipes.Remove(recipe);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
                 }
                 RefreshCurrentTab();
-            }
         }
 
         

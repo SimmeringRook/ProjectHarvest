@@ -7,7 +7,7 @@ GO
 
 CREATE TABLE [dbo].[Inventory] (
     [InventoryID]    INT          IDENTITY (1, 1) NOT NULL,
-    [IngredientName] VARCHAR (25) NOT NULL,
+    [IngredientName] VARCHAR (50) NOT NULL,
     [Category]       VARCHAR (20) NOT NULL,
     [Amount]         FLOAT (53)   NOT NULL,
     [Measurement]    VARCHAR (20) NOT NULL,
@@ -64,7 +64,7 @@ GO
 
 CREATE TABLE [dbo].[Recipe] (
     [RecipeID]   INT          IDENTITY (1, 1) NOT NULL,
-    [RecipeName] VARCHAR (20) NOT NULL,
+    [RecipeName] VARCHAR (50) NOT NULL,
     [Servings]   FLOAT (53)   NOT NULL,
     [RCategory]  VARCHAR (20) NOT NULL,
     CONSTRAINT [PK_Recipe] PRIMARY KEY CLUSTERED ([RecipeID] ASC),
