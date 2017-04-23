@@ -33,7 +33,8 @@ namespace Client_Desktop
         #region Events
         private void selectButton_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            if (SelectedRecipe != null)
+                this.DialogResult = DialogResult.OK;
         }
         private void cancelButton_Click(object sender, EventArgs e)
         {
@@ -50,6 +51,7 @@ namespace Client_Desktop
             }
             else
             {
+                SelectedRecipe = null;
                 selectButton.Enabled = false;
             }
         }

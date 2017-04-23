@@ -36,6 +36,7 @@ namespace Core.Utilities.General
         {
             Label template = new Label();
             template.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
+            template.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             return template;
         }
 
