@@ -16,7 +16,7 @@
             <PropertyRef Name="InventoryID" />
           </Key>
           <Property Name="InventoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IngredientName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="IngredientName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Amount" Type="float" Nullable="false" />
           <Property Name="Measurement" Type="varchar" MaxLength="20" Nullable="false" />
@@ -65,7 +65,7 @@
             <PropertyRef Name="RecipeID" />
           </Key>
           <Property Name="RecipeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RecipeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="RecipeName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Servings" Type="float" Nullable="false" />
           <Property Name="RCategory" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
@@ -273,7 +273,7 @@
             <PropertyRef Name="InventoryID" />
           </Key>
           <Property Name="InventoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IngredientName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IngredientName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Amount" Type="Double" Nullable="false" />
           <Property Name="Measurement" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
@@ -333,7 +333,7 @@
             <PropertyRef Name="RecipeID" />
           </Key>
           <Property Name="RecipeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RecipeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RecipeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Servings" Type="Double" Nullable="false" />
           <Property Name="RCategory" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MealHistory" Relationship="Self.FK_MealHistory_Recipe" FromRole="Recipe" ToRole="MealHistory" />

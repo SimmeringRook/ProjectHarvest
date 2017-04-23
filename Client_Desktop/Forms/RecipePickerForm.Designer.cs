@@ -197,7 +197,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.filtersLabel);
             this.Name = "RecipePickerForm";
-            this.Text = "RecipePickerForm";
+            this.Text = "Select A Recipe";
             this.Load += new System.EventHandler(this.RecipePickerForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

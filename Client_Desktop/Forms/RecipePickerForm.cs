@@ -33,7 +33,6 @@ namespace Client_Desktop
         #region Events
         private void selectButton_Click(object sender, EventArgs e)
         {
-            SelectedRecipe = (Recipe)RecipeGridView.Rows[RecipeGridView.CurrentCell.RowIndex].DataBoundItem;
             this.DialogResult = DialogResult.OK;
         }
         private void cancelButton_Click(object sender, EventArgs e)
@@ -42,7 +41,17 @@ namespace Client_Desktop
         }
         private void RecipeGridView_SelectionChanged(object sender, EventArgs e)
         {
-            selectButton.Enabled = true;
+            if (RecipeGridView.SelectedRows.Count > 0)
+            {
+                int rowIndex = RecipeGridView.SelectedRows[0].Index;
+                if (rowIndex != -1)
+                    SelectedRecipe = (Recipe)RecipeGridView.Rows[rowIndex].DataBoundItem;
+                selectButton.Enabled = true;
+            }
+            else
+            {
+                selectButton.Enabled = false;
+            }
         }
         #endregion
 
