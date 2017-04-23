@@ -37,6 +37,8 @@ namespace Client_Desktop
             _numberOfRows = recipeTableLayout.RowCount - 1;
             subtractButton.Enabled = (_listOfIngredients.Count > 1);
 
+            this.Text = "New Recipe";
+
             if (_recipe != null)
                 _DisplayRecipe();
             else
@@ -45,6 +47,8 @@ namespace Client_Desktop
 
         private void _DisplayRecipe()
         {
+            this.Text = _recipe.Name;
+
             //Populate Recipe Controls with Information
             RecipeNameTextBox.Text = _recipe.Name;
             categoryCombo.SelectedIndex = categoryCombo.Items.IndexOf(_recipe.Category);
@@ -210,7 +214,6 @@ namespace Client_Desktop
             temp.Name = RecipeNameTextBox.Text;
             temp.Category = categoryCombo.SelectedValue.ToString();
             temp.Servings = double.Parse(servingsTextbox.Text);
-            temp.ID = 0;
             return temp;
         }
 
