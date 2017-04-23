@@ -29,7 +29,7 @@ namespace Core.Adapters.Objects
             }
             catch(Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 Utilities.Logging.Logger.Log(ex);
             }
 
