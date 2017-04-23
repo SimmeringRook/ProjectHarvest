@@ -2,6 +2,7 @@
 using Core.Adapters.Objects;
 using Core.Utilities.UnitConversions;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Client_Desktop.Extensions
@@ -74,7 +75,7 @@ namespace Client_Desktop.Extensions
                     {
                         if (conversion.IsCorrectMeasurementType(ingredient.Measurement) == false)
                             conversion.ConversionType = new WeightUnitConversion();
-                        ingredient.Inventory.Amount -= conversion.Convert(new ConvertedIngredient(ingredient), ingredient.Inventory.Measurement).Amount;
+                        HarvestAdapter.InventoryItems.Single(item => item.Equals(ingredient.Inventory)).Amount -= conversion.Convert(new ConvertedIngredient(ingredient), ingredient.Inventory.Measurement).Amount;
                     }
             }
             catch (InvalidConversionException ex)

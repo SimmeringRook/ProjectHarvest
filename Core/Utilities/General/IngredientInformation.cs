@@ -70,5 +70,10 @@ namespace Core.Utilities.General
 
             return ingredient;
         }
+
+        public override string ToString()
+        {
+            return NameLabel.Text.PadRight(25) + Quantity.Text.PadRight(5) + Unit.Text.PadRight(25);
+        }
     }
 }

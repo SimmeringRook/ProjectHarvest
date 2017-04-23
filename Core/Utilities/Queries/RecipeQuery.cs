@@ -27,13 +27,13 @@ namespace Core.Utilities.Queries
             else
             {
                 Recipe dbRecipe = HarvestDatabase.Recipe.SingleOrDefault(inventory => inventory.RecipeID.Equals((int)itemID));
-                return RecipeFactory.Create_Client_From_Database(dbRecipe);
+                return dbRecipe;
             }
         }
 
         public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)
         {
-            Recipe recipe = itemToRemove as Recipe;
+            Recipe recipe = RecipeFactory.Create_Database_From_Client(itemToRemove as Adapters.Objects.Recipe);
 
             HarvestDatabase.RecipeIngredient.Load();
             List<RecipeIngredient> allRecipeIngredientsThatUseItem = HarvestDatabase.RecipeIngredient.Where(ri => ri.RecipeID == recipe.RecipeID).ToList();

@@ -22,8 +22,8 @@ namespace Client_Desktop
             InitializeComponent();
             _numberOfRows = groceryTableLayout.RowCount - 1;
 
-            foreach (RecipeIngredient ri in HarvestAdapter.CurrentWeek.GetAllIngredientsForWeek())
-                BuildRow(ri);
+            foreach (KeyValuePair<RecipeIngredient, double> itemToPurchase in HarvestAdapter.CurrentWeek.GetAllItemsToPurchase())
+                BuildRow(itemToPurchase);
         }
 
         private void GroceryListForm_Load(object sender, EventArgs e)
@@ -35,9 +35,10 @@ namespace Client_Desktop
             }
         }
 
-        private void BuildRow(RecipeIngredient recipeIngredient)
+        private void BuildRow(KeyValuePair<RecipeIngredient, double> itemToPurchase)
         {
-            if (recipeIngredient.Amount - recipeIngredient.Inventory.Amount <= 0)
+            Inventory inventory = HarvestAdapter.InventoryItems.Single(item => item.Equals(itemToPurchase.Key.Inventory));
+            if (inventory.Amount - itemToPurchase.Value >= 0)
                 return;
 
             IngredientInformation rowToBeAdded = new IngredientInformation(false, null);
@@ -46,11 +47,11 @@ namespace Client_Desktop
             for (int column = 0; column < rowToBeAdded.Controls.Count; column++)
                 groceryTableLayout.Controls.Add(rowToBeAdded.Controls[column], column, _numberOfRows);
 
-            rowToBeAdded.NameLabel.Text = recipeIngredient.Inventory.Name;
-            rowToBeAdded.Quantity.Text = (recipeIngredient.Amount - recipeIngredient.Inventory.Amount).ToString();
-            rowToBeAdded.Unit.Text = recipeIngredient.Measurement.ToString();
+            rowToBeAdded.NameLabel.Text = itemToPurchase.Key.Inventory.Name;
+            rowToBeAdded.Quantity.Text = (itemToPurchase.Value - inventory.Amount).ToString();
+            rowToBeAdded.Unit.Text = itemToPurchase.Key.Measurement.ToString();
 
-            _groceryListIngredients.Add(rowToBeAdded.NameLabel.Text.PadRight(25) + rowToBeAdded.Quantity.Text.PadRight(5) + rowToBeAdded.Unit.Text.PadRight(25));
+            _groceryListIngredients.Add(rowToBeAdded.ToString());
             _ingredientRows.Add(rowToBeAdded);
             _numberOfRows++;
         }
@@ -91,14 +92,11 @@ namespace Client_Desktop
         #region Submit
         private void submitButton_Click(object sender, EventArgs e)
         {
-            foreach (RecipeIngredient recipeIngredient in HarvestAdapter.CurrentWeek.GetAllIngredientsForWeek())
+            foreach (KeyValuePair<RecipeIngredient, double> purchasedItem in HarvestAdapter.CurrentWeek.GetAllItemsToPurchase())
             {
-                IngredientInformation currentRow = _ingredientRows.Single(row => row.NameLabel.Text.Equals(recipeIngredient.Inventory.Name));
+                IngredientInformation currentRow = _ingredientRows.Single(row => row.NameLabel.Text.Equals(purchasedItem.Key.Inventory.Name));
                 if (currentRow.Selected.Checked)
-                {
-                    double purchaseAmount = double.Parse(currentRow.Quantity.Text);
-                    recipeIngredient.Inventory.Amount += (purchaseAmount > recipeIngredient.Amount) ? purchaseAmount : recipeIngredient.Amount;
-                }
+                    HarvestAdapter.InventoryItems.Single(item => item.Equals(purchasedItem.Key.Inventory)).Amount += double.Parse(currentRow.Quantity.Text);
             }
             this.DialogResult = DialogResult.OK;
         }

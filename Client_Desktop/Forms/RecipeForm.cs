@@ -7,6 +7,7 @@ using Core.Adapters.Objects;
 using Core.Adapters;
 using Core.Utilities.Validation;
 using System.ComponentModel;
+using Core.Utilities.UnitConversions;
 
 namespace Client_Desktop
 {
@@ -219,11 +220,22 @@ namespace Client_Desktop
             if (_recipe.Category.Equals(categoryCombo.SelectedValue.ToString()) == false) _recipe.Category = categoryCombo.SelectedValue.ToString();
             if (_recipe.Servings.Equals(double.Parse(servingsTextbox.Text)) == false) _recipe.Servings = double.Parse(servingsTextbox.Text);
 
-            foreach (IngredientInformation ingredient in _listOfIngredients)
+            foreach (IngredientInformation ingredientRow in _listOfIngredients)
+                CheckForChangesToIngredient(ingredientRow);
+        }
+
+        private void CheckForChangesToIngredient(IngredientInformation row)
+        {
+            RecipeIngredient ingredient = _recipe.AssociatedIngredients.SingleOrDefault(item => item.Equals(row.GetRecipeIngredient(_recipe.ID)));
+            if (ingredient == null)
             {
-                RecipeIngredient newRecipeIngredient = ingredient.GetRecipeIngredient(_recipe.ID);
-                if (!_recipe.AssociatedIngredients.Contains(newRecipeIngredient))
-                    _recipe.AssociatedIngredients.Add(newRecipeIngredient);
+                _recipe.AssociatedIngredients.Add(ingredient);
+            }  
+            else
+            {
+                if (ingredient.Inventory.Name.Equals(row.Name.Text) == false) ingredient.Inventory.Name = row.Name.Text;
+                if (ingredient.Amount.Equals(double.Parse(row.Quantity.Text)) == false) ingredient.Amount = double.Parse(row.Quantity.Text);
+                if (ingredient.Measurement.ToString().Equals(row.Unit.Text) == false) ingredient.Measurement = (MeasurementUnit)Enum.Parse(typeof(MeasurementUnit), row.Unit.Text);
             }
         }
         #endregion

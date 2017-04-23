@@ -15,13 +15,23 @@ namespace Core.Utilities.Queries
         {
             HarvestDatabase.Inventory.Load();
 
-            InventoryCache<Adapters.Objects.Inventory> inventoryItems = new InventoryCache<Adapters.Objects.Inventory>();
+            if ((int)itemID > 0)
+            {
+                int id = (int)itemID;
+                Adapters.Database.Inventory dbItem = HarvestDatabase.Inventory.SingleOrDefault(item => item.InventoryID == id);
+                return dbItem;
+            }
+            else
+            {
+                InventoryCache<Adapters.Objects.Inventory> inventoryItems = new InventoryCache<Adapters.Objects.Inventory>();
 
-            foreach (Inventory dbInventory in HarvestDatabase.Inventory.ToList())
-                inventoryItems.Add(InventoryFactory.Create_Client_From_Database(dbInventory));
+                foreach (Inventory dbInventory in HarvestDatabase.Inventory.ToList())
+                    inventoryItems.Add(InventoryFactory.Create_Client_From_Database(dbInventory));
 
-            inventoryItems.RaiseListChangedEvents = true;
-            return inventoryItems;
+                inventoryItems.RaiseListChangedEvents = true;
+                return inventoryItems;
+            }
+
         }
 
         public void Remove(object itemToRemove, HarvestDatabaseEntities HarvestDatabase)

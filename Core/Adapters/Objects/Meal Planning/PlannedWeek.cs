@@ -31,26 +31,29 @@ namespace Core.Adapters.Objects
                 DaysOfWeek.Add(new PlannedDay(d));
         }
 
-        public List<RecipeIngredient> GetAllIngredientsForWeek()
+        public Dictionary<RecipeIngredient, double> GetAllItemsToPurchase()
         {
-            List<RecipeIngredient> allIngredients = new List<RecipeIngredient>();
+            Dictionary<RecipeIngredient, double> allItemsToPurchase = new Dictionary<RecipeIngredient, double>();
 
             foreach (PlannedDay day in DaysOfWeek)
             {
-                foreach (RecipeIngredient ingredientsFrequencyForDay in day.GetIngredientsForToday())
-                    if (allIngredients.Any(ingredient => ingredient.Inventory.ID == ingredientsFrequencyForDay.Inventory.ID))
-                    {
-                        RecipeIngredient ri = allIngredients.Single(i => i.Inventory.ID == ingredientsFrequencyForDay.Inventory.ID);
-                        allIngredients[allIngredients.IndexOf(ri)].Amount += ConvertedAmount(ingredientsFrequencyForDay, ri);
-                    }
-                    else
-                        allIngredients.Add(ingredientsFrequencyForDay);
+                foreach (PlannedMeal meal in day.MealsForDay)
+                {
+                    if (meal.HasBeenEaten == false)
+                        foreach (RecipeIngredient ingredient in meal.PlannedRecipe.AssociatedIngredients)
+                        {
+                            if (allItemsToPurchase.Any(item => item.Key.Inventory.Equals(ingredient.Inventory)))
+                                allItemsToPurchase[ingredient] += ConvertedAmount(ingredient, ingredient.Inventory.Measurement);
+                            else
+                                allItemsToPurchase.Add(ingredient, ingredient.Amount);
+                        }
+                }
             }
 
-            return allIngredients;
+            return allItemsToPurchase;
         }
 
-        private double ConvertedAmount(RecipeIngredient ingredientToConvert, RecipeIngredient unitToConvertTo)
+        private double ConvertedAmount(RecipeIngredient ingredientToConvert, MeasurementUnit unitToConvertTo)
         {
             try
             {
@@ -58,7 +61,7 @@ namespace Core.Adapters.Objects
                 {
                     if (conversion.IsCorrectMeasurementType(ingredientToConvert.Measurement) == false)
                         conversion.ConversionType = new WeightUnitConversion();
-                    return conversion.Convert(new ConvertedIngredient(ingredientToConvert), unitToConvertTo.Measurement).Amount;
+                    return conversion.Convert(new ConvertedIngredient(ingredientToConvert), unitToConvertTo).Amount;
                 }
             }
             catch (InvalidConversionException ex)

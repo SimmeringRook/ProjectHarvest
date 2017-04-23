@@ -31,7 +31,7 @@ namespace Core.Utilities.UnitConversions
                     unitToConvertTo.ToString(),
                     ingredientToConvert.Ingredient.Inventory.Name,
                     ingredientToConvert.Ingredient.Inventory.Measurement
-                    ); //TODO Can I tie in the recipe to this?
+                    );
                 throw new InvalidConversionException(completeExceptionMessage);
             }
                 

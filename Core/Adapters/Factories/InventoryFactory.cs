@@ -19,7 +19,7 @@ namespace Core.Adapters.Factories
             
             using(HarvestEntitiesUtility harvestDatabase = new HarvestEntitiesUtility(new InventoryQuery()))
             {
-                Database.Inventory dbInventory = (harvestDatabase.Get(id) as List<Database.Inventory>).Single(item => item.InventoryID == id);
+                Database.Inventory dbInventory = harvestDatabase.Get(id) as Database.Inventory;
                 return Create_Client_From_Database(dbInventory);
             }
         }

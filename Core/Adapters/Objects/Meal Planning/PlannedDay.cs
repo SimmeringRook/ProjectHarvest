@@ -14,53 +14,5 @@ namespace Core.Adapters.Objects
         {
             Day = day;
         }
-        public List<RecipeIngredient> GetIngredientsForToday()
-        {
-            List<RecipeIngredient> allIngredients = new List<RecipeIngredient>();
-
-            foreach (var meal in MealsForDay)
-            {
-                if (meal.HasBeenEaten == false)
-                {
-                    //Compare the recipe ingredients in 'this' recipe to the 'master list' (allIngredients)
-                    foreach (RecipeIngredient recipeIngredient in meal.PlannedRecipe.AssociatedIngredients)
-                    {
-                        //If the recipe is already in allIngredients
-                        if (allIngredients.Any(_ingredient => _ingredient.Equals(recipeIngredient)))
-                        {
-                            RecipeIngredient ingredientToAdd = allIngredients.SingleOrDefault(_ingredient => recipeIngredient.Equals(_ingredient));
-                            //convert the amount required to the same unit as what allIngredients has
-                            int indexOfIngredient = allIngredients.IndexOf(ingredientToAdd);
-                            allIngredients[indexOfIngredient].Amount += ConvertedAmount(recipeIngredient, ingredientToAdd.Measurement);
-                        }
-                        else
-                        {
-                            //Otherwise, it doesn't exist in the list yet, add it.
-                            allIngredients.Add(recipeIngredient);
-                        }
-                    }
-                }
-            }
-       
-            return allIngredients;
-        }
-
-        private double ConvertedAmount(RecipeIngredient ingredientToConvert, MeasurementUnit unitToConvertTo)
-        {
-            try
-            {
-                using (HarvestConverter conversion = new HarvestConverter(new VolumeUnitConversion()))
-                {
-                    if (conversion.IsCorrectMeasurementType(ingredientToConvert.Measurement) == false)
-                        conversion.ConversionType = new WeightUnitConversion();
-                    return conversion.Convert(new ConvertedIngredient(ingredientToConvert), unitToConvertTo).Amount;
-                }
-            }
-            catch(InvalidConversionException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
-                return 0.0;
-            }
-        }
     }
 }

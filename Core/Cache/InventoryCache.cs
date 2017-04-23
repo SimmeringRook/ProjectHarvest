@@ -12,10 +12,9 @@ namespace Core.Cache
 
         protected override void OnListChanged(ListChangedEventArgs e)
         {
+            this.RaiseListChangedEvents = false;
             base.OnListChanged(e);
-
             InventoryQuery inventoryQuery = new InventoryQuery();
-            inventoryQuery.Cache = this as InventoryCache<Adapters.Objects.Inventory>;
             using (HarvestEntitiesUtility harvest = new HarvestEntitiesUtility(inventoryQuery))
             {
                 if (e.ListChangedType == ListChangedType.ItemAdded)
@@ -24,6 +23,7 @@ namespace Core.Cache
                     harvest.Update(this[e.NewIndex]);
             }
             inventoryQuery = null;
+            this.RaiseListChangedEvents = true;
         }
 
         protected override void RemoveItem(int index)
