@@ -65,7 +65,7 @@ namespace Client_Desktop
             }
             List<string> servings = new List<string>();
 
-            foreach (Recipe recipe in HarvestAdapter.Recipes)
+            foreach (Recipe recipe in HarvestAdapter.Recipes.OrderBy(r => r.Servings))
                 if (!servings.Any(serving => serving.Equals(recipe.Servings.ToString())))
                     servings.Add(recipe.Servings.ToString());
 
