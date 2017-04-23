@@ -43,7 +43,7 @@
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.groceryTableLayout);
             this.panel1.Location = new System.Drawing.Point(24, 177);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(902, 400);
             this.panel1.TabIndex = 1;
@@ -57,13 +57,13 @@
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 380F));
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 148F));
             this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
-            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
+            this.groceryTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128F));
             this.groceryTableLayout.Location = new System.Drawing.Point(6, 6);
-            this.groceryTableLayout.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groceryTableLayout.Margin = new System.Windows.Forms.Padding(6);
             this.groceryTableLayout.Name = "groceryTableLayout";
             this.groceryTableLayout.RowCount = 1;
             this.groceryTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.groceryTableLayout.Size = new System.Drawing.Size(898, 65);
+            this.groceryTableLayout.Size = new System.Drawing.Size(899, 65);
             this.groceryTableLayout.TabIndex = 0;
             // 
             // label2
@@ -102,7 +102,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(74, 612);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(202, 44);
             this.button1.TabIndex = 5;
@@ -113,7 +113,7 @@
             // submitButton
             // 
             this.submitButton.Location = new System.Drawing.Point(682, 612);
-            this.submitButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.submitButton.Margin = new System.Windows.Forms.Padding(6);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(192, 44);
             this.submitButton.TabIndex = 6;
@@ -124,7 +124,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(388, 612);
-            this.button3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button3.Margin = new System.Windows.Forms.Padding(6);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(194, 44);
             this.button3.TabIndex = 7;
@@ -145,9 +145,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "GroceryListForm";
-            this.Text = "GorceryList";
+            this.Text = "Gorcery List";
             this.Load += new System.EventHandler(this.GroceryListForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

@@ -36,10 +36,12 @@ namespace Client_Desktop
             if (SelectedRecipe != null)
                 this.DialogResult = DialogResult.OK;
         }
+
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
         }
+
         private void RecipeGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (RecipeGridView.SelectedRows.Count > 0)
@@ -65,22 +67,42 @@ namespace Client_Desktop
                 categoryCombo.Enabled = false;
                 servingsCombo.Enabled = false;
             }
+
             List<string> servings = new List<string>();
+            List<string> categories = new List<string>();
 
             foreach (Recipe recipe in HarvestAdapter.Recipes.OrderBy(r => r.Servings))
+            {
                 if (!servings.Any(serving => serving.Equals(recipe.Servings.ToString())))
                     servings.Add(recipe.Servings.ToString());
+                if (!categories.Any(category => category.Equals(recipe.Category)))
+                    categories.Add(recipe.Category);
+            }
+
+            servingsCombo.Items.AddRange(servings.ToArray());
+            categoryCombo.Items.AddRange(categories.ToArray());
 
             if (servings.Count <= 1)
+            {
                 servingsCombo.Enabled = false;
-            servingsCombo.Items.AddRange(servings.ToArray());
-            servingsCombo.Items.Insert(0, "All");
-            servingsCombo.SelectedIndex = servingsCombo.Items.IndexOf("All");
+            } 
+            else
+            {
+                servingsCombo.Items.Insert(0, "All");
+                servingsCombo.SelectedIndex = servingsCombo.Items.IndexOf("All");
+            }
 
-            categoryCombo.Items.AddRange(HarvestAdapter.RecipeCategories.ToArray());
-            categoryCombo.Items.Insert(0, "All");
-            categoryCombo.SelectedIndex = categoryCombo.Items.IndexOf("All");
+            if (categories.Count <= 1)
+            {
+                categoryCombo.Enabled = false;
+            }
+            else
+            {
+                categoryCombo.Items.Insert(0, "All");
+                categoryCombo.SelectedIndex = categoryCombo.Items.IndexOf("All");
+            }
         }
+
         private void FilterGridView()
         {
             CurrencyManager currencyManager = (CurrencyManager)BindingContext[RecipeGridView.DataSource];
@@ -103,6 +125,7 @@ namespace Client_Desktop
 
             currencyManager.ResumeBinding();
         }
+
         private void categoryCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             FilterGridView();
