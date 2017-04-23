@@ -1,6 +1,4 @@
 ﻿using Core.Utilities.Queries;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Adapters.Factories
 {

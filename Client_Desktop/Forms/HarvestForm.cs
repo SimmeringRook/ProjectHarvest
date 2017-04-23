@@ -58,7 +58,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
         }
         #endregion
@@ -153,12 +154,20 @@ namespace Client_Desktop
             {
                 inventoryItemsToRemove.ForEach(inventory =>
                 {
-                    if (HarvestAdapter.Recipes.Any(r => r.AssociatedIngredients.Any(ri => ri.Inventory.ID == inventory.ID)) == false)
-                        HarvestAdapter.InventoryItems.Remove(inventory); 
-                    else
-                        MessageBox.Show(
-                            "Unable to delete " + inventory.Name + ", because it is required for at least one recipe. " + inventory.Name + " must be removed from the recipe(s) before it can be deleted from the Inventory.", 
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        if (HarvestAdapter.Recipes.Any(r => r.AssociatedIngredients.Any(ri => ri.Inventory.ID == inventory.ID)) == false)
+                            HarvestAdapter.InventoryItems.Remove(inventory);
+                        else
+                            MessageBox.Show(
+                                "Unable to delete " + inventory.Name + ", because it is required for at least one recipe. " + inventory.Name + " must be removed from the recipe(s) before it can be deleted from the Inventory.",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Core.Utilities.Logging.Logger.Log(ex);
+                    }
                 });
 
                 RefreshCurrentTab();
@@ -230,12 +239,11 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
             RefreshCurrentTab();
         }
-
-        
         #endregion
     }
 }

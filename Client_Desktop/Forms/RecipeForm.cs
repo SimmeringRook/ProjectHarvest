@@ -28,7 +28,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
         }
 
@@ -88,7 +89,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
 
             _listOfIngredients.Add(rowToBeAdded);
@@ -144,7 +146,8 @@ namespace Client_Desktop
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Core.Utilities.Logging.Logger.Log(ex);
                 }
             }
 
@@ -202,7 +205,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
             this.DialogResult = DialogResult.OK;
         }
@@ -263,6 +267,7 @@ namespace Client_Desktop
 
             return noErrors;
         }
+
         private void recipeNameTextBox_Validating(object sender, CancelEventArgs e)
         {
             HarvestValidator.Validate(RecipeNameTextBox, HarvestRegex.Name, recipeErrorProvider);
@@ -272,8 +277,6 @@ namespace Client_Desktop
         {
             HarvestValidator.Validate(servingsTextbox, HarvestRegex.Amount, recipeErrorProvider);
         }
-
-
         #endregion
 
         #region IDisposable

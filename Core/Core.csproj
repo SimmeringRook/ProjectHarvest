@@ -127,6 +127,7 @@
     <Compile Include="Adapters\Objects\Recipe Management\Recipe.cs" />
     <Compile Include="Adapters\Objects\Recipe Management\RecipeIngredient.cs" />
     <Compile Include="Utilities\General\ControlFactory.cs" />
+    <Compile Include="Utilities\Logging\Logger.cs" />
     <Compile Include="Utilities\Queries\HarvestEntitiesUtility.cs" />
     <Compile Include="Utilities\Queries\IHarvestQuery.cs" />
     <Compile Include="Utilities\Queries\IngredientCategoryQuery.cs" />

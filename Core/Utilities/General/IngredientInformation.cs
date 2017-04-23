@@ -3,6 +3,7 @@ using Core.Adapters.Objects;
 using Core.Utilities.UnitConversions;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Core.Utilities.General
 {
@@ -54,18 +55,26 @@ namespace Core.Utilities.General
             ingredient.Amount = double.Parse(Quantity.Text);
             ingredient.Measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), Unit.SelectedValue.ToString());
 
-            if (Adapters.HarvestAdapter.InventoryItems.Any(item => item.Name.Equals(Name.Text)))
+            try
             {
-                ingredient.Inventory = Adapters.HarvestAdapter.InventoryItems.SingleOrDefault(item => item.Name.Equals(Name.Text));
-            }
-            else
-            {
-                ingredient.Inventory = new Inventory();
-                ingredient.Inventory.Name = Name.Text;
-                ingredient.Inventory.Category = Category.SelectedValue.ToString();
-                ingredient.Inventory.Measurement = ingredient.Measurement;
+                if (Adapters.HarvestAdapter.InventoryItems.Any(item => item.Name.Equals(Name.Text)))
+                {
+                    ingredient.Inventory = Adapters.HarvestAdapter.InventoryItems.SingleOrDefault(item => item.Name.Equals(Name.Text));
+                }
+                else
+                {
+                    ingredient.Inventory = new Inventory();
+                    ingredient.Inventory.Name = Name.Text;
+                    ingredient.Inventory.Category = Category.SelectedValue.ToString();
+                    ingredient.Inventory.Measurement = ingredient.Measurement;
 
-                Adapters.HarvestAdapter.InventoryItems.Add(ingredient.Inventory);
+                    Adapters.HarvestAdapter.InventoryItems.Add(ingredient.Inventory);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logging.Logger.Log(ex);
             }
 
             return ingredient;

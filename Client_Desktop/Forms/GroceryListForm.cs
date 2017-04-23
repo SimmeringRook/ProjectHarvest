@@ -22,8 +22,16 @@ namespace Client_Desktop
             InitializeComponent();
             _numberOfRows = groceryTableLayout.RowCount - 1;
 
-            foreach (KeyValuePair<RecipeIngredient, double> itemToPurchase in HarvestAdapter.CurrentWeek.GetAllItemsToPurchase())
-                BuildRow(itemToPurchase);
+            try
+            {
+                foreach (KeyValuePair<RecipeIngredient, double> itemToPurchase in HarvestAdapter.CurrentWeek.GetAllItemsToPurchase())
+                    BuildRow(itemToPurchase);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
+            }
         }
 
         private void GroceryListForm_Load(object sender, EventArgs e)
@@ -68,7 +76,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
             this.DialogResult = DialogResult.OK;
         }
@@ -92,11 +101,19 @@ namespace Client_Desktop
         #region Submit
         private void submitButton_Click(object sender, EventArgs e)
         {
-            foreach (KeyValuePair<RecipeIngredient, double> purchasedItem in HarvestAdapter.CurrentWeek.GetAllItemsToPurchase())
+            try
             {
-                IngredientInformation currentRow = _ingredientRows.Single(row => row.NameLabel.Text.Equals(purchasedItem.Key.Inventory.Name));
-                if (currentRow.Selected.Checked)
-                    HarvestAdapter.InventoryItems.Single(item => item.Equals(purchasedItem.Key.Inventory)).Amount += double.Parse(currentRow.Quantity.Text);
+                foreach (KeyValuePair<RecipeIngredient, double> purchasedItem in HarvestAdapter.CurrentWeek.GetAllItemsToPurchase())
+                {
+                    IngredientInformation currentRow = _ingredientRows.Single(row => row.NameLabel.Text.Equals(purchasedItem.Key.Inventory.Name));
+                    if (currentRow.Selected.Checked)
+                        HarvestAdapter.InventoryItems.Single(item => item.Equals(purchasedItem.Key.Inventory)).Amount += double.Parse(currentRow.Quantity.Text);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
             this.DialogResult = DialogResult.OK;
         }

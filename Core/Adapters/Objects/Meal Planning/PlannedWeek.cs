@@ -16,13 +16,21 @@ namespace Core.Adapters.Objects
         {
             StartOfWeek = DateTime.Today;
 
-            using (HarvestEntitiesUtility launchTable = new HarvestEntitiesUtility(new LastLaunchedQuery()))
+            try
             {
-                var firstLaunch = launchTable.Get(-1) as Database.LastLaunched;
-                if (firstLaunch == null)
-                    launchTable.Update(new Database.LastLaunched() { Date = StartOfWeek });
-                else
-                    StartOfWeek = firstLaunch.Date;
+                using (HarvestEntitiesUtility launchTable = new HarvestEntitiesUtility(new LastLaunchedQuery()))
+                {
+                    var firstLaunch = launchTable.Get(-1) as Database.LastLaunched;
+                    if (firstLaunch == null)
+                        launchTable.Update(new Database.LastLaunched() { Date = StartOfWeek });
+                    else
+                        StartOfWeek = firstLaunch.Date;
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utilities.Logging.Logger.Log(ex);
             }
 
             EndOfWeek = StartOfWeek.AddDays(6);

@@ -25,7 +25,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
         }
 
@@ -53,7 +54,8 @@ namespace Client_Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
             }
             this.DialogResult = DialogResult.OK;
         }
