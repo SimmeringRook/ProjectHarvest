@@ -33,15 +33,15 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.categoryCombo = new System.Windows.Forms.ComboBox();
+            this.servingsCombo = new System.Windows.Forms.ComboBox();
             this.RecipeGridView = new System.Windows.Forms.DataGridView();
-            this.selectButton = new System.Windows.Forms.Button();
-            this.updateButton = new System.Windows.Forms.Button();
-            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.servingsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.categoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recipeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.selectButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecipeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).BeginInit();
@@ -65,8 +65,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox2, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.categoryCombo, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.servingsCombo, 3, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(20, 48);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -96,23 +96,25 @@
             this.label2.Text = "Servings:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // comboBox1
+            // categoryCombo
             // 
-            this.comboBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(205, 8);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(181, 33);
-            this.comboBox1.TabIndex = 2;
+            this.categoryCombo.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.categoryCombo.FormattingEnabled = true;
+            this.categoryCombo.Location = new System.Drawing.Point(205, 8);
+            this.categoryCombo.Name = "categoryCombo";
+            this.categoryCombo.Size = new System.Drawing.Size(181, 33);
+            this.categoryCombo.TabIndex = 2;
+            this.categoryCombo.SelectedIndexChanged += new System.EventHandler(this.categoryCombo_SelectedIndexChanged);
             // 
-            // comboBox2
+            // servingsCombo
             // 
-            this.comboBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(626, 8);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(130, 33);
-            this.comboBox2.TabIndex = 3;
+            this.servingsCombo.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.servingsCombo.FormattingEnabled = true;
+            this.servingsCombo.Location = new System.Drawing.Point(626, 8);
+            this.servingsCombo.Name = "servingsCombo";
+            this.servingsCombo.Size = new System.Drawing.Size(130, 33);
+            this.servingsCombo.TabIndex = 3;
+            this.servingsCombo.SelectedIndexChanged += new System.EventHandler(this.servingsCombo_SelectedIndexChanged);
             // 
             // RecipeGridView
             // 
@@ -126,37 +128,13 @@
             this.servingsDataGridViewTextBoxColumn,
             this.categoryDataGridViewTextBoxColumn});
             this.RecipeGridView.DataSource = this.recipeBindingSource;
-            this.RecipeGridView.Location = new System.Drawing.Point(20, 193);
+            this.RecipeGridView.Location = new System.Drawing.Point(20, 104);
             this.RecipeGridView.Name = "RecipeGridView";
             this.RecipeGridView.ReadOnly = true;
             this.RecipeGridView.RowTemplate.Height = 33;
-            this.RecipeGridView.Size = new System.Drawing.Size(791, 254);
+            this.RecipeGridView.Size = new System.Drawing.Size(791, 365);
             this.RecipeGridView.TabIndex = 6;
             this.RecipeGridView.SelectionChanged += new System.EventHandler(this.RecipeGridView_SelectionChanged);
-            // 
-            // selectButton
-            // 
-            this.selectButton.Location = new System.Drawing.Point(339, 493);
-            this.selectButton.Name = "selectButton";
-            this.selectButton.Size = new System.Drawing.Size(139, 48);
-            this.selectButton.TabIndex = 7;
-            this.selectButton.Text = "Select";
-            this.selectButton.UseVisualStyleBackColor = true;
-            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
-            // updateButton
-            // 
-            this.updateButton.Location = new System.Drawing.Point(558, 121);
-            this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(218, 47);
-            this.updateButton.TabIndex = 8;
-            this.updateButton.Text = "Update Results";
-            this.updateButton.UseVisualStyleBackColor = true;
-            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
-            // 
-            // recipeBindingSource
-            // 
-            this.recipeBindingSource.DataSource = typeof(Core.Adapters.Objects.Recipe);
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -182,18 +160,45 @@
             this.categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
             this.categoryDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // recipeBindingSource
+            // 
+            this.recipeBindingSource.DataSource = typeof(Core.Adapters.Objects.Recipe);
+            // 
+            // selectButton
+            // 
+            this.selectButton.Location = new System.Drawing.Point(238, 494);
+            this.selectButton.Name = "selectButton";
+            this.selectButton.Size = new System.Drawing.Size(139, 48);
+            this.selectButton.TabIndex = 7;
+            this.selectButton.Text = "Select";
+            this.selectButton.UseVisualStyleBackColor = true;
+            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(446, 493);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(139, 48);
+            this.cancelButton.TabIndex = 9;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // RecipePickerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(823, 553);
-            this.Controls.Add(this.updateButton);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.selectButton);
             this.Controls.Add(this.RecipeGridView);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.filtersLabel);
             this.Name = "RecipePickerForm";
             this.Text = "RecipePickerForm";
+            this.Load += new System.EventHandler(this.RecipePickerForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecipeGridView)).EndInit();
@@ -209,14 +214,14 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox categoryCombo;
+        private System.Windows.Forms.ComboBox servingsCombo;
         private System.Windows.Forms.DataGridView RecipeGridView;
         private System.Windows.Forms.Button selectButton;
-        private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn servingsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource recipeBindingSource;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
