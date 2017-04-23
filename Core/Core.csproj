@@ -170,11 +170,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="HarvestDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="HarvestDatabase_log.ldf">
       <DependentUpon>HarvestDatabase.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Adapters\Database\HarvestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
