@@ -1,11 +1,36 @@
 ﻿using Core.Cache;
 using Core.Utilities.Queries;
 using Core.Utilities.UnitConversions;
+using System;
 
 namespace Core.Adapters
 {
     public static class HarvestAdapter
     {
+        public static bool Initialize()
+        {
+            try
+            {
+                Database.HarvestDatabaseEntities db = new Database.HarvestDatabaseEntities();
+                db.Database.CreateIfNotExists();
+                return db.Database.Exists();
+            }
+            catch(Exception ex)
+            {
+                  Core.Utilities.Logging.Logger.Log(ex);
+                return false;
+            }
+        }
+        public static bool TableExists()
+        {
+            using (HarvestEntitiesUtility harvest = new HarvestEntitiesUtility(new MetricQuery()))
+            {
+                var table = harvest.Get(-1) as Cache<MeasurementUnit>;
+
+                return (table.Count > 0);
+            }
+        }
+
         #region Recipe
         private static RecipeCache<Objects.Recipe> _recipes = new HarvestEntitiesUtility(new RecipeQuery()).Get(-1) as RecipeCache<Objects.Recipe>;
         public static RecipeCache<Objects.Recipe> Recipes { get { return _recipes; } }

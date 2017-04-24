@@ -236,7 +236,7 @@ namespace Client_Desktop
             RecipeIngredient ingredient = _recipe.AssociatedIngredients.SingleOrDefault(item => item.Equals(row.GetRecipeIngredient(_recipe.ID)));
             if (ingredient == null)
             {
-                _recipe.AssociatedIngredients.Add(ingredient);
+                _recipe.AssociatedIngredients.Add(row.GetRecipeIngredient(_recipe.ID));
             }  
             else
             {

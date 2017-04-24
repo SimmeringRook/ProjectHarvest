@@ -353,8 +353,8 @@
             <PropertyRef Name="RecipeID" />
             <PropertyRef Name="InventoryID" />
           </Key>
-          <Property Name="RecipeID" Type="Int32" Nullable="false" />
-          <Property Name="InventoryID" Type="Int32" Nullable="false" />
+          <Property Name="RecipeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InventoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Amount" Type="Double" Nullable="false" />
           <Property Name="Measurement" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Inventory" Relationship="Self.FK_Recipe_Inventory_Inventory" FromRole="RecipeIngredient" ToRole="Inventory" />

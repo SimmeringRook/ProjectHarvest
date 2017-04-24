@@ -66,11 +66,15 @@ namespace Core.Utilities.Queries
             HarvestDatabase.Recipe.Load();
 
             Adapters.Objects.Recipe clientRecipe = itemToAdd as Adapters.Objects.Recipe;
-            clientRecipe.ID = _GetNextID(HarvestDatabase);
+            
 
             Recipe databaseRecipe = RecipeFactory.Create_Database_From_Client(clientRecipe);
             HarvestDatabase.Recipe.AddOrUpdate(databaseRecipe);
             HarvestDatabase.SaveChanges();
+
+            clientRecipe.ID = _GetNextID(HarvestDatabase);
+
+            //var justCreated = HarvestDatabase.Recipe.OrderByDescending(r => r.RecipeID).First();
             
             Cache.RaiseListChangedEvents = true;
         }
@@ -78,10 +82,10 @@ namespace Core.Utilities.Queries
         private int _GetNextID(HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Recipe.Load();
-            if (HarvestDatabase.Recipe.Count() == 0)
-                return 1;
+            //if (HarvestDatabase.Recipe.Count() == 0)
+            //    return 1;
             var lastRecipe = HarvestDatabase.Recipe.OrderByDescending(r => r.RecipeID).First();
-                return lastRecipe.RecipeID + 1;
+                return lastRecipe.RecipeID;
         }
     }
 }

@@ -83,14 +83,14 @@ namespace Core.Utilities.Queries
             HarvestDatabase.Inventory.Load();
 
             Adapters.Objects.Inventory clientInventory = itemToChange as Adapters.Objects.Inventory;
-            clientInventory.ID = GetNextID(HarvestDatabase);
+            
             Inventory dbInventoryItem = InventoryFactory.Create_Database_From_Client(clientInventory);
 
             HarvestDatabase.Inventory.AddOrUpdate(dbInventoryItem);
 
             HarvestDatabase.SaveChanges();
 
-            //clientInventory = null;
+            clientInventory.ID = GetNextID(HarvestDatabase);
             dbInventoryItem = null;
 
             if (Cache != null)
@@ -100,10 +100,8 @@ namespace Core.Utilities.Queries
         private int GetNextID(HarvestDatabaseEntities HarvestDatabase)
         {
             HarvestDatabase.Inventory.Load();
-            if (HarvestDatabase.Inventory.Count() == 0)
-                return 1;
             var lastRecipe = HarvestDatabase.Inventory.OrderByDescending(r => r.InventoryID).First();
-            return lastRecipe.InventoryID + 1;
+            return lastRecipe.InventoryID;
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Client_Desktop
             try
             {
                 RecipeGridView.DataSource = HarvestAdapter.Recipes.ToList();
+                if (RecipeGridView.Rows.Count > 0)
+                    RecipeGridView.Rows[0].Selected = true;
                 EnableFilters();
             }
             catch (Exception ex)
