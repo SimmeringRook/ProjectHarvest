@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace Client_Desktop
 {
@@ -15,7 +17,8 @@ namespace Client_Desktop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ExecuteCommand("SqlLocalDB start HARVESTDATABASE.mdf");
+            ExecuteCommand("SqlLocalDB -s MSSQLLocalDB");
+            
             HarvestForm mainForm = null;
             try
             {
@@ -27,7 +30,7 @@ namespace Client_Desktop
                 MessageBox.Show("Installation successful, please relaunch Harvest.");
                 Core.Utilities.Logging.Logger.Log(ex);
                 mainForm.Dispose();
-            }            
+            }
         }
 
         static void ExecuteCommand(string command)
@@ -52,6 +55,31 @@ namespace Client_Desktop
 
             Console.WriteLine("ExitCode: {0}", process.ExitCode);
             process.Close();
+        }
+
+        static bool TableExists()
+        {
+            string connString = ConfigurationManager.ConnectionStrings["HarvestDatabaseEntities"].ConnectionString;
+            bool itWorked = false;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    SqlCommand testCommand = new SqlCommand("SELECT * FROM Metrics", conn);
+                    SqlDataReader reader = testCommand.ExecuteReader();
+                    itWorked = reader.Read();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Core.Utilities.Logging.Logger.Log(ex);
+            }
+
+            return itWorked;
         }
     }
 }
