@@ -13,8 +13,12 @@ namespace Core.Utilities.Queries
             HarvestDatabase.MealTime.Load();
             Cache<string> mealTimes = new Cache<string>();
 
-            foreach (MealTime mealTIme in HarvestDatabase.MealTime.ToList())
-                mealTimes.Add(mealTIme.MealName);
+            foreach (MealTime mealTime in HarvestDatabase.MealTime.ToList())
+                mealTimes.Add(mealTime.MealName);
+
+            var lunch = mealTimes.Last();
+            mealTimes[2] = mealTimes[1];
+            mealTimes[1] = lunch;
 
             mealTimes.RaiseListChangedEvents = true;
             return mealTimes;

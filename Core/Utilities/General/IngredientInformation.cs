@@ -19,6 +19,8 @@ namespace Core.Utilities.General
 
         private ErrorProvider _formErrorProvider;
 
+        private Inventory _originalInventory = null;
+
         public IngredientInformation(bool isEditable, ErrorProvider formErrorProvider)
         {
             _formErrorProvider = formErrorProvider;
@@ -45,6 +47,8 @@ namespace Core.Utilities.General
             Unit.SelectedIndex = Unit.Items.IndexOf(ingredient.Measurement);
             Category.SelectedIndex = Category.Items.IndexOf(ingredient.Inventory.Category);
 
+            _originalInventory = ingredient.Inventory;
+
             Selected.Checked = false;
         }
 
@@ -55,11 +59,18 @@ namespace Core.Utilities.General
             ingredient.Amount = double.Parse(Quantity.Text);
             ingredient.Measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), Unit.SelectedValue.ToString());
 
+            Inventory newIngredientExistingInventory = Adapters.HarvestAdapter.InventoryItems.SingleOrDefault(item =>
+                    item.Name.Equals(Name.Text) &&
+                    item.Category.Equals(Category.SelectedValue.ToString()));
             try
             {
-                if (Adapters.HarvestAdapter.InventoryItems.Any(item => item.Name.Equals(Name.Text)))
+                if (_originalInventory != null)
                 {
-                    ingredient.Inventory = Adapters.HarvestAdapter.InventoryItems.SingleOrDefault(item => item.Name.Equals(Name.Text));
+                    ingredient.Inventory = _originalInventory;
+                }
+                else if (newIngredientExistingInventory != null)
+                {
+                    ingredient.Inventory = newIngredientExistingInventory;
                 }
                 else
                 {

@@ -47,7 +47,11 @@ namespace Client_Desktop
                 return;
             try
             {
-                if (_inventoryItem != null)
+                Inventory exisitingInventory = HarvestAdapter.InventoryItems.SingleOrDefault(
+                    item => 
+                    item.Name.Equals(itemNameTextbox.Text) &&
+                    item.Category.Equals(foodCategoryCombo.SelectedValue.ToString());
+                if (exisitingInventory != null)
                     CheckForChanges();
                 else
                     HarvestAdapter.InventoryItems.Add(CreateInventoryFromControls());

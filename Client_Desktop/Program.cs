@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 using System.Configuration;
 
@@ -17,20 +16,20 @@ namespace Client_Desktop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ExecuteCommand("SqlLocalDB -s MSSQLLocalDB");
-            
-            HarvestForm mainForm = null;
-            try
+            ExecuteCommand("SqlLocalDB create MSSQLLocalDB -s");
+
+            if (Core.Adapters.HarvestAdapter.Initialize())
             {
-                mainForm = new HarvestForm();
-                Application.Run(mainForm);
+                if (TableExists())
+                {
+                    Application.Run(new HarvestForm());
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Installation successful, please relaunch Harvest.");
-                Core.Utilities.Logging.Logger.Log(ex);
-                mainForm.Dispose();
+                MessageBox.Show("An error occured while creating the database, if this issue persists contact the developers.");
             }
+
         }
 
         static void ExecuteCommand(string command)
@@ -59,23 +58,15 @@ namespace Client_Desktop
 
         static bool TableExists()
         {
-            string connString = ConfigurationManager.ConnectionStrings["HarvestDatabaseEntities"].ConnectionString;
             bool itWorked = false;
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connString))
-                {
-                    conn.Open();
-
-                    SqlCommand testCommand = new SqlCommand("SELECT * FROM Metrics", conn);
-                    SqlDataReader reader = testCommand.ExecuteReader();
-                    itWorked = reader.Read();
-                }
+                itWorked = Core.Adapters.HarvestAdapter.TableExists();
             }
             catch(Exception ex)
             {
-                MessageBox.Show("An error occured while trying to retrieve information from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to access the Metric Table.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Core.Utilities.Logging.Logger.Log(ex);
             }
 
