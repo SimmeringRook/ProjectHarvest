@@ -50,7 +50,7 @@ namespace Client_Desktop
                 Inventory exisitingInventory = HarvestAdapter.InventoryItems.SingleOrDefault(
                     item => 
                     item.Name.Equals(itemNameTextbox.Text) &&
-                    item.Category.Equals(foodCategoryCombo.SelectedValue.ToString());
+                    item.Category.Equals(foodCategoryCombo.SelectedValue.ToString()));
                 if (exisitingInventory != null)
                     CheckForChanges();
                 else
