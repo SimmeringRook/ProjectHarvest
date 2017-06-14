@@ -59,9 +59,13 @@ namespace Core.Utilities.General
             ingredient.Amount = double.Parse(Quantity.Text);
             ingredient.Measurement = (MeasurementUnit)System.Enum.Parse(typeof(MeasurementUnit), Unit.SelectedValue.ToString());
 
+<<<<<<< HEAD
             Inventory newIngredientExistingInventory = Adapters.HarvestAdapter.InventoryItems.SingleOrDefault(item =>
                     item.Name.Equals(Name.Text) &&
                     item.Category.Equals(Category.SelectedValue.ToString()));
+=======
+            Inventory newIngredientExistingInventory = Adapters.HarvestAdapter.InventoryItems.SingleOrDefault(item => item.Name.Equals(Name.Text));
+>>>>>>> origin/master
             try
             {
                 if (_originalInventory != null)
