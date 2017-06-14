@@ -17,8 +17,6 @@ namespace Client_Desktop.Extensions
 
         public PlannedRecipeControl(PlannedMeal plannedRecipe)
         {
-            this.MouseDown += PlannedRecipeControl_MouseDown;
-
             this.PlannedMeal = plannedRecipe;
 
             this.Margin = new Padding(5, 2, 0, 2);
@@ -36,29 +34,6 @@ namespace Client_Desktop.Extensions
 
             if (plannedRecipe.HasBeenEaten)
                 SetControlsForHasBeenEaten();
-        }
-
-        #region Drag Drop
-        private void PlannedRecipeControl_MouseDown(object sender, MouseEventArgs e)
-        {
-            DoDragDrop(sender, DragDropEffects.Move);
-        }
-
-        public void UpdatePlan(DateTime dateTime, string mealTime)
-        {
-            RemovePlanFromWeek(this.PlannedMeal);
-
-            this.PlannedMeal = null;
-            this.PlannedMeal = new PlannedMeal() { Date = dateTime, HasBeenEaten = false, MealTime = mealTime, PlannedRecipe = this.RecipeButton.Recipe };
-            HarvestAdapter.PlannedMeals.Add(this.PlannedMeal);
-        }
-        #endregion
-
-        private void RemovePlanFromWeek(PlannedMeal planToRemove)
-        {
-            foreach (var plannedDay in HarvestAdapter.CurrentWeek.DaysOfWeek)
-                if (plannedDay.Day.Equals(PlannedMeal.Date))
-                    HarvestAdapter.PlannedMeals.Remove(planToRemove);
         }
 
         private void SetControlsForHasBeenEaten()
@@ -79,7 +54,9 @@ namespace Client_Desktop.Extensions
         #region Button Click Events
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            RemovePlanFromWeek(this.PlannedMeal);
+            foreach (var plannedDay in HarvestAdapter.CurrentWeek.DaysOfWeek)
+                if (plannedDay.Day.Equals(PlannedMeal.Date))
+                    HarvestAdapter.PlannedMeals.Remove(PlannedMeal);
 
             foreach (Control control in this.Controls)
                 control.Dispose();

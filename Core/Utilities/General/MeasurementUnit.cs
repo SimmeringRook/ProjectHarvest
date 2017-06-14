@@ -15,7 +15,6 @@
         Liter = 10,
         Milligram = 11,
         Gram = 12,
-        Kilogram = 13,
-        Each = 14
+        Kilogram = 13
     }
 }

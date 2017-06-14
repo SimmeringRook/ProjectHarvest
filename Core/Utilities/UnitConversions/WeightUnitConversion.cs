@@ -11,8 +11,7 @@ namespace Core.Utilities.UnitConversions
             MeasurementUnit.Pound,
             MeasurementUnit.Milligram,
             MeasurementUnit.Gram,
-            MeasurementUnit.Kilogram,
-            MeasurementUnit.Each
+            MeasurementUnit.Kilogram
         };
 
         public bool IsCorrectMeasurementType(MeasurementUnit measurement)

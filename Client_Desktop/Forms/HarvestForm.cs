@@ -17,40 +17,11 @@ namespace Client_Desktop
         public HarvestForm()
         {     
             InitializeComponent();
-            InitializeDragDrop();
-
             this.WindowState = FormWindowState.Maximized;
             RefreshCurrentTab();
         }
 
-        private void InitializeDragDrop()
-        {
-            foreach (Control c in weekTableLayout.Controls)
-            {
-                if (c.GetType() == typeof(FlowLayoutPanel))
-                {
-                    var flow = c as FlowLayoutPanel;
-                    flow.AllowDrop = true;
-                    flow.DragEnter += PlannedMealContainer_DragEnter;
-                    flow.DragDrop += PlannedMealContainer_DragDrop;
-                }
-            }
-        }
-
         #region Main Form Functionality
-        private void PlannedMealContainer_DragDrop(object sender, DragEventArgs e)
-        {
-            PlannedRecipeControl draggedPlan = e.Data.GetData(typeof(PlannedRecipeControl)) as PlannedRecipeControl;
-            FlowLayoutPanel newTimeSlot = sender as FlowLayoutPanel;
-            draggedPlan.UpdatePlan(GetDateAssociatedWithContainer(newTimeSlot), GetMealTimeAssociatedWithContainer(newTimeSlot));
-            (sender as FlowLayoutPanel).Controls.Add(draggedPlan);
-        }
-
-        private void PlannedMealContainer_DragEnter(object sender, DragEventArgs e)
-        {
-            if ((e.AllowedEffect & DragDropEffects.Move) != 0)
-                e.Effect = DragDropEffects.Move;
-        }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Dispose();
@@ -91,17 +62,6 @@ namespace Client_Desktop
                 Core.Utilities.Logging.Logger.Log(ex);
             }
         }
-
-        private DateTime GetDateAssociatedWithContainer(FlowLayoutPanel container)
-        {
-            int dayIndex = weekTableLayout.GetColumn(container);
-            return HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].Day;
-        }
-
-        private string GetMealTimeAssociatedWithContainer(FlowLayoutPanel container)
-        {
-            return HarvestAdapter.MealTimes[weekTableLayout.GetRow(container)];
-        }
         #endregion
 
         #region Meal Tab
@@ -111,18 +71,16 @@ namespace Client_Desktop
 
             foreach (Control flowLayout in weekTableLayout.Controls)
             {
-                string mealTime = GetMealTimeAssociatedWithContainer(flowLayout as FlowLayoutPanel);
-
-                flowLayout.Controls.Add(new PlanButton(GetDateAssociatedWithContainer(flowLayout as FlowLayoutPanel), mealTime));
-
                 int dayIndex = weekTableLayout.GetColumn(flowLayout);
-                var MealsForCurrentDay = HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay;
+                DateTime currentDay = HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].Day;
+                string mealTime = HarvestAdapter.MealTimes[weekTableLayout.GetRow(flowLayout)];
 
-                foreach (PlannedMeal plannedRecipe in MealsForCurrentDay)
-                {
-                    if (plannedRecipe.MealTime.Equals(mealTime))
-                        flowLayout.Controls.Add(new PlannedRecipeControl(plannedRecipe));
-                }
+                flowLayout.Controls.Add(new PlanButton(currentDay, mealTime));
+
+                if (HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay.Count > 0)
+                    foreach (PlannedMeal plannedRecipe in HarvestAdapter.CurrentWeek.DaysOfWeek[dayIndex].MealsForDay)
+                        if (plannedRecipe.MealTime.Equals(mealTime))
+                            flowLayout.Controls.Add(new PlannedRecipeControl(plannedRecipe));
             }
         }
 
